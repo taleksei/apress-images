@@ -91,13 +91,13 @@ module Apress
       # Returns Hash
       def extract_subject_attrs(params)
         attributes = {}
-        return attributes unless params[:subject_type].present? && params[:subject_id].present?
+        return attributes if params[:subject_type].blank?
 
         subject_type = params[:subject_type].camelize
         raise ArgumentError, 'Subject is not allowed' if allowed_subjects.exclude? subject_type
 
         attributes[:subject_type] = subject_type.constantize.model_name
-        attributes[:subject_id] = params[:subject_id].to_i
+        attributes[:subject_id] = params[:subject_id].to_i if params[:subject_id].present?
         attributes
       end
     end
