@@ -24,41 +24,17 @@ Or install it yourself as:
 
 ```ruby
 
-# Example 1
-# Use Imagebale module
 class Avatar < ActiveRecord::Base
-  # Define custom resizing
-  def self.attachment_options
-    {
-      styles: {
-        thumb: {geometry: '320x240>'}
-      }
-    }
-  end
-
-  # Note: it should be in bottom
-  include Apress::Images::Imageble
-end
-
-# Example 2
-# Use Imagebale module with resizing in background
-class Avatar < ActiveRecord::Base
-  # Define custom resizing
-  def self.attachment_options
-    {
-      styles: {
-        thumb: {geometry: '320x240>'}
-      }
-    }
-  end
-
-  include Apress::Images::Imageble
-  include Apress::Images::BackgroundProcessing
-end
-
-# Example 3
-# Use abstract Image model (with default styles and background resizing)
-class Avatar < Apress::Images::Image
+  include Apress::Images::Concerns::Imageable
+  
+  acts_as_image({
+    attachment_options: {
+      styles: {thumb: '100x100>'}
+    },
+    background_processing: false, # допустим, ресайз не хотим делать в фоне,
+    max_size: 4, # Максимальный размер изображения ставим в 4 Мб
+    watermark_small: 'my_watermark.png' # Своя ватермарка
+  })
 end
 
 ```
