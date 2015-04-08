@@ -2,8 +2,8 @@
 
 module Apress
   module Images
-    module Concerns
-      # Public: Предоставляет возможность обработки изображения в фоне
+    module Extensions
+      # Internal: Предоставляет возможность обработки изображения в фоне
       module BackgroundProcessing
         extend ActiveSupport::Concern
 

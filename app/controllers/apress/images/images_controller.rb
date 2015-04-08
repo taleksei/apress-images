@@ -26,7 +26,7 @@ module Apress
         ids = params.require(:images).each_with_object([]) do |file_or_url, memo|
           begin
             memo << uploader.upload(file_or_url).id
-          rescue ActiveRecord::RecordInvalid => e
+          rescue ::ActiveRecord::RecordInvalid => e
             render json: {status: :error, message: e.message}, status: :unprocessable_entity
             return
           end

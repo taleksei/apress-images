@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'rails'
-
 require 'strong_parameters'
 require 'paperclip'
 require 'paperclip/watermark'
