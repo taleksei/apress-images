@@ -1,5 +1,9 @@
 
 #### [Current]
+ * 2015-04-20 [9287c17](../../commit/9287c17) - __(Долганов Сергей)__ fix(specs): stack level too deep
+
+#### v1.0.0
+ * 2015-04-08 [085dce1](../../commit/085dce1) - __(Andrew N. Shalaev)__ Release 1.0.0
  * 2015-04-02 [b292703](../../commit/b292703) - __(Andrew N. Shalaev)__ feature(imageable): acts_as_image метод
 
 #### v0.0.2
