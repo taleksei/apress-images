@@ -15,9 +15,20 @@ describe Apress::Images::UploadService do
 
   describe '#upload' do
     context 'when source is file' do
-      subject { described_class.new('Apress::Images::Image') }
+      context 'when create a new image' do
+        subject { described_class.new('Apress::Images::Image') }
 
-      it { expect { subject.upload(image) }.to change(Apress::Images::Image, :count).by(1) }
+        it { expect { subject.upload(image) }.to change(Apress::Images::Image, :count).by(1) }
+      end
+
+      context 'when update an existing image' do
+        let(:old_image) { create :image }
+        subject { described_class.new('Apress::Images::Image', id: old_image.id) }
+
+        before { old_image }
+
+        it { expect { subject.upload(image) }.not_to change(Apress::Images::Image, :count) }
+      end
     end
 
     context 'when subject_type only present' do

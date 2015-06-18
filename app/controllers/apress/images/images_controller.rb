@@ -39,7 +39,7 @@ module Apress
 
       def uploader
         @uploader ||=
-          Apress::Images::UploadService.new(params.require(:model), params.slice(:subject_type, :subject_id))
+          Apress::Images::UploadService.new(params.require(:model), params.slice(:subject_type, :subject_id, :id))
       end
 
       def model

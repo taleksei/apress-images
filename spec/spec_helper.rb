@@ -4,13 +4,13 @@ require 'bundler/setup'
 require 'apress/images'
 
 require 'factory_girl_rails'
-require 'shoulda-matchers'
 require 'paperclip/matchers'
 
 require 'combustion'
 Combustion.initialize! :all
 
 require 'rspec/rails'
+require 'shoulda-matchers'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
