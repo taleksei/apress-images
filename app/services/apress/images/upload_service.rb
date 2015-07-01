@@ -13,7 +13,7 @@ module Apress
     #   image_from_file = service.upload(File.open(...))
     #   image_from_url  = service.upload('http://example.com/image.jpg')
     class UploadService
-      attr_reader :model, :subject_attributes
+      attr_reader :model, :image_attributes
 
       # Public: конструктор
       #
@@ -21,11 +21,12 @@ module Apress
       # subject - Hash (default: {})
       #          :subject_type - String тип объекта, которому добавляются изображения
       #          :subject_id   - String иденитфикатор объекта, которому добавляются изображения
+      #          :id           - String|Integer идентификатор изображения
       #
       # Returns ImageUploadService instance
-      def initialize(imageable_model, subject = {})
+      def initialize(imageable_model, params = {})
         @model = image_model(imageable_model)
-        @subject_attributes = extract_subject_attrs(subject)
+        @image_attributes = extract_image_attrs(params)
       end
 
       # Public: Создание изображения
@@ -38,8 +39,13 @@ module Apress
       # Returns Object изображение
       def upload(source, position = current_position.next)
         source_attribute = source.is_a?(String) ? :img_url : :img
-        attributes = {source_attribute => source, position: position}.merge!(subject_attributes)
-        model.create!(attributes)
+        attributes = {source_attribute => source, position: position}.merge!(image_attributes)
+
+        if attributes[:id].present?
+          update(attributes)
+        else
+          model.create!(attributes)
+        end
       end
 
       class << self
@@ -68,6 +74,12 @@ module Apress
 
       protected
 
+      def update(attributes)
+        img = model.find(attributes[:id])
+        img.update_attributes!(attributes)
+        img
+      end
+
       delegate :image_model, to: 'self.class'
 
       def allowed_subjects
@@ -78,19 +90,21 @@ module Apress
       #
       # Returns Integer
       def current_position
-        @current_position ||= subject_attributes.present? && model.where(subject_attributes).maximum(:position) || 0
+        @current_position ||= image_attributes.present? && model.where(image_attributes).maximum(:position) || 0
       end
 
       # Internal: Атрибуты изображения, для указанного в параметрах объекта
       # Note: Объект может быть не указан
       #
-      # params - Hash
+      # params - Hash (по умолчанию {}):
       #          :subject_type - String тип объекта, которому добавляются изображения
       #          :subject_id   - String иденитфикатор объекта, которому добавляются изображения
+      #          :id           - String|Integer идентификатор изображения
       #
-      # Returns Hash
-      def extract_subject_attrs(params)
+      # Returns Hash, атрибуты изображения.
+      def extract_image_attrs(params = {})
         attributes = {}
+        attributes[:id] = params[:id].to_i if params[:id].present?
         return attributes if params[:subject_type].blank?
 
         subject_type = params[:subject_type].camelize
