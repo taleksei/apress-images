@@ -4,7 +4,7 @@ module Apress
   module Images
     # Public: Базовый класс для хранения изображений
     class Image < ::ActiveRecord::Base
-      include Apress::Images::Concerns::Imageable
+      include Apress::Images::Imageable
 
       self.abstract_class = true
 
