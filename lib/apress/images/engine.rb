@@ -4,6 +4,7 @@ module Apress
   module Images
     class Engine < ::Rails::Engine
       config.autoload_paths += Dir["#{config.root}/lib"]
+      config.autoload_paths += [config.root.join('app', 'models', 'concerns')] if Rails::VERSION::MAJOR < 4
       config.i18n.load_path += Dir[config.root.join('locales', '*.{rb,yml}').to_s]
 
       initializer 'apress-images', before: :load_config_initializers do
