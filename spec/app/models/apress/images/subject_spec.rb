@@ -5,6 +5,7 @@ RSpec.describe Subject, type: :model do
   let(:subject) { create :subject }
 
   it { expect(subject).to have_one(:cover).class_name('SubjectImage') }
+  it { expect(described_class.reflect_on_association(:cover).options[:as]).to eq(:subject) }
   it { expect(subject).to accept_nested_attributes_for(:cover).allow_destroy(true) }
   it { expect(subject.cover).to be_kind_of SubjectImage }
 
