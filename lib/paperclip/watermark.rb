@@ -16,7 +16,7 @@ module Paperclip
     # that contains the new image.
     def make
       src = @file
-      dst = Tempfile.new([@basename, @format ? ".#{@format}" : ''])
+      dst = Tempfile.new([@basename, @format].compact.join('.'))
       dst.binmode
 
       begin
@@ -37,7 +37,14 @@ module Paperclip
           :watermark => watermark_path
         )
       rescue Cocaine::ExitStatusError
-        raise PaperclipError, "There was an error processing the watermark for #{@basename}" if @whiny
+        if @whiny
+          error = "There was an error processing the watermark for #{@basename}"
+          if Apress::Images.old_paperclip?
+            raise PaperclipError, error
+          else
+            raise Paperclip::Error, error
+          end
+        end
       rescue Cocaine::CommandNotFoundError
         raise Paperclip::CommandNotFoundError.new("Could not run the `#{program}` command. Please install ImageMagick.")
       end
@@ -54,6 +61,7 @@ module Paperclip
     end
 
     def transformation_command
+      @auto_orient = false if watermark_path.present?
       trans = super
       trans << '-colorspace sRGB'
       trans

@@ -19,12 +19,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = %w(lib)
 
-  spec.add_runtime_dependency 'rails', '>= 3.1.12', '< 4.0'
+  spec.add_runtime_dependency 'rails', '>= 3.1.12', '< 4.1'
   spec.add_runtime_dependency 'pg'
-  spec.add_runtime_dependency 'apress-paperclip', '>= 2.4'
   spec.add_runtime_dependency 'resque-integration', '>= 0.4.1'
   spec.add_runtime_dependency 'addressable', '>= 2.3.2'
-  spec.add_runtime_dependency 'strong_parameters', '>= 0.2.3'
 
   spec.add_development_dependency 'bundler', '~> 1.7'
   spec.add_development_dependency 'rake'
