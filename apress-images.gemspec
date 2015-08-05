@@ -30,7 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec-rails', '>= 2.14.0'
   spec.add_development_dependency 'appraisal', '>= 1.0.2'
   spec.add_development_dependency 'combustion', '>= 0.5.3'
-  spec.add_development_dependency 'factory_girl_rails'
   spec.add_development_dependency 'shoulda-matchers', '>= 2.8.0'
   spec.add_development_dependency 'pry-debugger'
 end

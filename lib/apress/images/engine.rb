@@ -12,12 +12,6 @@ module Apress
         config.imageable_subjects = Set.new
       end
 
-      initializer :define_apress_images_factories, after: 'factory_girl.set_factory_paths' do
-        if defined?(FactoryGirl)
-          FactoryGirl.definition_file_paths.unshift root.join('spec', 'factories')
-        end
-      end
-
       initializer :define_apress_images_migration_paths do |app|
         unless app.root.to_s.match root.to_s
           app.config.paths['db/migrate'].concat(config.paths['db/migrate'].expanded)
