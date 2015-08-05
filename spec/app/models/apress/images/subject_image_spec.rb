@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-RSpec.describe Apress::Images::Image, type: :model do
-  let(:image) { build :image }
+RSpec.describe SubjectImage, type: :model do
+  let(:image) { build :subject_image }
 
   before { allow(Apress::Images::ProcessJob).to receive(:enqueue) }
 
@@ -29,7 +29,7 @@ RSpec.describe Apress::Images::Image, type: :model do
     end
 
     context 'when destroy' do
-      let!(:image) { create :image }
+      let!(:image) { create :subject_image }
 
       it { expect(described_class).to receive(:normalize_positions) }
 
@@ -38,7 +38,7 @@ RSpec.describe Apress::Images::Image, type: :model do
   end
 
   describe '#store_img_status_changing' do
-    let(:image) { create :image }
+    let(:image) { create :subject_image }
 
     it { expect(image.instance_variable_get(:@_img_changed)).to eq true }
   end

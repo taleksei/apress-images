@@ -9,7 +9,9 @@ module Apress
       # Public: максимальный размер вложения, Мб
       MAX_SIZE = 2
       # Public: допустимые форматы
-      ALLOWED_MIME_TYPES = %r{\Aimage/[^/]+\Z}.freeze
+      ALLOWED_MIME_TYPES = /\Aimage\/(jpeg|png|gif|pjpeg)\Z/.freeze
+      # Public: шаблоны допустимых названий файлов
+      ALLOWED_FILE_NAMES = [/gif\Z/, /png\Z/, /jpe?g\Z/].freeze
       # Public: путь к маленькому водяному знаку по-умолчанию
       WATERMARK_SMALL = File.join(Rails.public_path, 'images', 'pcwm-small.png').freeze
       # Public: путь к большому водяному знаку по-умолчанию
@@ -30,6 +32,7 @@ module Apress
           define_singleton_method(:allowed_mime_types) { options.fetch :allowed_mime_types, ALLOWED_MIME_TYPES }
           define_singleton_method(:watermark_small) { options.fetch :watermark_small, WATERMARK_SMALL }
           define_singleton_method(:watermark_big) { options.fetch :watermark_big, WATERMARK_BIG }
+          define_singleton_method(:allowed_file_names) { options.fetch :allowed_file_names, ALLOWED_FILE_NAMES }
 
           include Apress::Images::Extensions::Imageable
           include(Apress::Images::Extensions::BackgroundProcessing) if options.fetch(:background_processing, true)
@@ -49,12 +52,10 @@ module Apress
             styles: {
               original: {
                 geometry: '1280x1024>',
-                format: 'jpg png gif',
                 animated: false
               },
               thumb: {
                 geometry: '90x90>',
-                format: 'jpg png gif',
                 animated: false,
                 watermark_path: watermark_small
               }

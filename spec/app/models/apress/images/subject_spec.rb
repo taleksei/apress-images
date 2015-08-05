@@ -4,9 +4,9 @@ require 'spec_helper'
 RSpec.describe Subject, type: :model do
   let(:subject) { create :subject }
 
-  it { expect(subject).to have_one(:cover).class_name('Apress::Images::Image') }
+  it { expect(subject).to have_one(:cover).class_name('SubjectImage') }
   it { expect(subject).to accept_nested_attributes_for(:cover).allow_destroy(true) }
-  it { expect(subject.cover).to be_kind_of Apress::Images::Image }
+  it { expect(subject.cover).to be_kind_of SubjectImage }
 
   context 'when subject is new record' do
     context 'when create without cover' do
@@ -19,7 +19,7 @@ RSpec.describe Subject, type: :model do
     end
 
     context 'when create with cover' do
-      let(:image) { create :image }
+      let(:image) { create :subject_image }
       let(:subject) { described_class.new(attributes_for(:subject).merge(cover_attributes: {'id' => image.id})) }
 
       before { subject.save }
@@ -43,7 +43,7 @@ RSpec.describe Subject, type: :model do
 
       context 'when update with cover' do
         let(:subject) { create :subject }
-        let(:image) { create :image, subject_id: subject.id, subject_type: subject.class.name }
+        let(:image) { create :subject_image, subject_id: subject.id, subject_type: subject.class.name }
 
         before do
           subject.assign_attributes(cover_attributes: {'id' => image.id})

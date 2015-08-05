@@ -6,10 +6,22 @@
 
 ## Installation
 
-Add this line to your application's Gemfile:
+### Rails 3.x
+
+Add this lines to your application's Gemfile:
 
 ```ruby
+gem 'apress-paperclip'
 gem 'apress-images'
+```
+
+### Rails 4.x
+
+Add this lines to your application's Gemfile:
+
+```ruby
+gem 'paperclip', '~> 4.3.0'
+gem 'apress-images', '> 2.0'
 ```
 
 And then execute:
@@ -18,7 +30,10 @@ And then execute:
 
 Or install it yourself as:
 
+```bash
+    $ gem install paperclip
     $ gem install apress-images
+```
 
 ## Usage
 

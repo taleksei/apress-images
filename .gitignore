@@ -14,3 +14,7 @@
 mkmf.log
 /.rvmrc
 /.idea/
+.ruby-version
+.ruby-gemset
+/gemfiles/
+/Makefile.local

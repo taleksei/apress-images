@@ -27,7 +27,7 @@ module Apress
           before_validation :download_remote_image, if: proc { img_url.present? }
 
           after_save :normalize_positions,
-                     if: proc { position_changed? || position.blank?  },
+                     if: proc { position_changed? || position.blank? },
                      unless: :not_normalize_positions_on_callback
 
           after_destroy :normalize_positions,
@@ -42,6 +42,12 @@ module Apress
           validates_attachment_content_type :img,
                                             message: I18n.t('activerecord.errors.wrong_file_type'),
                                             content_type: allowed_mime_types
+
+          unless Apress::Images.old_paperclip?
+            validates_attachment_file_name :img,
+                                           matches: allowed_file_names,
+                                           message: I18n.t('activerecord.errors.wrong_file_type')
+          end
         end
 
         module ClassMethods
