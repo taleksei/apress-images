@@ -3,13 +3,16 @@
 require 'bundler/setup'
 require 'apress/images'
 
-require 'factory_girl_rails'
 require 'paperclip/matchers'
 
 require 'combustion'
-Combustion.initialize! :all
+Combustion.initialize! :all do
+  config.i18n.enforce_available_locales = false
+  config.i18n.default_locale = :ru
+end
 
 require 'rspec/rails'
+require 'factory_girl_rails'
 require 'shoulda-matchers'
 
 RSpec.configure do |config|

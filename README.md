@@ -40,7 +40,7 @@ Or install it yourself as:
 ```ruby
 
 class Avatar < ActiveRecord::Base
-  include Apress::Images::Concerns::Imageable
+  include Apress::Images::Imageable
   
   acts_as_image({
     attachment_options: {
