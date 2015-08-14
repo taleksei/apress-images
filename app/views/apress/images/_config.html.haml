@@ -2,6 +2,7 @@
   app.config.images = {
     maxFileSize: #{options.fetch(:max_size).to_json},
     maxFilesCount: #{options.fetch(:images_limit).to_json},
+    sizeType: #{options.fetch(:size_type).to_json},
     previewUrl: #{preview_images_url.to_json},
     uploadUrl: #{images_upload_url.to_json},
     uploadData: {

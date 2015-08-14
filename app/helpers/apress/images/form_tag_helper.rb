@@ -28,6 +28,7 @@ module Apress
 
         js_options = {
           max_size: options.fetch(:max_size, Apress::Images::Image.max_size),
+          size_type: options.fetch(:size_type, 'medium'),
           model: options.fetch(:model),
           images_limit: options.fetch(:images_limit, 1),
           subject_type: options.fetch(:subject_type),
