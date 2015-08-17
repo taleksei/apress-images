@@ -14,10 +14,12 @@ end
 require 'rspec/rails'
 require 'factory_girl_rails'
 require 'shoulda-matchers'
+require 'rspec-html-matchers'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Paperclip::Shoulda::Matchers
   config.include ActionDispatch::TestProcess
+  config.include RSpecHtmlMatchers
   config.use_transactional_fixtures = true
 end
