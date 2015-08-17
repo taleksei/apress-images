@@ -1,0 +1,13 @@
+:javascript
+  app.config.images = {
+    maxFileSize: #{options.fetch(:max_size).to_json},
+    maxFilesCount: #{options.fetch(:images_limit).to_json},
+    previewUrl: #{preview_images_url.to_json},
+    uploadUrl: #{images_upload_url.to_json},
+    uploadData: {
+      authenticity_token: #{form_authenticity_token.to_json},
+      model: #{options.fetch(:model).to_json},
+      subject_type: #{options.fetch(:subject_type).to_json},
+      subject_id: #{options.fetch(:subject_id).to_json}
+    }
+  };

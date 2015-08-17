@@ -4,6 +4,8 @@ require 'rails'
 require('strong_parameters') if Rails::VERSION::MAJOR < 4
 require 'paperclip'
 require 'paperclip/watermark'
+require 'action_view'
+require 'haml'
 require 'apress/images/engine'
 require 'apress/images/version'
 
