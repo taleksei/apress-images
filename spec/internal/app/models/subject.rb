@@ -2,9 +2,7 @@
 class Subject < ActiveRecord::Base
   include Apress::Images::ActsAsSubjectable
 
-  acts_as_image_subjectable(
-    association_type: :has_one,
-    association_name: :cover,
-    association_class: SubjectImage
-  )
+  acts_as_subject_of_images :has_one,
+                            :cover,
+                            class_name: 'SubjectImage', as: :subject
 end
