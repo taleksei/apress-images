@@ -55,7 +55,11 @@ app.modules.images = (function(self) {
         _process = false;
         $.each(response, function() {
           var id = Object.keys(this)[0];
-          _images.push(id);
+          if (this[id] === 'processing') {
+            _images.push(id);
+          } else {
+            $('.js-image[data-id="' + id + '"]').attr({src: this[id]});
+          }
         });
         _images.length && setTimeout(_processing, _options.processingTime);
       },
