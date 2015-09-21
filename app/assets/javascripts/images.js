@@ -73,6 +73,13 @@ app.modules.images = (function(self) {
   }
 
   function _uploadFiles(files) {
+    if (_isImagesLimitExceeds(files)) {
+      $doc.trigger('imageLimitExceeds:images', _$imagesContainer);
+      files = files.slice(0, _options.maxFilesCount - (files.length + _getImagesCount()));
+    }
+    if (!files.length) {
+      return false;
+    }
     FileAPI.upload({
       url: app.config.images.uploadUrl,
       data: app.config.images.uploadData || null,
@@ -102,18 +109,12 @@ app.modules.images = (function(self) {
       if (/^image/.test(file.type)) {
         var fileSizeIsNormal = file.size <= _options.maxFileSize * FileAPI.MB;
         if (!fileSizeIsNormal) {
-          $doc.trigger('imageTooBig:images');
+          $doc.trigger('imageTooBig:images', _$imagesContainer);
         }
         return fileSizeIsNormal;
       }
     }, function(files) {
-      if (files.length) {
-        if (_isImagesLimitExceeds(files)) {
-          $doc.trigger('imageLimitExceeds:images', _$imagesContainer);
-          files = files.slice(0, _options.maxFilesCount - (files.length + _getImagesCount()));
-        }
-        files.length && _uploadFiles(files);
-      }
+      files.length && _uploadFiles(files);
     });
   }
 
@@ -130,28 +131,24 @@ app.modules.images = (function(self) {
   }
 
   function _listener() {
-    $doc.on('click', _options.selectors.buttonUpload, function(event) {
-      _setContainer(this);
-      $(_options.selectors.fileInput).click();
-      event.preventDefault();
-    });
+    $doc
+      .on('click', _options.selectors.buttonUpload, function(event) {
+        _setContainer(this);
+        $(_options.selectors.fileInput).click();
+        event.preventDefault();
+      })
+      .on('wrapperOpened:images', function() {
+        if (FileAPI.support.dnd) {
+          $(_options.selectors.imagesWrapper).dnd($.noop, function(files) {
+            _setContainer(this);
+            files.length && _uploadFiles(files);
+          });
+        }
+      });
 
     FileAPI.event.on($(_options.selectors.fileInput)[0], 'change', function(event) {
       _loadFiles(FileAPI.getFiles(event));
     });
-
-    if (FileAPI.support.dnd) {
-      $(_options.selectors.imagesWrapper).dnd($.noop, function(files) {
-        _setContainer(this);
-
-        if (_isImagesLimitExceeds(files)) {
-          $doc.trigger('imageLimitExceeds:images', _$imagesContainer);
-          files = files.slice(0, _options.maxFilesCount - (files.length + _getImagesCount()));
-        }
-
-        files.length && _uploadFiles(files);
-      });
-    }
   }
 
   self.load = function() {
