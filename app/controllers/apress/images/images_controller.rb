@@ -5,6 +5,8 @@ module Apress
     class ImagesController < ::ApplicationController
       layout false
 
+      rescue_from(ActionController::ParameterMissing) { head :bad_request }
+
       # Public: returns json with preview of product images
       #
       # Returns text/json
