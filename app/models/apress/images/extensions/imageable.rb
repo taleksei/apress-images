@@ -38,15 +38,15 @@ module Apress
           validates_attachment_presence :img
           validates_attachment_size :img,
                                     less_than: max_size.megabytes,
-                                    message: I18n.t('activerecord.errors.too_large_file_size', max_size: max_size)
+                                    message: 'Размер файла не должен превышать %s Мб' % max_size
           validates_attachment_content_type :img,
-                                            message: I18n.t('activerecord.errors.wrong_file_type'),
+                                            message: 'Файл должен быть корректным изображением',
                                             content_type: allowed_mime_types
 
           unless Apress::Images.old_paperclip?
             validates_attachment_file_name :img,
                                            matches: allowed_file_names,
-                                           message: I18n.t('activerecord.errors.wrong_file_type')
+                                           message: 'Файл должен быть корректным изображением'
           end
         end
 
