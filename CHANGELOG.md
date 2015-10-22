@@ -1,5 +1,11 @@
 
 #### [Current]
+ * 2015-10-19 [a71ac3a](../../commit/a71ac3a) - __(Zhidkov Denis)__ fix: fixup several bugs in images table upgrade migration
+ * 2015-10-19 [f53ea76](../../commit/f53ea76) - __(Zhidkov Denis)__ fix: temporary hardcode img-attributes validation messages
+ * 2015-10-06 [fb41616](../../commit/fb41616) - __(Andrew N. Shalaev)__ fix: shoulda-matchers 3.0 requires ruby 2.0
+
+#### v3.0.0
+ * 2015-10-06 [eae4ddb](../../commit/eae4ddb) - __(Andrew N. Shalaev)__ Release 3.0.0
  * 2015-09-29 [30d7129](../../commit/30d7129) - __(Andrew N. Shalaev)__ fix: handle missing params as bad_request
  * 2015-09-17 [7d80341](../../commit/7d80341) - __(kuznecova)__ fix([BPC-6884](../../issues/PC-6884)): починила dnd и триггер при загрузке слишком большого файла
  * 2015-09-14 [219d547](../../commit/219d547) - __(kuznecova)__ fix([BPC-6856](../../issues/PC-6856)): Не отображается превью у только что загруженной картинки
