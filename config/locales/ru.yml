@@ -1,6 +1,4 @@
 ru:
   activerecord:
     errors:
-      too_large_file_size: 'Размер файла не должен превышать %{max_size} Мб'
-      wrong_file_type: Файл должен быть корректным изображением
       failed_to_download_remote_file: Не удалось загрузить файл по ссылке
