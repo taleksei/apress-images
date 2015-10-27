@@ -1,6 +1,7 @@
 RAILS_ENV = test
-BUNDLE = RAILS_ENV=${RAILS_ENV} bundle
-BUNDLE_OPTIONS = --jobs=2
+BUNDLE_VERSION = 1.7.15
+BUNDLE = RAILS_ENV=${RAILS_ENV} bundle _${BUNDLE_VERSION}_
+BUNDLE_OPTIONS = --jobs=3 --quiet
 RSPEC = rspec
 APPRAISAL = appraisal
 
@@ -23,9 +24,7 @@ configs:
 	echo "$${DATABASE_YML}" > spec/internal/config/database.yml
 
 bundler:
-	if ! gem list bundler -i > /dev/null; then \
-	  gem install bundler; \
-	fi
+	gem list bundler | grep '^bundler\s.*' > /dev/null || gem install bundler --no-ri --no-rdoc --version=${BUNDLE_VERSION}
 	${BUNDLE} install ${BUNDLE_OPTIONS}
 
 appraisal:
