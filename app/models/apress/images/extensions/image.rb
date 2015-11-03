@@ -1,30 +1,23 @@
 # coding: utf-8
 
-require 'addressable/uri'
-
 module Apress
   module Images
     module Extensions
       # Internal: Содержит функционал для хранения изображений
-      module Imageable
+      module Image
         extend ActiveSupport::Concern
-        # Public: Аттрибуты для хранения изобрежения
+        # Public: Аттрибуты для хранения изображения
         IMG_ATTRIBUTES = %w(img_file_name img_content_type img_file_size img_fingerprint).freeze
 
         included do
-          self.table_name = 'images'
-
           attr_writer :not_normalize_positions_on_callback
-          attr_accessor :img_url
-          alias_attribute :image_url, :img_url
+          attr_reader :image_url
 
           class << self
             attr_writer :not_normalize_positions_on_callback
           end
 
           scope :ordered, -> { order(arel_table[:position].asc) }
-
-          before_validation :download_remote_image, if: proc { img_url.present? }
 
           after_save :normalize_positions,
                      if: proc { position_changed? || position.blank? },
@@ -43,11 +36,17 @@ module Apress
                                             message: 'Файл должен быть корректным изображением',
                                             content_type: allowed_mime_types
 
-          unless Apress::Images.old_paperclip?
-            validates_attachment_file_name :img,
-                                           matches: allowed_file_names,
-                                           message: 'Файл должен быть корректным изображением'
-          end
+          validates_attachment_file_name :img,
+                                         matches: allowed_file_names,
+                                         message: 'Файл должен быть корректным изображением'
+
+          delegate :fingerprints,
+                   :files,
+                   :thumbs,
+                   :most_existing_style,
+                   :to_file,
+                   to: :img,
+                   allow_nil: true
         end
 
         module ClassMethods
@@ -83,38 +82,11 @@ module Apress
           end
         end
 
-        # Public: Стили
+        # Public: список стилей
         #
         # Returns Array
         def styles
           img.styles.keys
-        end
-
-        # Public: Все стили кроме оригинала
-        #
-        # Returns Array
-        def thumbs
-          styles.reject { |s| s == :original }
-        end
-
-        # Public: Пути в файловой системе для каждого стиля
-        #
-        # Returns Hash
-        def files
-          styles.each_with_object({}) do |style, result|
-            result[style] = img.path(style)
-            result
-          end
-        end
-
-        # Public: Расчитывает хеш для каждого стиля
-        #
-        # Returns Hash
-        def fingerprints
-          files.each_with_object({}) do |(style, file), result|
-            result[style] = Digest::MD5.file(file).to_s
-            result
-          end
         end
 
         # Public: Изменено ли изображение
@@ -129,24 +101,19 @@ module Apress
           @not_normalize_positions_on_callback
         end
 
+        def image_url=(url)
+          self.img = Addressable::URI.parse(url)
+          @image_url = url
+        end
+
+        def image_url_provided?
+          image_url.present?
+        end
+
         protected
 
         def normalize_positions
           self.class.normalize_positions(subject_id, subject_type)
-        end
-
-        def download_remote_image
-          self.img = fetch_remote_file
-        end
-
-        def fetch_remote_file
-          io = open(Addressable::URI.parse(image_url))
-          def io.original_filename
-            base_uri.path.split('/').last
-          end
-          io.original_filename.present? ? io : nil
-        rescue
-          errors.add(:img_url, I18n.t('activerecord.errors.failed_to_download_remote_file'))
         end
 
         private

@@ -4,6 +4,7 @@ require 'spec_helper'
 
 RSpec.describe SubjectImage, type: :model do
   let(:image) { build :subject_image }
+  let(:dummy_filepath) { Rails.root.join('../fixtures/images/sample_image.jpg') }
 
   before { allow(Apress::Images::ProcessJob).to receive(:enqueue) }
 
@@ -17,8 +18,15 @@ RSpec.describe SubjectImage, type: :model do
     it { expect(image.styles).to eq described_class.attachment_options[:styles].keys }
   end
 
-  describe '#thumbs' do
-    it { expect(image.thumbs).to eq described_class.attachment_options[:styles].keys.reject { |s| s == :original } }
+  describe 'delegated methods' do
+    before { allow_any_instance_of(Paperclip::Attachment).to receive(:path).and_return(dummy_filepath) }
+
+    it 'delegates attachment methods' do
+      expect(image.thumbs).to eq(image.img.thumbs)
+      expect(image.files).to eq(image.img.files)
+      expect(image.fingerprints).to eq(image.img.fingerprints)
+      expect(image.most_existing_style).to eq(image.img.most_existing_style)
+    end
   end
 
   describe '#normalize_positions' do
@@ -35,11 +43,5 @@ RSpec.describe SubjectImage, type: :model do
 
       after { image.destroy }
     end
-  end
-
-  describe '#store_img_status_changing' do
-    let(:image) { create :subject_image }
-
-    it { expect(image.instance_variable_get(:@_img_changed)).to eq true }
   end
 end
