@@ -39,6 +39,8 @@ module Apress
         url: '/system/images/:class/:id_partition_:style.:extension'
       }.freeze
 
+      COLUMN_POSITION_NAME = 'position'.freeze
+
       module ClassMethods
         # Public: Добавляет поведение картинки в модель active_record
         #
@@ -59,6 +61,10 @@ module Apress
           define_singleton_method(:allowed_file_names) { options.fetch :allowed_file_names, ALLOWED_FILE_NAMES }
 
           include Apress::Images::Extensions::Image
+
+          if options.fetch(:position_normalizing, true) && column_names.include?(COLUMN_POSITION_NAME)
+            include Apress::Images::PositionNormalizable
+          end
 
           return unless options.fetch(:background_processing, true)
 
