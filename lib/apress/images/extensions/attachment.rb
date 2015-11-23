@@ -145,9 +145,10 @@ module Apress
         # Public: файл для стиля
         #
         # Returns Tempfile
-        def to_file(style)
-          tmpfile = Tempfile.new(path(style))
-          copy_to_local_file(most_existing_style, tmpfile.path)
+        def to_file(style = default_style)
+          file_path = path(style)
+          tmpfile = Tempfile.new([File.basename(file_path), File.extname(file_path)])
+          copy_to_local_file(style, tmpfile.path)
           tmpfile.rewind
           tmpfile
         end

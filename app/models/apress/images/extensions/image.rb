@@ -10,21 +10,7 @@ module Apress
         IMG_ATTRIBUTES = %w(img_file_name img_content_type img_file_size img_fingerprint).freeze
 
         included do
-          attr_writer :not_normalize_positions_on_callback
           attr_reader :image_url
-
-          class << self
-            attr_writer :not_normalize_positions_on_callback
-          end
-
-          scope :ordered, -> { order(arel_table[:position].asc) }
-
-          after_save :normalize_positions,
-                     if: proc { position_changed? || position.blank? },
-                     unless: :not_normalize_positions_on_callback
-
-          after_destroy :normalize_positions,
-                        unless: :not_normalize_positions_on_callback
 
           has_attached_file :img, attachment_options
 
@@ -49,39 +35,6 @@ module Apress
                    allow_nil: true
         end
 
-        module ClassMethods
-          # Public: Нормализация позиций в контексте subject_id - subject_type
-          #
-          # subject_id - Integer
-          # subject_type - String
-          #
-          # Returns nothing
-          def normalize_positions(subject_id, subject_type)
-            return unless subject_id.present? && subject_type.present?
-
-            table = quoted_table_name
-            connection.execute <<-SQL
-              UPDATE #{table} i SET position = t.real_position
-              FROM
-              (
-                SELECT
-                  id,
-                  row_number() OVER (PARTITION BY subject_id, subject_type
-                                     ORDER BY "position" NULLS LAST, created_at, id) AS real_position
-                FROM
-                  #{table}
-                WHERE
-                  subject_id = #{connection.quote(subject_id)} AND subject_type = #{connection.quote(subject_type)}
-              ) t
-              WHERE i.id = t.id;
-            SQL
-          end
-
-          def not_normalize_positions_on_callback
-            @not_normalize_positions_on_callback.nil? ? false : @not_normalize_positions_on_callback
-          end
-        end
-
         # Public: список стилей
         #
         # Returns Array
@@ -96,11 +49,6 @@ module Apress
           img.dirty? || img_was_changed?
         end
 
-        def not_normalize_positions_on_callback
-          return self.class.not_normalize_positions_on_callback if @not_normalize_positions_on_callback.nil?
-          @not_normalize_positions_on_callback
-        end
-
         def image_url=(url)
           self.img = Addressable::URI.parse(url)
           @image_url = url
@@ -108,12 +56,6 @@ module Apress
 
         def image_url_provided?
           image_url.present?
-        end
-
-        protected
-
-        def normalize_positions
-          self.class.normalize_positions(subject_id, subject_type)
         end
 
         private
