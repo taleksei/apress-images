@@ -1,5 +1,9 @@
 
 #### [Current]
+ * 2015-12-02 [5ee2e2b](../../commit/5ee2e2b) - __(Mikhail Nelaev)__ feature: сервис удаления старых картинок
+
+#### v3.0.1
+ * 2015-10-22 [814115b](../../commit/814115b) - __(Andrew N. Shalaev)__ Release 3.0.1
  * 2015-10-19 [a71ac3a](../../commit/a71ac3a) - __(Zhidkov Denis)__ fix: fixup several bugs in images table upgrade migration
  * 2015-10-19 [f53ea76](../../commit/f53ea76) - __(Zhidkov Denis)__ fix: temporary hardcode img-attributes validation messages
  * 2015-10-06 [fb41616](../../commit/fb41616) - __(Andrew N. Shalaev)__ fix: shoulda-matchers 3.0 requires ruby 2.0
