@@ -1,5 +1,9 @@
 
 #### [Current]
+ * 2015-12-09 [c311654](../../commit/c311654) - __(Mikhail Nelaev)__ feature: rake task для очистки мусорных картинок
+
+#### v3.1.0
+ * 2015-12-08 [85aa88b](../../commit/85aa88b) - __(Andrew N. Shalaev)__ Release 3.1.0
  * 2015-12-02 [5ee2e2b](../../commit/5ee2e2b) - __(Mikhail Nelaev)__ feature: сервис удаления старых картинок
 
 #### v3.0.1
