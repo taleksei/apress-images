@@ -31,10 +31,13 @@ module Apress
         #      end
         #      alias_method_chain :cover, :build
         #
-        #      def cover_attributes=(attributes)
-        #        self.cover = Apress::Deals::OfferCover.find(attributes['id']) \
-        #          if attributes['id'].present? && new_record?
-        #        assign_nested_attributes_for_one_to_one_association(:cover, attributes)
+        #      def cover_attributes=(attrs)
+        #        return unless attrs['id'].present?
+        #        new_image = Apress::Deals::OfferCover.find(attrs['id'])
+        #        return unless new_image.subject_id.nil? || new_image.subject_id == id
+        #
+        #        self.cover = new_image
+        #        assign_nested_attributes_for_one_to_one_association(:cover, attrs)
         #      end
         #
         # Returns nothing.
@@ -64,10 +67,30 @@ module Apress
               extend ActiveSupport::Concern
 
               included do
-                def #{name}_attributes=(attributes)
-                  self.#{name} = #{options[:class_name]}.find(attributes['id']) \\
-                    if attributes['id'].present? && new_record?
-                  assign_nested_attributes_for_one_to_one_association(:#{name}, attributes)
+                # Public: перезаписывает изображение для субъекта. Если атрибуты валидны, то записи в базе данных
+                # обновятся: старое изображение будет отвязано, новое будет привязано к субъекту, а все атрибуты будут
+                # сразу же обновлены. Потому что так работает присваивание одиночно ассоциированных моделей. Если есть
+                # невалидные атрибуты, то к объекту добавятся ошибки, но перепривязка всё равно произойдёт. Если
+                # переданный id указывает на изображение, которое принадлежит другому субъекту, то ничего не произойдёт.
+                # Строка
+                #
+                #   self.#{name} = new_image
+                #
+                # нужна для того, чтобы мы могли присваивать этим методом изображения, у которых subject_id = nil.
+                # Этого нельзя делать через обычную версию этого метода, которую создаёт accepts_nested_attributes_for,
+                # из-за ограничений, но нам надо.
+                #
+                # attrs - Hash. Атрибуты изображения. Ключи могут быть как строками, так и символами.
+                #
+                # Returns attrs or nil.
+                # Raises ActiveRecord::RecordNotFound.
+                def #{name}_attributes=(attrs)
+                  return unless attrs.with_indifferent_access[:id].present?
+                  new_image = #{options.fetch(:class_name)}.find(attrs.with_indifferent_access[:id])
+                  return unless new_image.subject_id.nil? || new_image.subject_id == id
+
+                  self.#{name} = new_image
+                  assign_nested_attributes_for_one_to_one_association(:#{name}, attrs)
                 end
               end
             end)
