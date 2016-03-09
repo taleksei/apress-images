@@ -1,5 +1,9 @@
 
 #### [Current]
+ * 2016-02-18 [e613ce1](../../commit/e613ce1) - __(Pavel Galkin)__ fix image assignment through nested attributes
+
+#### v3.1.1
+ * 2015-12-14 [eceb4d5](../../commit/eceb4d5) - __(Andrew N. Shalaev)__ Release 3.1.1
  * 2015-12-09 [c311654](../../commit/c311654) - __(Mikhail Nelaev)__ feature: rake task для очистки мусорных картинок
 
 #### v3.1.0
