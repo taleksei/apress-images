@@ -43,7 +43,7 @@ module Apress
         done = 0
 
         loop do
-          images = scope.limit(options[:batch_size]).scoped
+          images = scope.limit(options[:batch_size])
 
           break unless images.to_a.present?
 

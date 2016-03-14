@@ -38,6 +38,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'shoulda-matchers', '< 3'
   spec.add_development_dependency 'rspec-html-matchers', '>= 0.7'
   spec.add_development_dependency 'simplecov', '>= 0.9'
-  spec.add_development_dependency 'test_after_commit', '>= 0.2.3'
+  spec.add_development_dependency 'test_after_commit', '>= 0.2.3', '< 0.5'
   spec.add_development_dependency 'mock_redis', '>= 0.15.3'
 end

@@ -17,7 +17,7 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
     context 'when update processing field' do
       before { image.save }
 
-      it { expect(image.reload).to be_processing }
+      it { expect(image).to be_processing }
     end
 
     context 'when enqueing' do

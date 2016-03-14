@@ -42,7 +42,7 @@ module Apress
         def enqueue_delayed_processing
           return if !img_changed? || reload.processing?
 
-          self.class.where(id: id).update_all(processing: true)
+          update_column(:processing, true)
 
           Apress::Images::ProcessJob.enqueue(id, self.class.name)
         end
