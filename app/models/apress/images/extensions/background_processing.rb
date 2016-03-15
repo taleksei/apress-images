@@ -7,6 +7,11 @@ module Apress
       module BackgroundProcessing
         extend ActiveSupport::Concern
 
+        included do
+          # Public: callback должен быть "навешан" раньше callback'ов paperclip-attachment'а
+          before_destroy :reset_processing_flag, if: :processing?
+        end
+
         module ClassMethods
           # Public: конфигурирует модель изображения для обработки в фоне
           #
@@ -45,6 +50,13 @@ module Apress
           update_column(:processing, true)
 
           Apress::Images::ProcessJob.enqueue(id, self.class.name)
+        end
+
+        private
+
+        def reset_processing_flag
+          self.processing = false
+          nil
         end
       end
     end

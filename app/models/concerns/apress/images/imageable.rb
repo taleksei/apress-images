@@ -60,17 +60,17 @@ module Apress
           define_singleton_method(:watermark_big) { options.fetch :watermark_big, WATERMARK_BIG }
           define_singleton_method(:allowed_file_names) { options.fetch :allowed_file_names, ALLOWED_FILE_NAMES }
 
+          background_processing = options.fetch(:background_processing, true)
+
+          include(Apress::Images::Extensions::BackgroundProcessing) if background_processing
+
           include Apress::Images::Extensions::Image
 
           if options.fetch(:position_normalizing, true) && column_names.include?(COLUMN_POSITION_NAME)
             include Apress::Images::PositionNormalizable
           end
 
-          return unless options.fetch(:background_processing, true)
-
-          include(Apress::Images::Extensions::BackgroundProcessing)
-
-          process_in_background options.slice(:processing_image_url, :queue_name)
+          process_in_background(options.slice(:processing_image_url, :queue_name)) if background_processing
         end
 
         # Public: Опции по-умолчанию

@@ -28,4 +28,34 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
       after { image.save }
     end
   end
+
+  describe 'stub urls when image in processing' do
+    let(:image) { create :delayed_image }
+    let(:image_stub) { Rails.root.join('public/foo.jpg') }
+
+    before do
+      FileUtils.cp(
+        Rails.root.join('public/images/stub_thumb.gif'),
+        image_stub
+      )
+
+      DelayedImage.attachment_definitions[:img][:delayed][:processing_image_url] = 'foo.jpg'
+    end
+
+    after { FileUtils.rm(image_stub) }
+
+    context 'when image destroy' do
+      before { image.destroy }
+
+      it { expect(image).to be_destroyed }
+
+      it 'reset procecesing flag' do
+        expect(image).not_to be_processing
+      end
+
+      it 'keep stub image' do
+        expect(File.exist?(image_stub)).to be
+      end
+    end
+  end
 end
