@@ -23,6 +23,7 @@ require 'shoulda-matchers'
 require 'paperclip/matchers'
 require 'rspec-html-matchers'
 require 'test_after_commit'
+require 'webmock/rspec'
 
 require 'mock_redis'
 Resque.redis = MockRedis.new

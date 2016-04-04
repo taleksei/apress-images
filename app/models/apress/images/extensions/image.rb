@@ -49,8 +49,11 @@ module Apress
           img.dirty? || img_was_changed?
         end
 
+        # Public: загрузка изображения по url
+        #
+        # Returns String
         def image_url=(url)
-          self.img = Addressable::URI.parse(url)
+          self.img = Addressable::URI.parse(url).normalize.to_s
           @image_url = url
         end
 
