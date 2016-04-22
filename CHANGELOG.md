@@ -1,5 +1,14 @@
 
 #### [Current]
+ * 2016-04-04 [6f387d8](../../commit/6f387d8) - __(Andrew N. Shalaev)__ fix: format validation and normalize uploading urls
+ * 2016-03-15 [ed100c3](../../commit/ed100c3) - __(Andrew N. Shalaev)__ fix: reset processing flag before destroy image
+ * 2016-03-14 [b5247d3](../../commit/b5247d3) - __(TamarinEA)__ fix: change image status when save with delay processing
+ * 2015-11-13 [c2e2046](../../commit/c2e2046) - __(Andrew N. Shalaev)__ feat: extract position normalization into module and make it optional
+ * 2015-11-13 [7d9dc21](../../commit/7d9dc21) - __(Andrew N. Shalaev)__ fix: method to_file returns correct result with file extension
+ * 2015-10-27 [7547b56](../../commit/7547b56) - __(Andrew N. Shalaev)__ feat: поддержка thoughtbot/paperclip для rails 3.1
+
+#### v3.2.0
+ * 2016-03-03 [b3cb45b](../../commit/b3cb45b) - __(Andrew N. Shalaev)__ Release 3.2.0
  * 2016-02-18 [e613ce1](../../commit/e613ce1) - __(Pavel Galkin)__ fix image assignment through nested attributes
 
 #### v3.1.1
