@@ -5,7 +5,6 @@ require 'spec_helper'
 RSpec.describe Apress::Images::ImagesController, type: :controller do
   before do
     Rails.application.config.imageable_models << 'SubjectImage'
-    SubjectImage.post_process = false
   end
 
   let(:image_in_process) { create :subject_image, processing: true }

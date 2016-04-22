@@ -7,14 +7,13 @@
 /pkg/
 /spec/reports/
 /tmp/
+*.log
 *.bundle
 *.so
 *.o
 *.a
-mkmf.log
 /.rvmrc
 /.idea/
 .ruby-version
 .ruby-gemset
 /gemfiles/
-/Makefile.local

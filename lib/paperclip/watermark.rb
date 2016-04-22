@@ -37,14 +37,7 @@ module Paperclip
           :watermark => watermark_path
         )
       rescue Cocaine::ExitStatusError
-        if @whiny
-          error = "There was an error processing the watermark for #{@basename}"
-          if Apress::Images.old_paperclip?
-            raise PaperclipError, error
-          else
-            raise Paperclip::Error, error
-          end
-        end
+        raise Paperclip::Error, "There was an error processing the watermark for #{@basename}" if @whiny
       rescue Cocaine::CommandNotFoundError
         raise Paperclip::CommandNotFoundError.new("Could not run the `#{program}` command. Please install ImageMagick.")
       end
