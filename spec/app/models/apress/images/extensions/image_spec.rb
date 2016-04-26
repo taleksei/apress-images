@@ -22,6 +22,28 @@ RSpec.describe Apress::Images::Extensions::Image do
       end
     end
 
+    context 'when russian letters in filename' do
+      let(:url) { 'http://example.com/картинка.jpg' }
+
+      it 'transliterate filename'do
+        expect { image.image_url = url }.not_to raise_error
+        image.image_url = url
+        expect(image).to be_valid
+        expect(image.img_file_name).to eq 'kartinka.jpg'
+      end
+    end
+
+    context 'when filename is longer than 255' do
+      let(:url) { "http://example.com/x#{'y' * 251}.jpg" }
+
+      it 'trim filename from beginning'do
+        expect { image.image_url = url }.not_to raise_error
+        image.image_url = url
+        expect(image).to be_valid
+        expect(image.img_file_name).to eq "#{'y' * 251}.jpg"
+      end
+    end
+
     context 'when extension in uppercase' do
       context 'when JPG' do
         let(:url) { 'http://русский-язык.рф/file.JPG' }

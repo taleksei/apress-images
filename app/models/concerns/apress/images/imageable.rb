@@ -36,7 +36,8 @@ module Apress
             watermark_path: WATERMARK_SMALL
           }
         },
-        url: '/system/images/:class/:id_partition_:style.:extension'
+        url: '/system/images/:class/:id_partition_:style.:extension',
+        filename_cleaner: Apress::Images::FilenameCleaner.new
       }.freeze
 
       COLUMN_POSITION_NAME = 'position'.freeze
