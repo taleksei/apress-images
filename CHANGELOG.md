@@ -1,5 +1,9 @@
 
 #### [Current]
+ * 2016-04-26 [08400e3](../../commit/08400e3) - __(Dmitry Bochkarev)__ fix: обработка имени файла (#33)
+
+#### v4.0.0
+ * 2016-04-22 [5774294](../../commit/5774294) - __(Andrew N. Shalaev)__ Release 4.0.0
  * 2016-04-04 [6f387d8](../../commit/6f387d8) - __(Andrew N. Shalaev)__ fix: format validation and normalize uploading urls
  * 2016-03-15 [ed100c3](../../commit/ed100c3) - __(Andrew N. Shalaev)__ fix: reset processing flag before destroy image
  * 2016-03-14 [b5247d3](../../commit/b5247d3) - __(TamarinEA)__ fix: change image status when save with delay processing
