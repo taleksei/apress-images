@@ -26,6 +26,7 @@ module Apress
               queue_name: :images # TODO: добавить возможность выставить в кастомную очередь
             )
 
+            before_save :set_enqueue_img_delayed_processing_flag
             after_commit :enqueue_delayed_processing
           end
         end
@@ -41,15 +42,23 @@ module Apress
 
         protected
 
+        # Internal: перед сохраненнием, запоминаем что картинка была изменена
+        def set_enqueue_img_delayed_processing_flag
+          return unless img_changed?
+          @enqueue_img_delayed_processing = true
+          nil
+        end
+
         # Internal: выставить в очередь на обработку
         #
         # Returns nothing
         def enqueue_delayed_processing
-          return if !img_changed? || reload.processing?
+          return if !@enqueue_img_delayed_processing || reload.processing?
 
           update_column(:processing, true)
-
           Apress::Images::ProcessJob.enqueue(id, self.class.name)
+        ensure
+          @enqueue_img_delayed_processing = false
         end
 
         private

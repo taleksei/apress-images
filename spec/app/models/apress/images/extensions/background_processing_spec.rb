@@ -15,17 +15,33 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
     before { allow(Apress::Images::ProcessJob).to receive(:enqueue) }
 
     context 'when update processing field' do
-      before { image.save }
+      before { image.save! }
 
       it { expect(image).to be_processing }
     end
 
     context 'when enqueing' do
+      before { image.save! }
+
       it do
-        expect(Apress::Images::ProcessJob).to receive(:enqueue).with(instance_of(Fixnum), image.class.name)
+        expect(Apress::Images::ProcessJob).to have_received(:enqueue).with(image.id, image.class.name)
+      end
+    end
+
+    context 'when model saved twice in transaction' do
+      before do
+        allow(Apress::Images::ProcessJob).to receive(:enqueue).with(instance_of(Fixnum), image.class.name)
+        ActiveRecord::Base.transaction do
+          image.save!
+          image.updated_at = image.updated_at + 1.day
+          image.save!
+        end
       end
 
-      after { image.save }
+      it do
+        expect(image).to be_processing
+        expect(Apress::Images::ProcessJob).to have_received(:enqueue).with(image.id, image.class.name).once
+      end
     end
   end
 
