@@ -23,7 +23,7 @@ RSpec.describe Paperclip::Attachment do
       let(:options) { DelayedImage.new.img.delayed_options }
 
       it do
-        expect(options[:processing_image_url]).to eq('foo.jpg')
+        expect(options[:processing_image_url]).to eq(DelayedImage::DEFAULT_PROCESSING_IMAGE_PATH)
         expect(options[:queue_name]).to eq(:base)
       end
     end

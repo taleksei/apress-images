@@ -1,6 +1,6 @@
 # Apress::Images
 
-<a href="http://dolly.railsc.ru/projects/83/builds/latest/?ref=paperclip-upgrade"><img src="http://dolly.railsc.ru/badges/abak-press/apress-images/paperclip-upgrade" height="18"></a>
+<a href="http://dolly.railsc.ru/projects/83/builds/latest/?ref=master"><img src="http://dolly.railsc.ru/badges/abak-press/apress-images/master" height="18"></a>
 
 Предоставляет функционал для загрузки и прикрепления изображений
 

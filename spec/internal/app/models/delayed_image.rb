@@ -3,7 +3,6 @@ class DelayedImage < ActiveRecord::Base
 
   acts_as_image(
     background_processing: true,
-    processing_image_url: 'foo.jpg',
     queue_name: :base
   )
 end
