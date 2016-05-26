@@ -6,6 +6,8 @@ module Apress
       # Public: отложенная обработка изображений
       module BackgroundProcessing
         extend ActiveSupport::Concern
+        # Public: путь к заглушке
+        DEFAULT_PROCESSING_IMAGE_PATH = '/images/stubs/stub_:style.gif'
 
         included do
           # Public: callback должен быть "навешан" раньше callback'ов paperclip-attachment'а
@@ -22,7 +24,7 @@ module Apress
           # Returns nothing
           def process_in_background(options = {})
             attachment_definitions[:img][:delayed] = options.reverse_merge!(
-              processing_image_url: nil,
+              processing_image_url: DEFAULT_PROCESSING_IMAGE_PATH,
               queue_name: :images # TODO: добавить возможность выставить в кастомную очередь
             )
 
