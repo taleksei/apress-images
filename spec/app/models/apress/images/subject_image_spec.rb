@@ -26,7 +26,7 @@ RSpec.describe SubjectImage, type: :model do
       expect(image.files).to eq(image.img.files)
       expect(image.fingerprints).to eq(image.img.fingerprints)
       expect(image.most_existing_style).to eq(image.img.most_existing_style)
-      expect(image.best_style_for_copy).to eq(image.img.best_style_for_copy)
+      expect(image.original_or_biggest_style).to eq(image.img.original_or_biggest_style)
     end
   end
 

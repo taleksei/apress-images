@@ -84,7 +84,7 @@ RSpec.describe Paperclip::Attachment do
     let(:image) { create :subject_image }
 
     context 'original exists' do
-      it { expect(image.img.best_style_for_copy).to eq(:original) }
+      it { expect(image.img.original_or_biggest_style).to eq(:original) }
     end
 
     context 'original missing' do
@@ -92,7 +92,7 @@ RSpec.describe Paperclip::Attachment do
         File.unlink(image.img.path(:original))
       end
 
-      it { expect(image.img.best_style_for_copy).to eq(:big) }
+      it { expect(image.img.original_or_biggest_style).to eq(:big) }
     end
 
     context 'original and big version missing' do
@@ -101,7 +101,7 @@ RSpec.describe Paperclip::Attachment do
         File.unlink(image.img.path(:big))
       end
 
-      it { expect(image.img.best_style_for_copy).to eq(:thumb) }
+      it { expect(image.img.original_or_biggest_style).to eq(:thumb) }
     end
   end
 

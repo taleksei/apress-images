@@ -151,10 +151,10 @@ module Apress
             .first
         end
 
-        # Public: выбирает стиль, наиболее подходящий для копирования
+        # Public: выбирает стиль, если есть, то original, или самый большой (по площади)
         #
         # Returns Symbol
-        def best_style_for_copy
+        def original_or_biggest_style
           if exists?(:original)
             :original
           else
