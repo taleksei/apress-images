@@ -1,5 +1,11 @@
 
 #### [Current]
+ * 2016-05-31 [d487c7f](../../commit/d487c7f) - __(Dmitry Bochkarev)__ fix: возращаем для Attachemnt#most_existing_style самый крупный (#36)
+ * 2016-05-26 [5c330bb](../../commit/5c330bb) - __(Andrew N. Shalaev)__ fix: CI badge in README
+ * 2016-05-26 [aad8567](../../commit/aad8567) - __(Andrew N. Shalaev)__ feat: default processing image path
+
+#### v4.0.2
+ * 2016-04-27 [7136311](../../commit/7136311) - __(Andrew N. Shalaev)__ Release 4.0.2
  * 2016-04-27 [63a74e3](../../commit/63a74e3) - __(Dmitry Bochkarev)__ fix: постановка в очередь, при двойном сохранении в транзакции (#34)
 
 #### v4.0.1
