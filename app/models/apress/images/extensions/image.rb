@@ -30,6 +30,7 @@ module Apress
                    :files,
                    :thumbs,
                    :most_existing_style,
+                   :best_style_for_copy,
                    :to_file,
                    to: :img,
                    allow_nil: true

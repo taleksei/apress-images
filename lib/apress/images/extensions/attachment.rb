@@ -135,11 +135,31 @@ module Apress
           end
         end
 
-        # Public: из всех стилей первый, файл которого существует
+        # Public: из всех стилей первый самый большой(по площади), файл которого существует
         #
         # Returns Symbol
         def most_existing_style
-          thumbs.find { |t| exists?(t) }
+          thumbs
+            .map do |style_name|
+              geo = Paperclip::Geometry.parse(styles[style_name].geometry)
+              area = geo.width * geo.height
+              sort_value = -area # самые большие, при сортировке, встанут первыми
+              [style_name, sort_value]
+            end
+            .sort_by(&:last)
+            .find { |(style_name, _area)| exists?(style_name) }
+            .first
+        end
+
+        # Public: выбирает стиль, наиболее подходящий для копирования
+        #
+        # Returns Symbol
+        def best_style_for_copy
+          if exists?(:original)
+            :original
+          else
+            most_existing_style
+          end
         end
 
         # Public: файл для стиля

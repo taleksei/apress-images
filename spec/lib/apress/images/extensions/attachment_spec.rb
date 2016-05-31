@@ -66,7 +66,7 @@ RSpec.describe Paperclip::Attachment do
         File.unlink(image.img.path(:original))
       end
 
-      it 'restores original from must existing style' do
+      it 'restores original from most existing style' do
         expect(image.img).not_to be_exists(:original)
         image.img.process_delayed!
         expect(image.img).to be_exists(:original)
@@ -75,13 +75,40 @@ RSpec.describe Paperclip::Attachment do
   end
 
   describe '#most_existing_style' do
-    before { allow_any_instance_of(described_class).to receive(:path).and_return(dummy_filepath) }
+    let(:image) { create :subject_image }
 
-    it { expect(image.img.most_existing_style).to eq(:thumb) }
+    it { expect(image.img.most_existing_style).to eq(:big) }
+  end
+
+  describe '#best_style_for_copy' do
+    let(:image) { create :subject_image }
+
+    context 'original exists' do
+      it { expect(image.img.best_style_for_copy).to eq(:original) }
+    end
+
+    context 'original missing' do
+      before do
+        File.unlink(image.img.path(:original))
+      end
+
+      it { expect(image.img.best_style_for_copy).to eq(:big) }
+    end
+
+    context 'original and big version missing' do
+      before do
+        File.unlink(image.img.path(:original))
+        File.unlink(image.img.path(:big))
+      end
+
+      it { expect(image.img.best_style_for_copy).to eq(:thumb) }
+    end
   end
 
   describe '#thumbs' do
-    it { expect(image.img.thumbs).to match_array([:thumb]) }
+    let(:image) { create :subject_image }
+
+    it { expect(image.img.thumbs).to match_array([:big, :thumb, :small]) }
   end
 
   describe '#files' do
