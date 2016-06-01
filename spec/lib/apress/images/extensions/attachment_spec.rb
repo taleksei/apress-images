@@ -78,6 +78,12 @@ RSpec.describe Paperclip::Attachment do
     let(:image) { create :subject_image }
 
     it { expect(image.img.most_existing_style).to eq(:big) }
+
+    context 'if no image exists' do
+      before { allow(image.img).to receive(:exists?).and_return(false) }
+
+      it { expect(image.img.most_existing_style).to be_nil }
+    end
   end
 
   describe '#best_style_for_copy' do

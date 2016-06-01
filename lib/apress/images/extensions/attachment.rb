@@ -148,7 +148,7 @@ module Apress
             end
             .sort_by(&:last)
             .find { |(style_name, _area)| exists?(style_name) }
-            .first
+            .try(:first)
         end
 
         # Public: выбирает стиль, если есть, то original, или самый большой (по площади)
