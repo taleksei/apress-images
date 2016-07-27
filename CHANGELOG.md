@@ -1,5 +1,10 @@
 
 #### [Current]
+ * 2016-06-01 [781d1ba](../../commit/781d1ba) - __(Denis Korobicyn)__ fix: most_existing_style with no images (#38)
+ * 2016-05-31 [c48ec88](../../commit/c48ec88) - __(Denis Korobicyn)__ fix: renamed method best_style_for_copy
+
+#### v4.0.3
+ * 2016-05-31 [224ff79](../../commit/224ff79) - __(Andrew N. Shalaev)__ Release 4.0.3
  * 2016-05-31 [d487c7f](../../commit/d487c7f) - __(Dmitry Bochkarev)__ fix: возращаем для Attachemnt#most_existing_style самый крупный (#36)
  * 2016-05-26 [5c330bb](../../commit/5c330bb) - __(Andrew N. Shalaev)__ fix: CI badge in README
  * 2016-05-26 [aad8567](../../commit/aad8567) - __(Andrew N. Shalaev)__ feat: default processing image path
