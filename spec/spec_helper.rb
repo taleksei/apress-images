@@ -7,6 +7,7 @@ SimpleCov.start 'rails' do
   minimum_coverage 95
   add_filter 'lib/apress/images/engine.rb'
   add_filter 'lib/apress/images/version.rb'
+  add_filter 'app/docs'
 end
 
 require 'apress/images'
@@ -24,6 +25,7 @@ require 'paperclip/matchers'
 require 'rspec-html-matchers'
 require 'webmock/rspec'
 require 'test_after_commit'
+require 'apress/api/testing/json_matcher'
 
 require 'mock_redis'
 Resque.redis = MockRedis.new

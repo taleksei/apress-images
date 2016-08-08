@@ -10,6 +10,7 @@ require 'paperclip/watermark'
 require 'action_view'
 require 'haml'
 require 'rails-assets-FileAPI'
+require 'apress/api'
 
 module Apress
   module Images

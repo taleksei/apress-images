@@ -28,9 +28,11 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'haml', '>= 4.0.7'
   spec.add_runtime_dependency 'rails-assets-FileAPI', '>= 2'
   spec.add_runtime_dependency 'class_logger', '~> 1.0.1'
+  spec.add_runtime_dependency 'apress-api', '>= 1.8.0'
 
   spec.add_development_dependency 'bundler', '~> 1.7'
   spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'json-schema'
   spec.add_development_dependency 'rspec', '>= 3.1'
   spec.add_development_dependency 'rspec-rails', '>= 2.14.0'
   spec.add_development_dependency 'appraisal', '>= 1.0.2'
