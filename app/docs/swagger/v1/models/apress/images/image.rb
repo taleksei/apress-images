@@ -20,17 +20,22 @@ module Swagger
                 key :type, :integer
               end
 
-              property :content_type do
-                key :type, :string
-              end
-
-              property :url do
-                key :type, :string
-              end
-
-              property :file_size do
+              property :img_file_size do
                 key :type, :string
                 key :description, 'Size in bytes'
+              end
+
+              property :img_file_name do
+                key :type, :string
+              end
+
+              property :img do
+                key :type, :string
+                key :description, 'image url'
+              end
+
+              property :img_content_type do
+                key :type, :string
               end
             end
           end

@@ -12,7 +12,7 @@ module Swagger
               :_destroy => 'boolean'
             }
 
-            self.attributes = self.attributes_types.keys
+            self.attributes = attributes_types.keys
 
             swagger_schema name.to_sym do
               key :required, ::Swagger::V1::Models::Apress::Images::ImageParams.attributes
