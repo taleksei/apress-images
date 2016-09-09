@@ -16,4 +16,8 @@ RSpec.describe "apress/images/api/v1/images/image.json.jbuilder", type: :view do
   end
 
   it { expect(rendered).to match_json_schema(schema) }
+
+  it 'return full image url' do
+    expect(JSON.parse(rendered)['img']).to include 'http://test/system/images'
+  end
 end
