@@ -1,5 +1,11 @@
 
 #### [Current]
+ * 2016-09-09 [23cd136](../../commit/23cd136) - __(Denis Korobicyn)__ fix: show full image url
+ * 2016-08-09 [f93509d](../../commit/f93509d) - __(Denis Korobicyn)__ docs: hound and params fixes (#40)
+ * 2016-08-08 [ec9e3e8](../../commit/ec9e3e8) - __(Denis Korobicyn)__ feature: swagger docs for image (#39)
+
+#### v4.1.0
+ * 2016-07-27 [08edaeb](../../commit/08edaeb) - __(Andrew N. Shalaev)__ Release 4.1.0
  * 2016-06-01 [781d1ba](../../commit/781d1ba) - __(Denis Korobicyn)__ fix: most_existing_style with no images (#38)
  * 2016-05-31 [c48ec88](../../commit/c48ec88) - __(Denis Korobicyn)__ fix: renamed method best_style_for_copy
 
