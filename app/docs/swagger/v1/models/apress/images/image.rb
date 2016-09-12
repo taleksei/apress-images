@@ -4,14 +4,18 @@ module Swagger
       module Apress
         module Images
           class Image < ::Apress::Api::Swagger::Schema
-            cattr_accessor :attributes
-            self.attributes = [
+            cattr_accessor :attributes, :simple_attributes, :compute_attributes
+
+            self.simple_attributes = [
               :id,
               :img_file_size,
               :img_file_name,
-              :img,
               :img_content_type
             ]
+
+            self.compute_attributes = [:img]
+
+            self.attributes = simple_attributes + compute_attributes
 
             swagger_schema name.to_sym do
               key :required, ::Swagger::V1::Models::Apress::Images::Image.attributes
