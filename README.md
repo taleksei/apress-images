@@ -1,6 +1,6 @@
 # Apress::Images
 
-<a href="http://dolly.railsc.ru/projects/83/builds/latest/?ref=master"><img src="http://dolly.railsc.ru/badges/abak-press/apress-images/master" height="18"></a>
+[![Build Status](https://drone.railsc.ru/api/badges/abak-press/apress-images/status.svg)](https://drone.railsc.ru/abak-press/apress-images)
 
 Предоставляет функционал для загрузки и прикрепления изображений
 
