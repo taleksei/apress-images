@@ -15,7 +15,7 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
   describe '#enqueue_delayed_processing' do
     let(:image) { build :delayed_image }
 
-    before { allow(Apress::Images::ProcessJob).to receive(:enqueue) }
+    before { allow(Resque).to receive(:enqueue_to) }
 
     context 'when update processing field' do
       before { image.save! }
@@ -24,16 +24,41 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
     end
 
     context 'when enqueing' do
-      before { image.save! }
+      context 'online processing' do
+        before do
+          image.online_processing = true
+          image.save!
+        end
 
-      it do
-        expect(Apress::Images::ProcessJob).to have_received(:enqueue).with(image.id, image.class.name)
+        it do
+          expect(Resque).to have_received(:enqueue_to).with(Apress::Images::ProcessJob.queue,
+                                                            Apress::Images::ProcessJob,
+                                                            image.id,
+                                                            image.class.name)
+        end
+      end
+
+      context 'non online processing' do
+        before do
+          image.online_processing = false
+          image.save!
+        end
+
+        it do
+          expect(Resque).to have_received(:enqueue_to).with(Apress::Images::ProcessJob.non_online_queue,
+                                                            Apress::Images::ProcessJob,
+                                                            image.id,
+                                                            image.class.name)
+        end
       end
     end
 
     context 'when model saved twice in transaction' do
       before do
-        allow(Apress::Images::ProcessJob).to receive(:enqueue).with(instance_of(Fixnum), image.class.name)
+        allow(Resque).to receive(:enqueue_to).with(Apress::Images::ProcessJob.queue,
+                                                   Apress::Images::ProcessJob,
+                                                   instance_of(Fixnum),
+                                                   image.class.name)
         ActiveRecord::Base.transaction do
           image.save!
           image.updated_at = image.updated_at + 1.day
@@ -43,7 +68,10 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
 
       it do
         expect(image).to be_processing
-        expect(Apress::Images::ProcessJob).to have_received(:enqueue).with(image.id, image.class.name).once
+        expect(Resque).to have_received(:enqueue_to).with(Apress::Images::ProcessJob.queue,
+                                                          Apress::Images::ProcessJob,
+                                                          image.id,
+                                                          image.class.name).once
       end
     end
   end
