@@ -42,6 +42,17 @@ module Apress
           nil
         end
 
+        # Public: Определяет какая обработка изображения будет: онлайн(по умолчанию) или не онлайн
+        attr_writer :online_processing
+
+        def online_processing?
+          if defined?(@online_processing)
+            @online_processing
+          else
+            true
+          end
+        end
+
         protected
 
         # Internal: перед сохраненнием, запоминаем что картинка была изменена
@@ -58,7 +69,14 @@ module Apress
           return if !@enqueue_img_delayed_processing || reload.processing?
 
           update_column(:processing, true)
-          Apress::Images::ProcessJob.enqueue(id, self.class.name)
+
+          queue_name =
+            if online_processing?
+              Apress::Images::ProcessJob.queue
+            else
+              Apress::Images::ProcessJob.non_online_queue
+            end
+          Resque.enqueue_to queue_name, Apress::Images::ProcessJob, id, self.class.name
         ensure
           @enqueue_img_delayed_processing = false
         end
