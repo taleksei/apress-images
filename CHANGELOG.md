@@ -1,5 +1,10 @@
 
 #### [Current]
+ * 2016-10-27 [9925330](../../commit/9925330) - __(Dmitry Bochkarev)__ feature: разделение обработки на онлайн и не онлайн
+ * 2016-10-20 [d538cc8](../../commit/d538cc8) - __(Andrew N. Shalaev)__ chore: add droneio
+
+#### v4.2.0
+ * 2016-09-12 [68f6661](../../commit/68f6661) - __(Andrew N. Shalaev)__ Release 4.2.0
  * 2016-09-09 [23cd136](../../commit/23cd136) - __(Denis Korobicyn)__ fix: show full image url
  * 2016-08-09 [f93509d](../../commit/f93509d) - __(Denis Korobicyn)__ docs: hound and params fixes (#40)
  * 2016-08-08 [ec9e3e8](../../commit/ec9e3e8) - __(Denis Korobicyn)__ feature: swagger docs for image (#39)
