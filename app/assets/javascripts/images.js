@@ -113,6 +113,9 @@ app.modules.images = (function(self) {
         }
         return fileSizeIsNormal;
       }
+      else {
+        $doc.trigger('imageTypeInvalid:images', _$imagesContainer);
+      }
     }, function(files) {
       files.length && _uploadFiles(files);
     });
@@ -147,7 +150,9 @@ app.modules.images = (function(self) {
       });
 
     FileAPI.event.on($(_options.selectors.fileInput)[0], 'change', function(event) {
-      _loadFiles(FileAPI.getFiles(event));
+      if ($(this).val()) {
+        _loadFiles(FileAPI.getFiles(event));
+      }
     });
   }
 
