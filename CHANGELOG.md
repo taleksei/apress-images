@@ -1,5 +1,9 @@
 
 #### [Current]
+ * 2016-11-17 [94353f0](../../commit/94353f0) - __(Shangin Alexey)__ fix(images.js): Добавит триггер [SKIP CI]
+
+#### v5.0.0
+ * 2016-10-28 [7c8f4f1](../../commit/7c8f4f1) - __(Andrew N. Shalaev)__ Release 5.0.0
  * 2016-10-27 [9925330](../../commit/9925330) - __(Dmitry Bochkarev)__ feature: разделение обработки на онлайн и не онлайн
  * 2016-10-20 [d538cc8](../../commit/d538cc8) - __(Andrew N. Shalaev)__ chore: add droneio
 
