@@ -23,7 +23,7 @@ module Apress
 
       def self.perform(image_id, class_name)
         model = class_name.camelize.constantize
-        image = model.find_by_id(image_id)
+        image = model.where(id: image_id).first
 
         image.img.process_delayed! if image && image.processing?
       end
