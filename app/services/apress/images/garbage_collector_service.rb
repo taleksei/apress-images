@@ -38,7 +38,7 @@ module Apress
       private
 
       def deleting_service
-        @deleting_service ||= DeleteDanglingImages.new(
+        @deleting_service ||= DeleteImages.new(
           image_class: Image,
           logger: logger,
           conditions: ['subject_id IS NULL AND updated_at < ?', options[:expiration_time]],
