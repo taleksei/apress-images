@@ -15,64 +15,36 @@ module Apress
 
       attr_reader :options
 
-      def self.default_options
-        {
-          expiration_time: 1.days.ago.at_beginning_of_day,
-          images_limit: 5_000_000,
-          batch_size: 2000
-        }
-      end
+      delegate :call, to: :deleting_service
 
-      def self.logger_default_file_name
-        LOGGER_FILE_NAME
+      class << self
+        def default_options
+          {
+            expiration_time: 1.days.ago.at_beginning_of_day,
+            images_limit: 5_000_000,
+            batch_size: 2000
+          }
+        end
+
+        def logger_default_file_name
+          LOGGER_FILE_NAME
+        end
       end
 
       def initialize(options = {})
         @options = options.reverse_merge(self.class.default_options)
       end
 
-      def call
-        process_destroy Image.where(subject_id: nil).where('updated_at < ?', options[:expiration_time])
-      end
-
       private
 
-      def process_destroy(scope)
-        logger.info "Удаление #{scope.klass}: старт."
-
-        done = 0
-
-        loop do
-          images = scope.limit(options[:batch_size])
-
-          break unless images.to_a.present?
-
-          destroy_attached_files images
-
-          scope.unscoped.where(id: images.map(&:id)).delete_all
-
-          logger.info "Обработано ~ #{done += options[:batch_size]} картинок."
-
-          if done >= options[:images_limit]
-            e = "Достигнут предел в #{options[:images_limit]} удалённых картинок!"
-
-            logger.error e
-            raise e
-          end
-        end
-
-        logger.info 'Процесс успешно завершен.'
-      end
-
-      def destroy_attached_files(images)
-        images.each do |image|
-          begin
-            image.img.clear
-            image.img.flush_deletes
-          rescue => e
-            logger.error "Ошибка: \n\r#{e.inspect}\n\n #{e.backtrace.join("\n")}"
-          end
-        end
+      def deleting_service
+        @deleting_service ||= DeleteDanglingImages.new(
+          image_class: Image,
+          logger: logger,
+          conditions: ['subject_id IS NULL AND updated_at < ?', options[:expiration_time]],
+          delete_limit: options[:images_limit],
+          batch_size: options[:batch_size]
+        )
       end
 
       ActiveSupport.run_load_hooks(:'apress/images/garbage_collector_service', self)

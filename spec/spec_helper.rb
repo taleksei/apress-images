@@ -27,9 +27,9 @@ require 'rspec-html-matchers'
 require 'webmock/rspec'
 require 'test_after_commit'
 require 'apress/api/testing/json_matcher'
+require 'timecop'
 
 require 'mock_redis'
-Resque.redis = MockRedis.new
 
 Paperclip.options[:logger] = Rails.logger
 
@@ -41,4 +41,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.filter_run_including focus: true
   config.run_all_when_everything_filtered = true
+
+  Redis.current = MockRedis.new
+  Resque.redis = Redis.current
 end

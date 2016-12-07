@@ -18,7 +18,7 @@ describe Apress::Images::GarbageCollectorService do
 
       it do
         expect { described_class.new(images_limit: 2, batch_size: 1).call }
-          .to change { Apress::Images::Image.all.count }.from(4).to(2).and raise_error
+          .to change { Apress::Images::Image.all.count }.from(4).to(2)
       end
     end
   end

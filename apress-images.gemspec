@@ -44,4 +44,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'mock_redis', '>= 0.15.3'
   spec.add_development_dependency 'webmock', '>= 1.24.2'
   spec.add_development_dependency 'factory_girl_rails'
+  spec.add_development_dependency 'timecop'
 end
