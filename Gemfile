@@ -13,6 +13,7 @@ if RUBY_VERSION < '2'
   gem 'pg', '< 0.19'
   gem 'migration_comments', '= 0.3.2'
   gem 'public_suffix', '< 1.5'
+  gem 'nokogiri', '< 1.7.0'
   gem 'webmock', '< 2.3', group: :test
 else
   gem 'pry-byebug'
