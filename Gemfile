@@ -12,6 +12,7 @@ if RUBY_VERSION < '2'
   gem 'pry-debugger', require: false
   gem 'pg', '< 0.19'
   gem 'migration_comments', '= 0.3.2'
+  gem 'public_suffix', '< 1.5'
 else
   gem 'pry-byebug'
   gem 'test-unit'
