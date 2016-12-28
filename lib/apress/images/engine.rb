@@ -8,8 +8,15 @@ module Apress
       config.i18n.load_path += Dir[config.root.join('config', 'locales', '*.{rb,yml}').to_s]
 
       initializer 'apress-images', before: :load_config_initializers do
-        config.imageable_models = Set.new(['Apress::Images::Image'])
-        config.imageable_subjects = Set.new
+        config.images = {
+          clear_dangling_after: 24.hours,
+          clear_dangling_spread: 6.hours,
+          imageable_models: Set.new(['Apress::Images::Image']),
+          imageable_subjects: Set.new
+        }
+        # TODO: deprecated
+        config.imageable_models = config.images[:imageable_models]
+        config.imageable_subjects = config.images[:imageable_subjects]
 
         Paperclip::Attachment.send(:include, Apress::Images::Extensions::Attachment)
 

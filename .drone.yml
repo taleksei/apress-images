@@ -1,13 +1,13 @@
 matrix:
   include:
-    - DOCKER_RUBY_VERSION: "2.2"
-      RUBY_IMAGE_TAG: "2.2-1"
+    - DOCKER_RUBY_VERSION: 2.2
+      RUBY_IMAGE_TAG: 2.2-2
 
-    - DOCKER_RUBY_VERSION: "1.9.3"
-      RUBY_IMAGE_TAG: "1.9.3-2"
+    - DOCKER_RUBY_VERSION: 1.9.3
+      RUBY_IMAGE_TAG: 1.9.3-2
 
 build:
-  image: abakpress/dind:1
+  image: abakpress/dind:2
   privileged: true
   volumes:
     - /home/data/drone/images:/images
