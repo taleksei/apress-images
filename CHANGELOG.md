@@ -1,5 +1,10 @@
 
 #### [Current]
+ * 2016-11-25 [8248fd8](../../commit/8248fd8) - __(Andrew N. Shalaev)__ fix: public_suffix version for ruby 1.9
+ * 2016-11-25 [392e810](../../commit/392e810) - __(Andrew N. Shalaev)__ feature: backoff strategy for process images
+
+#### v5.1.0
+ * 2016-11-22 [293feab](../../commit/293feab) - __(Andrew N. Shalaev)__ Release 5.1.0
  * 2016-11-17 [94353f0](../../commit/94353f0) - __(Shangin Alexey)__ fix(images.js): Добавит триггер [SKIP CI]
 
 #### v5.0.0
