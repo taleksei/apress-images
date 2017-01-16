@@ -1,5 +1,5 @@
 module Apress
   module Images
-    VERSION = '5.2.0'
+    VERSION = '6.0.0'
   end
 end

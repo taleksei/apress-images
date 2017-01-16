@@ -1,5 +1,15 @@
 
 #### [Current]
+ * 2016-12-28 [0f2280b](../../commit/0f2280b) - __(Andrew N. Shalaev)__ fix: nokogiri for ruby 1.9
+ * 2016-12-27 [dfe419c](../../commit/dfe419c) - __(Andrew N. Shalaev)__ feature: remove grabage_collector service
+ * 2016-12-08 [e537eb3](../../commit/e537eb3) - __(Andrew N. Shalaev)__ feature: delayed processing of unowned images
+ * 2016-12-08 [05fa2f4](../../commit/05fa2f4) - __(Andrew N. Shalaev)__ feature: extract cleanup images into interactor
+ * 2016-12-08 [a1536cf](../../commit/a1536cf) - __(Andrew N. Shalaev)__ chore: improves droneio config
+ * 2016-12-08 [afd1ba8](../../commit/afd1ba8) - __(Andrew N. Shalaev)__ fix: #find_by_* is deprecated
+ * 2016-12-08 [cfcdcb3](../../commit/cfcdcb3) - __(Andrew N. Shalaev)__ fix: webmock for 1.9.3
+
+#### v5.2.0
+ * 2016-12-28 [eabca40](../../commit/eabca40) - __(Andrew N. Shalaev)__ Release 5.2.0
  * 2016-11-25 [8248fd8](../../commit/8248fd8) - __(Andrew N. Shalaev)__ fix: public_suffix version for ruby 1.9
  * 2016-11-25 [392e810](../../commit/392e810) - __(Andrew N. Shalaev)__ feature: backoff strategy for process images
 
