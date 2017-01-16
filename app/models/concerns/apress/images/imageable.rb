@@ -71,6 +71,8 @@ module Apress
             include Apress::Images::PositionNormalizable
           end
 
+          include Apress::Images::DanglingCleanable if options.fetch(:clean_dangling_images, true)
+
           process_in_background(options.slice(:processing_image_url, :queue_name)) if background_processing
         end
 
