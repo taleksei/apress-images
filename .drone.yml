@@ -4,7 +4,7 @@ matrix:
       RUBY_IMAGE_TAG: 2.2-2
 
     - DOCKER_RUBY_VERSION: 1.9.3
-      RUBY_IMAGE_TAG: 1.9.3-2
+      RUBY_IMAGE_TAG: 1.9.3-4
 
 build:
   image: abakpress/dind:2
