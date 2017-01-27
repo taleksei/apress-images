@@ -1,5 +1,9 @@
 
 #### [Current]
+ * 2017-01-27 [5903284](../../commit/5903284) - __(Andrew N. Shalaev)__ fix: use model attribute for determine if subject nil
+
+#### v6.0.0
+ * 2017-01-16 [6105ff9](../../commit/6105ff9) - __(Andrew N. Shalaev)__ Release 6.0.0
  * 2016-12-28 [0f2280b](../../commit/0f2280b) - __(Andrew N. Shalaev)__ fix: nokogiri for ruby 1.9
  * 2016-12-27 [dfe419c](../../commit/dfe419c) - __(Andrew N. Shalaev)__ feature: remove grabage_collector service
  * 2016-12-08 [e537eb3](../../commit/e537eb3) - __(Andrew N. Shalaev)__ feature: delayed processing of unowned images
