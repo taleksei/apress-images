@@ -81,6 +81,36 @@ end
 
 ```
 
+### Кадрирование изображений
+
+```ruby
+class Avatar < ActiveRecord::Base
+  include Apress::Images::Imageable
+
+  acts_as_image(
+    attachment_options: {
+      styles: {
+        thumb: {
+          geometry: '100x100>'
+        }
+      }
+    },
+    # хотим кадрировать данный стиль
+    cropable_style: :thumb,
+    cropable_style_options: {min_height: 100, min_width: 100}
+  )
+end
+
+# Кадрирование происходит только в случае если переданы все crop_ аттрибуты
+@avatar = Avatar.new(crop_x: 400, crop_y: 400, crop_h: 100, crop_w: 100)
+@avatar.img = File.new(...)
+@avatar.save
+
+file = Paperclip.io_adapters.for(@avatar.img.styles[:thumb])
+Paperclip::Geometry.from_file(file).to_s #=> '100x100'
+```
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/abak-press/apress-images/fork )

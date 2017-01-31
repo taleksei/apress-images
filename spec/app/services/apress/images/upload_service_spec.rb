@@ -47,5 +47,36 @@ describe Apress::Images::UploadService do
 
       it { expect { subject.upload(image) }.to raise_error(ArgumentError) }
     end
+
+    context 'when crop parameters are given' do
+      let(:crop_params) { {crop_x: '0', crop_y: '10', crop_h: '100', crop_w: '100'} }
+      subject do
+        described_class.new('SubjectImage', {subject_type: subject_type}.merge(crop_params))
+      end
+
+      before do
+        allow_any_instance_of(described_class).to receive(:allowed_subjects).and_return [subject_type]
+      end
+
+      shared_examples 'croping image style according to given crop_ parameters' do
+        it do
+          uploaded_image = subject.upload(image)
+          file = Paperclip.io_adapters.for(uploaded_image.img.styles[:big])
+
+          expect(Paperclip::Geometry.from_file(file).to_s).to eq '100x100'
+        end
+      end
+
+      context 'when creating a new image' do
+        it_behaves_like 'croping image style according to given crop_ parameters'
+      end
+
+      context 'when updating an existing image' do
+        let(:old_image) { create :subject_image }
+        subject { described_class.new('SubjectImage', {id: old_image.id}.merge(crop_params)) }
+
+        it_behaves_like 'croping image style according to given crop_ parameters'
+      end
+    end
   end
 end
