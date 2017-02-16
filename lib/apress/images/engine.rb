@@ -25,6 +25,10 @@ module Apress
         Paperclip.io_adapters.register Paperclip::UriAdapter do |target|
           target.is_a?(Addressable::URI)
         end
+
+        Paperclip.configure do |c|
+          c.register_processor :manual_croper, Paperclip::ManualCroper
+        end
       end
 
       initializer :define_apress_images_migration_paths do |app|

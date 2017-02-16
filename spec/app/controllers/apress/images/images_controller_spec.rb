@@ -33,6 +33,26 @@ RSpec.describe Apress::Images::ImagesController, type: :controller do
       it { expect(SubjectImage.count).to eq 2 }
     end
 
+    context 'when upload images with croping params' do
+      before do
+        post :upload,
+             model: 'SubjectImage',
+             crop_x: '150',
+             crop_y: '20',
+             crop_h: '100',
+             crop_w: '100',
+             images: [image, image]
+      end
+
+      it 'crops all images to given size' do
+        images = SubjectImage.all
+        file_1 = Paperclip.io_adapters.for(images[0].img.styles[:big])
+        expect(Paperclip::Geometry.from_file(file_1).to_s).to eq '100x100'
+        file_2 = Paperclip.io_adapters.for(images[1].img.styles[:big])
+        expect(Paperclip::Geometry.from_file(file_2).to_s).to eq '100x100'
+      end
+    end
+
     context 'when invalid file' do
       let(:wrong_image) { fixture_file_upload(Rails.root.join('../fixtures/images/txt_file.txt'), 'text/plain') }
 

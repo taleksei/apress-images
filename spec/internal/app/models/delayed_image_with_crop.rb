@@ -1,4 +1,4 @@
-class SubjectImage < ActiveRecord::Base
+class DelayedImageWithCrop < ActiveRecord::Base
   include Apress::Images::Imageable
 
   acts_as_image(
@@ -7,14 +7,11 @@ class SubjectImage < ActiveRecord::Base
         big: {
           geometry: '600x600>',
           animated: false
-        },
-        small: {
-          geometry: '50x50>',
-          animated: false
         }
       }
     },
-    background_processing: false,
+    background_processing: true,
+    queue_name: :base,
     cropable_style: :big,
     cropable_style_options: {
       min_height: 100,
