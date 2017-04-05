@@ -30,6 +30,7 @@ require 'apress/api/testing/json_matcher'
 require 'timecop'
 
 require 'mock_redis'
+require 'pry-byebug'
 
 Paperclip.options[:logger] = Rails.logger
 
