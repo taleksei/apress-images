@@ -1,24 +1,33 @@
 build:
-  image: abakpress/dind-testing
-  privileged: true
-  volumes:
-    - /home/data/drone/images:/images
-    - /home/data/drone/gems:/bundle
-    - /home/data/drone/key_cache:/ssh_keys
-  environment:
-    - DOCKER_RUBY_VERSION=2.2
-      RUBY_IMAGE_TAG=2.2-latest
-    - COMPOSE_FILE_EXT=drone
-    - RAILS_ENV=test
-    - POSTGRES_IMAGE_TAG=9.3-latest
-  commands:
-    - wrapdocker docker -v
+  test:
+    image: abakpress/dind-testing
+    privileged: true
+    volumes:
+      - /home/data/drone/images:/images
+      - /home/data/drone/gems:/bundle
+      - /home/data/drone/key_cache:/ssh_keys
+    environment:
+      - DOCKER_RUBY_VERSION=2.2
+      - RUBY_IMAGE_TAG=2.2-latest
+      - COMPOSE_FILE_EXT=drone
+      - RAILS_ENV=test
+      - POSTGRES_IMAGE_TAG=9.3-latest
+    commands:
+      - wrapdocker docker -v
 
-    - fetch-images
-      --image whilp/ssh-agent
-      --image abakpress/ruby:$RUBY_IMAGE_TAG
-      --image abakpress/postgres:$POSTGRES_IMAGE_TAG
+      - fetch-images
+        --image whilp/ssh-agent
+        --image abakpress/ruby:$RUBY_IMAGE_TAG
+        --image abakpress/postgres:$POSTGRES_IMAGE_TAG
 
-    - dip ssh add -T -v /ssh_keys -k /ssh_keys/id_rsa
-    - dip provision
-    - dip rspec
+      - dip ssh add -T -v /ssh_keys -k /ssh_keys/id_rsa
+      - dip provision
+      - dip rspec
+
+  release:
+    image: abakpress/gem-publication:latest
+    pull: true
+    when:
+      event: push
+    commands:
+      - release-gem
