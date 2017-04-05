@@ -12,14 +12,16 @@ module Apress
           clear_dangling_after: 24.hours,
           clear_dangling_spread: 6.hours,
           imageable_models: Set.new(['Apress::Images::Image']),
-          imageable_subjects: Set.new
+          imageable_subjects: Set.new,
+          http_open_timeout: 5.seconds,
+          http_read_timeout: 5.seconds
         }
         # TODO: deprecated
         config.imageable_models = config.images[:imageable_models]
         config.imageable_subjects = config.images[:imageable_subjects]
 
-        Paperclip::Attachment.send(:include, Apress::Images::Extensions::Attachment)
-        Paperclip::UriAdapter.send(:prepend, Apress::Images::Extensions::IoAdapters::UriAdapter)
+        Paperclip::Attachment.include(Apress::Images::Extensions::Attachment)
+        Paperclip::UriAdapter.prepend(Apress::Images::Extensions::IoAdapters::UriAdapter)
 
         Paperclip::Attachment.default_options[:url_generator] = Apress::Images::UrlGenerator
 
