@@ -62,6 +62,24 @@ RSpec.describe Apress::Images::Extensions::Image do
           expect(image).to be_valid
         end
       end
+
+      context 'when redirection http -> https' do
+        let(:url) { 'http://someurl.ru' }
+
+        before do
+          stub_request(:any, url).
+            to_return(body: 'Redirecting to https://someurl.ru',
+                      status: 301,
+                      headers: {'Content-Type' => 'text/html', 'Location' => 'https://someurl.ru'})
+
+          stub_request(:any, 'https://someurl.ru').
+            to_return(body: File.new(dummy_filepath), status: 200, headers: {'Content-Type' => 'image/jpeg'})
+        end
+
+        it do
+          expect { image.image_url = url }.not_to raise_error
+        end
+      end
     end
   end
 end

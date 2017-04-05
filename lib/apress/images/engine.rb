@@ -19,6 +19,7 @@ module Apress
         config.imageable_subjects = config.images[:imageable_subjects]
 
         Paperclip::Attachment.send(:include, Apress::Images::Extensions::Attachment)
+        Paperclip::UriAdapter.send(:prepend, Apress::Images::Extensions::IoAdapters::UriAdapter)
 
         Paperclip::Attachment.default_options[:url_generator] = Apress::Images::UrlGenerator
 
