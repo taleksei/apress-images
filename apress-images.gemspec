@@ -45,4 +45,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock', '>= 1.24.2'
   spec.add_development_dependency 'factory_girl_rails'
   spec.add_development_dependency 'timecop'
+  spec.add_development_dependency 'test-unit'
+  spec.add_development_dependency 'pry-byebug'
 end
