@@ -69,7 +69,8 @@ module Apress
                   model.compute_processors_with_crop
                 end
               }
-            }
+            },
+            :need_extract_source_image_geometry => true
           )
         end
       end

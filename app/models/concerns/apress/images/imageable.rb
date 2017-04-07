@@ -37,7 +37,9 @@ module Apress
           }
         },
         url: '/system/images/:class/:id_partition_:style.:extension',
-        filename_cleaner: Apress::Images::FilenameCleaner.new
+        filename_cleaner: Apress::Images::FilenameCleaner.new,
+        # нужно ли сохранять Paperclip::Geometry исходного файла
+        need_extract_source_image_geometry: false
       }.freeze
 
       COLUMN_POSITION_NAME = 'position'.freeze

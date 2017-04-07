@@ -41,7 +41,10 @@ class Avatar < ActiveRecord::Base
     },
     max_size: 4, # Максимальный размер изображения ставим в 4 Мб (по-умолчанию 15 Мб)
     watermark_small: 'my_watermark.png', # Своя ватермарка
-    background_processing: true # допустим, хотим, чтобы ресайз происходил в фоне
+    background_processing: true, # допустим, хотим, чтобы ресайз происходил в фоне
+    # Если установлено, то размеры исходного изображения будут
+    # сохранены в виртуальном аттрибуте avatar.source_image_geometry (по-умолчанию false)
+    need_extract_source_image_geometry: true
   )
 end
 
