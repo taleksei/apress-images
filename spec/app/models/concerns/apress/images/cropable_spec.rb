@@ -22,7 +22,7 @@ RSpec.describe Apress::Images::Cropable, type: :model do
 
       context 'when image needs to be croped' do
         before do
-          image.assign_attributes(crop_x: '0', crop_y: '10', crop_h: '100', crop_w: '100')
+          image.assign_attributes(crop_w: '100', crop_h: '100', crop_x: '0', crop_y: '10')
         end
 
         it do

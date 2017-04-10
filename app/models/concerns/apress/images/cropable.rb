@@ -3,7 +3,7 @@ module Apress
     module Cropable
       extend ActiveSupport::Concern
 
-      CROP_ATTRS = [:crop_x, :crop_y, :crop_w, :crop_h].freeze
+      CROP_ATTRS = [:crop_w, :crop_h, :crop_x, :crop_y].freeze
 
       included do
         class << self
@@ -21,7 +21,7 @@ module Apress
       #
       # Returns boolean.
       def need_croping?
-        crop_x.present? && crop_y.present? && crop_w.present? && crop_h.present?
+        crop_w.present? && crop_h.present? && crop_x.present? && crop_y.present?
       end
 
       # Public: Если изображение нуждается в кадрировании, то к уже настроеным процессорам
@@ -51,7 +51,7 @@ module Apress
       def options_for_delayed_enqueue_with_crop
         if need_croping?
           options_for_delayed_enqueue_without_crop.deep_merge(
-            assign_attributes: {crop_x: crop_x, crop_y: crop_y, crop_w: crop_w, crop_h: crop_h}
+            assign_attributes: {crop_w: crop_w, crop_h: crop_h, crop_x: crop_x, crop_y: crop_y}
           )
         else
           options_for_delayed_enqueue_without_crop
