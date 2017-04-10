@@ -9,14 +9,29 @@ module Paperclip
     private
 
     def crop_command
-      target = @attachment.instance
+      model = @attachment.instance
+      reduction_scale = image_reduction_scale(@attachment, model)
 
-      crop_w = Integer(target.crop_w)
-      crop_h = Integer(target.crop_h)
-      crop_x = Integer(target.crop_x)
-      crop_y = Integer(target.crop_y)
+      crop_w = (Integer(model.crop_w) * reduction_scale).round
+      crop_h = (Integer(model.crop_h) * reduction_scale).round
+      crop_x = (Integer(model.crop_x) * reduction_scale).round
+      crop_y = (Integer(model.crop_y) * reduction_scale).round
 
       ["-crop #{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}", "+repage"]
+    end
+
+    # Internal: Коэффициент уменьшения исходного размера до размеров original стиля.
+    #
+    # attachment - Paperclip::Attachment.
+    # model - subclass of ActiveRecord::Base.
+    #
+    # Returns Rational.
+    def image_reduction_scale(attachment, model)
+      source_image_geometry = model.source_image_geometry
+      original_style_geometry = attachment.styles[:original].geometry
+      reduced_geometry = source_image_geometry.resize_to(original_style_geometry)
+
+      Rational(reduced_geometry.width, source_image_geometry.width)
     end
   end
 end

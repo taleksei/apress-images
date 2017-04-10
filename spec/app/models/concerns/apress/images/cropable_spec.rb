@@ -73,5 +73,30 @@ RSpec.describe Apress::Images::Cropable, type: :model do
         expect { image.update_attributes!(img: image_file) }.to raise_error(ArgumentError)
       end
     end
+
+    context 'when image is bigger than the original style geometry' do
+      let(:big_image_file) do
+        fixture_file_upload(Rails.root.join('../fixtures/images/sample_big_image.png'), 'image/png', :binary)
+      end
+
+      before do
+        image.assign_attributes(crop_x: '40', crop_y: '46', crop_h: '1000', crop_w: '1400')
+        image.update_attributes!(img: big_image_file)
+      end
+
+      it 'crops cropable_style image and shrinks it to fit the style geometry' do
+        file = Paperclip.io_adapters.for(image.img.styles[:big])
+
+        # размер изображения 1536x1126
+        # размер original стиля 1280x1024
+        # коэф. уменьшения (image -> original) 1280.0 / 1536.0 = 0.8(3)
+        # размер кадра - (1400 * 0.83)x(1000 * 0.83) = 1167x833
+        #
+        # размер big стиля 600x600
+        # коэф. уменьшения (croped -> big) 600.0 / 1167 = 0.514
+        # (1167 * 0.514)x(833 * 0.514) = 600x428
+        expect(Paperclip::Geometry.from_file(file).to_s).to eq '600x428'
+      end
+    end
   end
 end
