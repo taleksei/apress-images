@@ -12,8 +12,8 @@ class DelayedImageWithCrop < ActiveRecord::Base
     },
     background_processing: true,
     queue_name: :base,
-    cropable_style: :big,
-    cropable_style_options: {
+    cropable_styles: [:big],
+    crop_options: {
       min_height: 100,
       min_width: 100
     }
