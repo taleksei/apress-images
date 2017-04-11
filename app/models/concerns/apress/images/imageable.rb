@@ -67,9 +67,9 @@ module Apress
 
           include(Apress::Images::Extensions::BackgroundProcessing) if background_processing
 
-          if options[:cropable_style] && options[:cropable_style_options]
-            define_singleton_method(:cropable_style) { options[:cropable_style] }
-            define_singleton_method(:cropable_style_options) { options[:cropable_style_options] }
+          if options[:cropable_styles].present? && options[:crop_options]
+            define_singleton_method(:cropable_styles) { options[:cropable_styles] }
+            define_singleton_method(:crop_options) { options[:crop_options] }
             include Apress::Images::Cropable
           end
 

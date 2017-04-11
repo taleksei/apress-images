@@ -22,17 +22,17 @@ RSpec.describe Apress::Images::Cropable, type: :model do
 
       context 'when image needs to be croped' do
         before do
-          image.assign_attributes(crop_x: '0', crop_y: '10', crop_h: '100', crop_w: '100')
+          image.assign_attributes(crop_w: '100', crop_h: '100', crop_x: '0', crop_y: '10')
         end
 
         it do
-          expect(image.compute_processors_with_crop).to eq([:manual_croper, :watermark])
+          expect(image.compute_processors_with_crop(:big)).to eq([:manual_croper, :watermark])
         end
       end
 
       context 'when image does not need to be croped' do
         it do
-          expect(image.compute_processors_with_crop).to eq([:watermark])
+          expect(image.compute_processors_with_crop(:big)).to eq([:watermark])
         end
       end
     end
@@ -44,7 +44,7 @@ RSpec.describe Apress::Images::Cropable, type: :model do
         image.update_attributes!(img: image_file)
       end
 
-      it 'does not crop cropable_style image' do
+      it 'does not crop configured style image' do
         file = Paperclip.io_adapters.for(image.img.styles[:big])
 
         expect(Paperclip::Geometry.from_file(file).to_s).to eq '400x271'
@@ -53,20 +53,31 @@ RSpec.describe Apress::Images::Cropable, type: :model do
 
     context 'when crop parameters are given' do
       before do
-        image.assign_attributes(crop_x: '0', crop_y: '10', crop_h: '100', crop_w: '100')
+        image.assign_attributes(crop_w: '100', crop_h: '90', crop_x: '0', crop_y: '10')
         image.update_attributes!(img: image_file)
       end
 
-      it 'crops cropable_style image according to given params' do
-        file = Paperclip.io_adapters.for(image.img.styles[:big])
+      it 'crops configured styles according to given params' do
+        big_style_file = Paperclip.io_adapters.for(image.img.styles[:big])
+        small_style_file = Paperclip.io_adapters.for(image.img.styles[:small])
 
-        expect(Paperclip::Geometry.from_file(file).to_s).to eq '100x100'
+        # геометрия big стиля 600x600>
+        expect(Paperclip::Geometry.from_file(big_style_file).to_s).to eq '100x90'
+        # геометрия small стиля 50x50>
+        expect(Paperclip::Geometry.from_file(small_style_file).to_s).to eq '50x45'
+      end
+
+      it 'does not crop unconfigured styles' do
+        thumb_style_file = Paperclip.io_adapters.for(image.img.styles[:thumb])
+
+        # геометрия thumb стиля 90x90>
+        expect(Paperclip::Geometry.from_file(thumb_style_file).to_s).to eq '90x61'
       end
     end
 
     context 'when bad crop parameters are given' do
       before do
-        image.assign_attributes(crop_x: 'sudo', crop_y: 'rm', crop_h: '-rf', crop_w: '/')
+        image.assign_attributes(crop_w: '/', crop_h: '-rf', crop_x: 'sudo', crop_y: 'rm')
       end
 
       it 'fails on image processing' do
@@ -80,11 +91,11 @@ RSpec.describe Apress::Images::Cropable, type: :model do
       end
 
       before do
-        image.assign_attributes(crop_x: '40', crop_y: '46', crop_h: '1000', crop_w: '1400')
+        image.assign_attributes(crop_w: '1400', crop_h: '1000', crop_x: '40', crop_y: '46')
         image.update_attributes!(img: big_image_file)
       end
 
-      it 'crops cropable_style image and shrinks it to fit the style geometry' do
+      it 'crops configured style image and shrinks it to fit the style geometry' do
         file = Paperclip.io_adapters.for(image.img.styles[:big])
 
         # размер изображения 1536x1126

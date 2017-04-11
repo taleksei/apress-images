@@ -49,7 +49,7 @@ describe Apress::Images::UploadService do
     end
 
     context 'when crop parameters are given' do
-      let(:crop_params) { {crop_x: '0', crop_y: '10', crop_h: '100', crop_w: '100'} }
+      let(:crop_params) { {crop_w: '100', crop_h: '100', crop_x: '0', crop_y: '10'} }
       subject do
         described_class.new('SubjectImage', {subject_type: subject_type}.merge(crop_params))
       end

@@ -37,10 +37,10 @@ RSpec.describe Apress::Images::ImagesController, type: :controller do
       before do
         post :upload,
              model: 'SubjectImage',
+             crop_w: '100',
+             crop_h: '100',
              crop_x: '150',
              crop_y: '20',
-             crop_h: '100',
-             crop_w: '100',
              images: [image, image]
       end
 

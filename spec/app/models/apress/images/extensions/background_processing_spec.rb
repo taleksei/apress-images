@@ -63,7 +63,7 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
 
         context 'when crop_ attributes are specified' do
           before do
-            image.assign_attributes(crop_x: '0', crop_y: '10', crop_h: '100', crop_w: '100')
+            image.assign_attributes(crop_w: '100', crop_h: '100', crop_x: '0', crop_y: '10')
             image.save!
           end
 
@@ -73,7 +73,7 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
                                                               image.id,
                                                               image.class.name,
                                                               assign_attributes: {
-                                                                crop_x: "0", crop_y: "10", crop_w: "100", crop_h: "100"
+                                                                crop_w: "100", crop_h: "100", crop_x: "0", crop_y: "10"
                                                               })
           end
         end
