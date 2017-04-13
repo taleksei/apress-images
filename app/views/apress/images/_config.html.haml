@@ -5,6 +5,8 @@
     sizeType: #{options.fetch(:size_type).to_json},
     previewUrl: #{preview_images_url.to_json},
     uploadUrl: #{images_upload_url.to_json},
+    cropable: #{options.fetch(:cropable)},
+    cropOptions: #{options.fetch(:crop_options).to_json},
     uploadData: {
       authenticity_token: #{form_authenticity_token.to_json},
       model: #{options.fetch(:model).to_json},
