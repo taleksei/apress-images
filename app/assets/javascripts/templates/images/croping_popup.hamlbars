@@ -1,0 +1,8 @@
+.header= I18n.t('views.apress/images.croping_popup.header')
+.image-wrapper.js-image-wrapper
+  %img.js-original-image-for-crop{src: '{{image}}'}
+  .image-overlay
+  .image-crop-area.js-image-crop-area
+    %img.js-clone-image-for-crop{src: '{{image}}'}
+.actions
+  %span.apress-button.ab-default.js-save-croped-image= I18n.t('views.apress/images.croping_popup.submit')
