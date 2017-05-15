@@ -83,6 +83,16 @@ module Apress
         rescue Paperclip::Errors::NotIdentifiedByImageMagickError
           nil
         end
+
+        module ClassMethods
+          # Public: параметры геометрии для определенного стиля.
+          #
+          # Returns Paperclip::Geometry.
+          def style_geometry(style)
+            geometry_string = attachment_definitions.fetch(:img).fetch(:styles).fetch(style).fetch(:geometry)
+            Paperclip::Geometry.parse(geometry_string)
+          end
+        end
       end
     end
   end

@@ -91,4 +91,19 @@ RSpec.describe Apress::Images::Extensions::Image do
       end
     end
   end
+
+  describe '.style_geometry' do
+    context 'given existent style' do
+      it do
+        expect(image.class.style_geometry(:original).width).to eq(1280.0)
+        expect(image.class.style_geometry(:original).height).to eq(1024.0)
+      end
+    end
+
+    context 'given nonexistent style' do
+      it do
+        expect { image.class.style_geometry(:non_existent).width }.to raise_error(KeyError)
+      end
+    end
+  end
 end
