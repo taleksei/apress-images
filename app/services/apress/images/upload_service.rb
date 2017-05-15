@@ -37,9 +37,11 @@ module Apress
       # Raises ActiveRecord::RecordInvalid
       #
       # Returns Object изображение
-      def upload(source, position = current_position.next)
+      def upload(source, position = current_position.try(:next))
         source_attribute = source.is_a?(String) ? :img_url : :img
-        attributes = {source_attribute => source, position: position}.merge!(image_attributes)
+        attributes = {source_attribute => source}
+        attributes[:position] = position if position
+        attributes.merge!(image_attributes)
 
         if attributes[:id].present?
           update(attributes)
@@ -90,7 +92,12 @@ module Apress
       #
       # Returns Integer
       def current_position
-        @current_position ||= image_attributes.present? && model.where(image_attributes).maximum(:position) || 0
+        return @current_position if defined?(@current_position)
+
+        @current_position =
+          if model.column_names.include?(Imageable::COLUMN_POSITION_NAME)
+            image_attributes.present? && model.where(image_attributes).maximum(Imageable::COLUMN_POSITION_NAME) || 0
+          end
       end
 
       # Internal: Атрибуты изображения, для указанного в параметрах объекта
