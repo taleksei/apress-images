@@ -60,6 +60,7 @@ module Apress
           define_singleton_method(:watermark_small) { options.fetch :watermark_small, WATERMARK_SMALL }
           define_singleton_method(:watermark_big) { options.fetch :watermark_big, WATERMARK_BIG }
           define_singleton_method(:allowed_file_names) { options.fetch :allowed_file_names, ALLOWED_FILE_NAMES }
+          define_singleton_method(:attachment_attribute) { options.fetch :attachment_attribute, :img }
 
           background_processing = options.fetch(:background_processing, true)
 

@@ -8,4 +8,11 @@ ActiveRecord::Schema.define do
     t.integer :position, null: false, default: 0
     t.boolean :processing, null: false, default: false
   end
+
+  create_table :custom_attribute_images, force: true do |t|
+    t.references :subject, polymorphic: true
+    t.string :custom_file_name
+    t.string :custom_content_type
+    t.integer :custom_file_size
+  end
 end
