@@ -7,6 +7,10 @@
     uploadUrl: #{images_upload_url.to_json},
     cropable: #{options.fetch(:cropable)},
     cropOptions: #{options.fetch(:crop_options).to_json},
+    originalStyle: {
+      width: #{options.fetch(:original_style_width).to_json},
+      height: #{options.fetch(:original_style_height).to_json}
+    },
     uploadData: {
       authenticity_token: #{form_authenticity_token.to_json},
       model: #{options.fetch(:model).to_json},

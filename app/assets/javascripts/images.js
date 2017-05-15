@@ -81,7 +81,19 @@ app.modules.images = (function(self) {
   function _checkIfImageShouldBeCroped(file) {
     FileAPI.getInfo(file, function(error, fileInfo) {
       switch (true) {
-        case fileInfo.width > app.config.images.cropOptions['min_width'] ||
+        case fileInfo.width > app.config.images.cropOptions['min_width'] &&
+             fileInfo.height > app.config.images.cropOptions['min_height']:
+          _showCropingDialog(file, fileInfo);
+          _processedImage = file;
+          break;
+
+        case fileInfo.width > app.config.images.cropOptions['min_width'] &&
+             fileInfo.height === app.config.images.cropOptions['min_height']:
+          _showCropingDialog(file, fileInfo);
+          _processedImage = file;
+          break;
+
+        case fileInfo.width === app.config.images.cropOptions['min_width'] &&
              fileInfo.height > app.config.images.cropOptions['min_height']:
           _showCropingDialog(file, fileInfo);
           _processedImage = file;
@@ -224,10 +236,23 @@ app.modules.images = (function(self) {
         $doc.trigger('imageTypeInvalid:images', _$imagesContainer);
       }
     }, function(files) {
+      var file;
+
       if (files.length) {
         if (app.config.images.cropable) {
+          file = files[0];
+
           // На текущий момент кроп предусмотрен только в случае одиночной загрузки картинок
-          _checkIfImageShouldBeCroped(files[0]);
+          if (app.config.images.originalStyle.width && app.config.images.originalStyle.height) {
+            FileAPI.Image(file)
+              //уменьшаем картинку до размеров оригинального стиля, относительно которого backend обрезает изображение
+              .resize(app.config.images.originalStyle.width, app.config.images.originalStyle.height, 'max')
+              .get(function(error, image) {
+                _checkIfImageShouldBeCroped(new File([dataURLtoBlob(image.toDataURL())], file.name, {type: file.type}));
+              });
+          } else {
+            _checkIfImageShouldBeCroped(file);
+          }
         } else {
           _uploadFiles(files, app.config.images.uploadData);
         }
