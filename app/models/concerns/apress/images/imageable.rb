@@ -41,6 +41,7 @@ module Apress
       }.freeze
 
       COLUMN_POSITION_NAME = 'position'.freeze
+      COLUMN_PROCESSING_NAME = 'processing'.freeze
 
       module ClassMethods
         # Public: Добавляет поведение картинки в модель active_record
@@ -60,8 +61,10 @@ module Apress
           define_singleton_method(:watermark_small) { options.fetch :watermark_small, WATERMARK_SMALL }
           define_singleton_method(:watermark_big) { options.fetch :watermark_big, WATERMARK_BIG }
           define_singleton_method(:allowed_file_names) { options.fetch :allowed_file_names, ALLOWED_FILE_NAMES }
+          define_singleton_method(:attachment_attribute) { options.fetch :attachment_attribute, :img }
 
-          background_processing = options.fetch(:background_processing, true)
+          background_processing =
+            options.fetch(:background_processing, true) && column_names.include?(COLUMN_PROCESSING_NAME)
 
           include(Apress::Images::Extensions::BackgroundProcessing) if background_processing
 

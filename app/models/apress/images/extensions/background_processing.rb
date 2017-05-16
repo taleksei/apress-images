@@ -23,7 +23,7 @@ module Apress
           #
           # Returns nothing
           def process_in_background(options = {})
-            attachment_definitions[:img][:delayed] = options.reverse_merge!(
+            attachment_definitions[attachment_attribute][:delayed] = options.reverse_merge!(
               processing_image_url: DEFAULT_PROCESSING_IMAGE_PATH,
               queue_name: :images # TODO: добавить возможность выставить в кастомную очередь
             )
