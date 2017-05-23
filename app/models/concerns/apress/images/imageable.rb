@@ -22,7 +22,7 @@ module Apress
         default_style: :thumb,
         processors: [:watermark],
         convert_options: {
-          original: '-interlace Plane'
+          original: '-interlace Plane -strip'
         },
         styles: {
           original: {
