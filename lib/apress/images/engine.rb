@@ -14,7 +14,10 @@ module Apress
           imageable_models: Set.new(['Apress::Images::Image']),
           imageable_subjects: Set.new,
           http_open_timeout: 5.seconds,
-          http_read_timeout: 5.seconds
+          http_read_timeout: 5.seconds,
+          default_convert_options: {
+            all: "-filter Triangle -define filter:support=2 -dither None -quality 85 -quiet"
+          }
         }
         # TODO: deprecated
         config.imageable_models = config.images[:imageable_models]
@@ -23,11 +26,16 @@ module Apress
         Paperclip::Attachment.include(Apress::Images::Extensions::Attachment)
         Paperclip::UriAdapter.prepend(Apress::Images::Extensions::IoAdapters::UriAdapter)
 
-        Paperclip::Attachment.default_options[:url_generator] = Apress::Images::UrlGenerator
-
         Paperclip.io_adapters.register Paperclip::UriAdapter do |target|
           target.is_a?(Addressable::URI)
         end
+      end
+
+      initializer :define_paperclip_default_options do
+        Paperclip::Attachment.default_options[:convert_options] =
+          Rails.application.config.images[:default_convert_options]
+
+        Paperclip::Attachment.default_options[:url_generator] = Apress::Images::UrlGenerator
       end
 
       initializer :define_apress_images_migration_paths do |app|
