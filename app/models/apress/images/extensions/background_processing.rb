@@ -76,9 +76,18 @@ module Apress
             else
               Apress::Images::ProcessJob.non_online_queue
             end
-          Resque.enqueue_to queue_name, Apress::Images::ProcessJob, id, self.class.name
+
+          Resque.enqueue_to queue_name, Apress::Images::ProcessJob, id, self.class.name, options_for_delayed_enqueue
         ensure
           @enqueue_img_delayed_processing = false
+        end
+
+        # Public: Опции для передачи джобу обработки изображений.
+        #         Может перекрываться в наследниках.
+        #
+        # Returns Hash.
+        def options_for_delayed_enqueue
+          {}
         end
 
         private

@@ -34,7 +34,8 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
           expect(Resque).to have_received(:enqueue_to).with(Apress::Images::ProcessJob.queue,
                                                             Apress::Images::ProcessJob,
                                                             image.id,
-                                                            image.class.name)
+                                                            image.class.name,
+                                                            {})
         end
       end
 
@@ -48,7 +49,47 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
           expect(Resque).to have_received(:enqueue_to).with(Apress::Images::ProcessJob.non_online_queue,
                                                             Apress::Images::ProcessJob,
                                                             image.id,
-                                                            image.class.name)
+                                                            image.class.name,
+                                                            {})
+        end
+      end
+
+      context 'with croping' do
+        let(:image) { build :delayed_image_with_crop }
+
+        before do
+          image.online_processing = false
+        end
+
+        context 'when crop_ attributes are specified' do
+          before do
+            image.assign_attributes(crop_w: '100', crop_h: '100', crop_x: '0', crop_y: '10')
+            image.save!
+          end
+
+          it 'passes those attributes as last argument to enqueue_to' do
+            expect(Resque).to have_received(:enqueue_to).with(Apress::Images::ProcessJob.non_online_queue,
+                                                              Apress::Images::ProcessJob,
+                                                              image.id,
+                                                              image.class.name,
+                                                              assign_attributes: {
+                                                                crop_w: "100", crop_h: "100", crop_x: "0", crop_y: "10"
+                                                              })
+          end
+        end
+
+        context 'when crop_ attributes are not specified' do
+          before do
+            image.save!
+          end
+
+          it 'does not pass those attributes to enqueue_to' do
+            expect(Resque).to have_received(:enqueue_to).with(Apress::Images::ProcessJob.non_online_queue,
+                                                              Apress::Images::ProcessJob,
+                                                              image.id,
+                                                              image.class.name,
+                                                              {})
+          end
         end
       end
     end
@@ -58,7 +99,8 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
         allow(Resque).to receive(:enqueue_to).with(Apress::Images::ProcessJob.queue,
                                                    Apress::Images::ProcessJob,
                                                    instance_of(Fixnum),
-                                                   image.class.name)
+                                                   image.class.name,
+                                                   {})
         ActiveRecord::Base.transaction do
           image.save!
           image.updated_at = image.updated_at + 1.day
@@ -71,7 +113,8 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
         expect(Resque).to have_received(:enqueue_to).with(Apress::Images::ProcessJob.queue,
                                                           Apress::Images::ProcessJob,
                                                           image.id,
-                                                          image.class.name).once
+                                                          image.class.name,
+                                                          {}).once
       end
     end
   end

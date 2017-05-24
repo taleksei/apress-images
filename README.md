@@ -41,7 +41,10 @@ class Avatar < ActiveRecord::Base
     },
     max_size: 4, # Максимальный размер изображения ставим в 4 Мб (по-умолчанию 15 Мб)
     watermark_small: 'my_watermark.png', # Своя ватермарка
-    background_processing: true # допустим, хотим, чтобы ресайз происходил в фоне
+    background_processing: true, # допустим, хотим, чтобы ресайз происходил в фоне
+    # Если установлено, то размеры исходного изображения будут
+    # сохранены в виртуальном аттрибуте avatar.source_image_geometry (по-умолчанию false)
+    need_extract_source_image_geometry: true
   )
 end
 
@@ -80,6 +83,42 @@ end
 @avatar.img.url #=> "/system/images/3/original/IMG_2772.JPG?1267562148"
 
 ```
+
+### Кадрирование изображений
+
+```ruby
+class Avatar < ActiveRecord::Base
+  include Apress::Images::Imageable
+
+  acts_as_image(
+    attachment_options: {
+      styles: {
+        big: {
+          geometry: '200x200>'
+        },
+        thumb: {
+          geometry: '50x50>'
+        }
+      }
+    },
+    # хотим кадрировать данные стили
+    cropable_styles: [:big, :thumb],
+    crop_options: {min_height: 100, min_width: 100}
+  )
+end
+
+# Кадрирование происходит только в случае если переданы все crop_ аттрибуты
+@avatar = Avatar.new(crop_w: 100, crop_h: 50, crop_x: 400, crop_y: 400)
+@avatar.img = File.new(...)
+@avatar.save
+
+big_file = Paperclip.io_adapters.for(@avatar.img.styles[:big])
+Paperclip::Geometry.from_file(big_file).to_s #=> '100x50'
+thumb_file = Paperclip.io_adapters.for(@avatar.img.styles[:thumb])
+# если кадрируемая область больше размеров стиля, то после обрезки она будет уменьшена
+Paperclip::Geometry.from_file(thumb_file).to_s #=> '50x25'
+```
+
 
 ## Contributing
 

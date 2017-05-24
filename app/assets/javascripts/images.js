@@ -3,6 +3,7 @@
 * app.config.images {
 *   maxFileSize - по умолчанию 2
 *   maxFilesCount - по умолчанию 1
+*   cropable - по умолчанию false
 *   sizeType - по умолчанию 'medium'
 *   uploadData: {
 *     model
@@ -29,7 +30,12 @@ app.modules.images = (function(self) {
     },
     _images = [],
     _process = false,
-    _$imagesContainer;
+    CROP_POPUP_WIDTH = 650,
+    _$imagesContainer,
+    _$cropingDialog,
+    _cropRatio,
+    _cropData,
+    _processedImage;
 
   _images.add = function(params) {
     this.push(params);
@@ -72,7 +78,119 @@ app.modules.images = (function(self) {
     _images.splice(0, _images.length);
   }
 
-  function _uploadFiles(files) {
+  function _checkIfImageShouldBeCroped(file) {
+    FileAPI.getInfo(file, function(error, fileInfo) {
+      switch (true) {
+        case fileInfo.width > app.config.images.cropOptions['min_width'] &&
+             fileInfo.height > app.config.images.cropOptions['min_height']:
+          _showCropingDialog(file, fileInfo);
+          _processedImage = file;
+          break;
+
+        case fileInfo.width > app.config.images.cropOptions['min_width'] &&
+             fileInfo.height === app.config.images.cropOptions['min_height']:
+          _showCropingDialog(file, fileInfo);
+          _processedImage = file;
+          break;
+
+        case fileInfo.width === app.config.images.cropOptions['min_width'] &&
+             fileInfo.height > app.config.images.cropOptions['min_height']:
+          _showCropingDialog(file, fileInfo);
+          _processedImage = file;
+          break;
+
+        case fileInfo.width < app.config.images.cropOptions['min_width'] ||
+             fileInfo.height < app.config.images.cropOptions['min_height']:
+          $doc.trigger('imageTooSmall:images', _$imagesContainer);
+          _uploadFiles([file], app.config.images.uploadData);
+          break;
+
+        case fileInfo.width === app.config.images.cropOptions['min_width'] &&
+             fileInfo.height === app.config.images.cropOptions['min_height']:
+          _uploadFiles([file], app.config.images.uploadData);
+          break;
+      }
+    });
+  }
+
+  function _showCropingDialog(file, fileInfo) {
+    FileAPI.Image(file)
+      .resize(CROP_POPUP_WIDTH, 'max')
+      .get(function(error, image) {
+        _cropRatio = image.width / fileInfo.width;
+        _$cropingDialog.html(HandlebarsTemplates['images/croping_popup']({image: image.toDataURL()})).dialog({
+          modal: true,
+          resizable: false,
+          width: CROP_POPUP_WIDTH,
+          dialogClass: 'croping-popup'
+        });
+
+        _initCropArea();
+      });
+
+  }
+
+  function _initCropArea() {
+    var
+      $cropArea = _$cropingDialog.find('.js-image-crop-area'),
+      $cloneImage = _$cropingDialog.find('.js-clone-image-for-crop'),
+      cropAreaDimensions = {
+        width: app.config.images.cropOptions['min_width'] * _cropRatio,
+        height: app.config.images.cropOptions['min_height'] * _cropRatio
+      };
+
+    $cloneImage.css({width: CROP_POPUP_WIDTH});
+    _setCropData({left: 0, top: 0}, {width: cropAreaDimensions.width, height: cropAreaDimensions.height});
+
+    $cropArea.resizable({
+      aspectRatio: true,
+      containment: 'parent',
+      handles: 'all',
+      minWidth: cropAreaDimensions.width,
+      minHeight: cropAreaDimensions.height,
+      resize: function(event, ui) {
+        $cloneImage.css({
+          left: -ui.position.left,
+          top: -ui.position.top
+        });
+        _setCropData(ui.position, ui.size);
+      }
+    }).draggable({
+      containment: 'parent',
+      drag: function(event, ui) {
+        if (ui.position.left < 0) {
+          ui.position.left = 0;
+        }
+        if (ui.position.top < 0) {
+          ui.position.top = 0;
+        }
+        $cloneImage.css({
+          left: -ui.position.left,
+          top: -ui.position.top
+        });
+        _setCropData(ui.position, {width: event.target.offsetWidth, height: event.target.offsetHeight});
+      }
+    }).css({
+      width: cropAreaDimensions.width,
+      height: cropAreaDimensions.height,
+      top: 0,
+      left: 0
+    }).find('img').css({
+      top: 0,
+      left: 0
+    });
+  }
+
+  function _setCropData(position, size) {
+    _cropData = {
+      'crop_x': parseInt(position.left / _cropRatio),
+      'crop_y': parseInt(position.top / _cropRatio),
+      'crop_w': parseInt(size.width / _cropRatio),
+      'crop_h': parseInt(size.height / _cropRatio)
+    };
+  }
+
+  function _uploadFiles(files, data) {
     if (_isImagesLimitExceeds(files)) {
       $doc.trigger('imageLimitExceeds:images', _$imagesContainer);
       files = files.slice(0, _options.maxFilesCount - (files.length + _getImagesCount()));
@@ -80,9 +198,10 @@ app.modules.images = (function(self) {
     if (!files.length) {
       return false;
     }
+
     FileAPI.upload({
       url: app.config.images.uploadUrl,
-      data: app.config.images.uploadData || null,
+      data: data || null,
       files: {'images[]': files},
       upload: function() {
         _$imagesContainer.find(_options.selectors.buttonUpload).prop({disabled: true});
@@ -117,7 +236,27 @@ app.modules.images = (function(self) {
         $doc.trigger('imageTypeInvalid:images', _$imagesContainer);
       }
     }, function(files) {
-      files.length && _uploadFiles(files);
+      var file;
+
+      if (files.length) {
+        if (app.config.images.cropable) {
+          file = files[0];
+
+          // На текущий момент кроп предусмотрен только в случае одиночной загрузки картинок
+          if (app.config.images.originalStyle.width && app.config.images.originalStyle.height) {
+            FileAPI.Image(file)
+              //уменьшаем картинку до размеров оригинального стиля, относительно которого backend обрезает изображение
+              .resize(app.config.images.originalStyle.width, app.config.images.originalStyle.height, 'max')
+              .get(function(error, image) {
+                _checkIfImageShouldBeCroped(new File([dataURLtoBlob(image.toDataURL())], file.name, {type: file.type}));
+              });
+          } else {
+            _checkIfImageShouldBeCroped(file);
+          }
+        } else {
+          _uploadFiles(files, app.config.images.uploadData);
+        }
+      }
     });
   }
 
@@ -144,7 +283,7 @@ app.modules.images = (function(self) {
         if (FileAPI.support.dnd) {
           $(_options.selectors.imagesWrapper).dnd($.noop, function(files) {
             _setContainer(this);
-            files.length && _uploadFiles(files);
+            files.length && _uploadFiles(files, app.config.images.uploadData);
           });
         }
       });
@@ -154,9 +293,25 @@ app.modules.images = (function(self) {
         _loadFiles(FileAPI.getFiles(event));
       }
     });
+
+    _$cropingDialog
+      .on('dialogclose', function() {
+        $(_options.selectors.fileInput).val('');
+      })
+      .on('click', '.js-save-croped-image', function() {
+        _uploadFiles([_processedImage], $.extend({}, app.config.images.uploadData, _cropData));
+        _$cropingDialog.dialog('close');
+      });
+  }
+
+  function _init() {
+    if (app.config.images.cropable) {
+      $('body').append(_$cropingDialog = $('<div>').addClass('js-croping-dialog dn'));
+    }
   }
 
   self.load = function() {
+    _init();
     _listener();
   };
 

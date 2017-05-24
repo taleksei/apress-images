@@ -37,7 +37,9 @@ module Apress
           }
         },
         url: '/system/images/:class/:id_partition_:style.:extension',
-        filename_cleaner: Apress::Images::FilenameCleaner.new
+        filename_cleaner: Apress::Images::FilenameCleaner.new,
+        # нужно ли сохранять Paperclip::Geometry исходного файла
+        need_extract_source_image_geometry: false
       }.freeze
 
       COLUMN_POSITION_NAME = 'position'.freeze
@@ -64,6 +66,12 @@ module Apress
           background_processing = options.fetch(:background_processing, true)
 
           include(Apress::Images::Extensions::BackgroundProcessing) if background_processing
+
+          if options[:cropable_styles].present? && options[:crop_options]
+            define_singleton_method(:cropable_styles) { options[:cropable_styles] }
+            define_singleton_method(:crop_options) { options[:crop_options] }
+            include Apress::Images::Cropable
+          end
 
           include Apress::Images::Extensions::Image
 
