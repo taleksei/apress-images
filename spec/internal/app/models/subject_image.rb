@@ -14,6 +14,8 @@ class SubjectImage < ActiveRecord::Base
         }
       }
     },
-    background_processing: false
+    background_processing: false,
+    cropable_styles: [:big, :small],
+    crop_options: {min_height: 100, min_width: 100}
   )
 end

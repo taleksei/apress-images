@@ -41,11 +41,15 @@ module Apress
 
       def uploader
         @uploader ||=
-          Apress::Images::UploadService.new(params.require(:model), params.slice(:subject_type, :subject_id, :id))
+          Apress::Images::UploadService.new(params.require(:model), image_params)
       end
 
       def model
         @model ||= Apress::Images::UploadService.image_model(params.require(:model))
+      end
+
+      def image_params
+        params.permit(:subject_type, :subject_id, :id, *Cropable::CROP_ATTRS)
       end
     end
   end

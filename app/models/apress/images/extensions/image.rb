@@ -11,6 +11,7 @@ module Apress
 
         included do
           attr_reader :image_url
+          attr_accessor :source_image_geometry
 
           has_attached_file :img, attachment_options
 
@@ -25,6 +26,8 @@ module Apress
           validates_attachment_file_name :img,
                                          matches: allowed_file_names,
                                          message: 'Файл должен быть корректным изображением'
+
+          before_img_post_process :extract_source_image_geometry
 
           delegate :fingerprints,
                    :files,
@@ -66,6 +69,29 @@ module Apress
 
         def img_was_changed?
           (previous_changes.keys & IMG_ATTRIBUTES).present?
+        end
+
+        # Internal: Сохрание размеров исходного изображения. Выполняется перед валидациями
+        #           поэтому необходимо обработать ошибку некорректного формата изображения.
+        #
+        # Returns nothing.
+        def extract_source_image_geometry
+          return unless self.class.attachment_options.fetch(:need_extract_source_image_geometry)
+
+          tempfile = img.queued_for_write[:original]
+          self.source_image_geometry = Paperclip::Geometry.from_file(tempfile)
+        rescue Paperclip::Errors::NotIdentifiedByImageMagickError
+          nil
+        end
+
+        module ClassMethods
+          # Public: параметры геометрии для определенного стиля.
+          #
+          # Returns Paperclip::Geometry.
+          def style_geometry(style)
+            geometry_string = attachment_definitions.fetch(:img).fetch(:styles).fetch(style).fetch(:geometry)
+            Paperclip::Geometry.parse(geometry_string)
+          end
         end
       end
     end

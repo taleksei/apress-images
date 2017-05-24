@@ -13,12 +13,12 @@ module Apress
     #   image_from_file = service.upload(File.open(...))
     #   image_from_url  = service.upload('http://example.com/image.jpg')
     class UploadService
-      attr_reader :model, :image_attributes
+      attr_reader :model, :image_attributes, :image_crop_attributes
 
       # Public: конструктор
       #
       # imageable_model - String, название модели
-      # subject - Hash (default: {})
+      # params - Hash (default: {})
       #          :subject_type - String тип объекта, которому добавляются изображения
       #          :subject_id   - String иденитфикатор объекта, которому добавляются изображения
       #          :id           - String|Integer идентификатор изображения
@@ -26,6 +26,7 @@ module Apress
       # Returns ImageUploadService instance
       def initialize(imageable_model, params = {})
         @model = image_model(imageable_model)
+        @image_crop_attributes = params.slice(*Cropable::CROP_ATTRS)
         @image_attributes = extract_image_attrs(params)
       end
 
@@ -41,11 +42,16 @@ module Apress
         source_attribute = source.is_a?(String) ? :img_url : :img
         attributes = {source_attribute => source, position: position}.merge!(image_attributes)
 
-        if attributes[:id].present?
-          update(attributes)
-        else
-          model.create!(attributes)
-        end
+        image = if attributes[:id].present?
+                  model.find(attributes[:id])
+                else
+                  model.new
+                end
+
+        image.assign_attributes(image_crop_attributes)
+        image.assign_attributes(attributes)
+        image.save!
+        image
       end
 
       class << self
@@ -73,12 +79,6 @@ module Apress
       end
 
       protected
-
-      def update(attributes)
-        img = model.find(attributes[:id])
-        img.update_attributes!(attributes)
-        img
-      end
 
       delegate :image_model, to: 'self.class'
 

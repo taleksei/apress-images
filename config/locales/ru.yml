@@ -2,3 +2,8 @@ ru:
   activerecord:
     errors:
       failed_to_download_remote_file: Не удалось загрузить файл по ссылке
+  views:
+    apress/images:
+      croping_popup:
+        header: 'Выберите область изображения, которая будет отображаться на слайде:'
+        submit: 'Сохранить'

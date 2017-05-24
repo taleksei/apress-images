@@ -32,7 +32,11 @@ module Apress
           model: options.fetch(:model),
           images_limit: options.fetch(:images_limit, 1),
           subject_type: options.fetch(:subject_type),
-          subject_id: options.fetch(:subject_id, '')
+          subject_id: options.fetch(:subject_id, ''),
+          cropable: options.fetch(:cropable, false),
+          crop_options: options.fetch(:crop_options, ''),
+          original_style_width: options[:original_style_width],
+          original_style_height: options[:original_style_height]
         }
 
         capture do
