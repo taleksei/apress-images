@@ -16,7 +16,7 @@ module Apress
           http_open_timeout: 5.seconds,
           http_read_timeout: 5.seconds,
           default_convert_options: {
-            all: "-filter Triangle -define filter:support=2 -dither None -quality 85 -quiet"
+            all: "-filter Triangle -define filter:support=2 -dither None -quality 80 -quiet"
           }
         }
         # TODO: deprecated
