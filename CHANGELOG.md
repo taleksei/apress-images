@@ -1,6 +1,47 @@
+# v6.3.0
+
+* 2017-05-26 [48131c7](../../commit/48131c7) - __(Andrew N. Shalaev)__ Release v6.3.0 
+* 2017-05-26 [9360eb3](../../commit/9360eb3) - __(Andrew N. Shalaev)__ feature: move haml dependency to Gemfile 
+* 2017-05-26 [f01f56d](../../commit/f01f56d) - __(Andrew N. Shalaev)__ fix: decrease quality to 80% by default 
+Раньше для товарных было качество 80, прдлагаю для всех так оставить по-умолчанию.
+
+* 2017-05-23 [1c8e037](../../commit/1c8e037) - __(Andrew N. Shalaev)__ feature: add options -filter Triangle and disable ditheraztion (it enabled by default) 
+https://jira.railsc.ru/browse/BPC-10323
+
+Examples:
+
+Before:
+
+```
+andy@andypc:~/work/blizko/public/system/images/product on feature/BPC-8899 [!$]
+$ ls -l | grep 123922020
+-rw-r--r-- 1 root root 15509 May 23 15:04 123922020_big.jpg
+-rw-r--r-- 1 root root  5208 May 23 15:04 123922020_medium.jpg
+-rw-r--r-- 1 root root 47231 May 23 15:04 123922020_original.jpg
+-rw-r--r-- 1 root root   876 May 23 15:04 123922020_small.jpg
+-rw-r--r-- 1 root root  1956 May 23 15:04 123922020_thumb.jpg
+```
+
+After:
+```
+andy@andypc:~/work/blizko/public/system/images/product on feature/BPC-8899 [!$]
+$ ls -l | grep 123922021
+-rw-r--r-- 1 root root 14124 May 23 15:12 123922021_big.jpg
+-rw-r--r-- 1 root root  4813 May 23 15:12 123922021_medium.jpg
+-rw-r--r-- 1 root root 47231 May 23 15:12 123922021_original.jpg
+-rw-r--r-- 1 root root   841 May 23 15:12 123922021_small.jpg
+-rw-r--r-- 1 root root  1831 May 23 15:12 123922021_thumb.jpg
+```
+
+fix: set default options of paperclip after load config
+
+fix: missing strip option
+
+* 2017-05-23 [6fe21b3](../../commit/6fe21b3) - __(Andrew N. Shalaev)__ feature: move global convert options to engine initializator 
+* 2017-05-23 [14516fc](../../commit/14516fc) - __(Andrew N. Shalaev)__ chore: git ignore all log files 
+
 # v6.2.0
 
-* 2017-05-24 [87d0420](../../commit/87d0420) - __(Konstantin Lazarev)__ Release 6.2.0 
 Кадрирование изображений.
 Использование в слайдере -
 https://github.com/abak-press/apress-companies-sliders/pull/55.
