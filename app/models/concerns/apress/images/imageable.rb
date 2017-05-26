@@ -22,8 +22,7 @@ module Apress
         default_style: :thumb,
         processors: [:watermark],
         convert_options: {
-          original: '-strip -interlace Plane -quality 85',
-          thumb: '-strip -quality 85'
+          original: '-interlace Plane -strip'
         },
         styles: {
           original: {

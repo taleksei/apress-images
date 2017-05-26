@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'russian', '>= 0.6'
   spec.add_runtime_dependency 'resque-integration', '>= 0.4.1'
   spec.add_runtime_dependency 'addressable', '>= 2.3.2'
-  spec.add_runtime_dependency 'haml', '>= 4.0.7'
   spec.add_runtime_dependency 'rails-assets-FileAPI', '>= 2'
   spec.add_runtime_dependency 'class_logger', '~> 1.0.1'
   spec.add_runtime_dependency 'apress-api', '>= 1.8.0'
