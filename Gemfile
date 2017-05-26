@@ -5,4 +5,5 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rails-assets-FileAPI', source: 'https://rails-assets.org/'
+gem "haml", ">= 4.0.7"
 
