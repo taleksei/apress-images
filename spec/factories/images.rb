@@ -22,4 +22,10 @@ FactoryGirl.define do
     img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
     position 1
   end
+
+  factory :custom_attribute_image, class: CustomAttributeImage
+
+  factory :disordered_image, class: DisorderedImage do
+    img { Rack::Test::UploadedFile.new(Rails.root.join('../fixtures/images/sample_image.jpg'), 'image/jpeg') }
+  end
 end
