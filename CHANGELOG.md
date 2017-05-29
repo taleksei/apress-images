@@ -1,6 +1,15 @@
+# v6.4.0
+
+* 2017-05-29 [6c5dfe6](../../commit/6c5dfe6) - __(korotaev)__ Release 6.4.0 
+* 2017-05-29 [622ef13](../../commit/622ef13) - __(korotaev)__ fix: geometry extraction, style_geometry for custom attribute 
+* 2017-05-15 [db10431](../../commit/db10431) - __(korotaev)__ feat(upload): make position and processing optional for model 
+https://jira.railsc.ru/browse/GOODS-565
+
+* 2017-05-15 [c18fa50](../../commit/c18fa50) - __(korotaev)__ feat(imageable): add attachment_attribute option 
+https://jira.railsc.ru/browse/GOODS-565
+
 # v6.3.0
 
-* 2017-05-26 [48131c7](../../commit/48131c7) - __(Andrew N. Shalaev)__ Release v6.3.0 
 * 2017-05-26 [9360eb3](../../commit/9360eb3) - __(Andrew N. Shalaev)__ feature: move haml dependency to Gemfile 
 * 2017-05-26 [f01f56d](../../commit/f01f56d) - __(Andrew N. Shalaev)__ fix: decrease quality to 80% by default 
 Раньше для товарных было качество 80, прдлагаю для всех так оставить по-умолчанию.
