@@ -40,7 +40,7 @@ module Apress
                                          matches: allowed_file_names,
                                          message: 'Файл должен быть корректным изображением'
 
-          before_img_post_process :extract_source_image_geometry
+          public_send "before_#{attachment_attribute}_post_process", :extract_source_image_geometry
 
           delegate :fingerprints,
                    :files,
@@ -102,7 +102,12 @@ module Apress
           #
           # Returns Paperclip::Geometry.
           def style_geometry(style)
-            geometry_string = attachment_definitions.fetch(:img).fetch(:styles).fetch(style).fetch(:geometry)
+            geometry_string = attachment_definitions.
+              fetch(attachment_attribute).
+              fetch(:styles).
+              fetch(style).
+              fetch(:geometry)
+
             Paperclip::Geometry.parse(geometry_string)
           end
         end

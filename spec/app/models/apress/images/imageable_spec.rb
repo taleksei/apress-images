@@ -47,7 +47,7 @@ RSpec.describe Apress::Images::Imageable do
   end
 
   context 'when model has custom attachment attribute' do
-    let(:image) { build :custom_attribute_image }
+    let(:image) { build :custom_attribute_image, custom: nil }
     let(:attachment) { Rack::Test::UploadedFile.new(Rails.root.join(dummy_filepath), 'image/jpeg') }
 
     it 'assigns image by default attribute (img)' do
