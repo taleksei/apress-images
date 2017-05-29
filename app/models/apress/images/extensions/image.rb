@@ -6,28 +6,41 @@ module Apress
       # Internal: Содержит функционал для хранения изображений
       module Image
         extend ActiveSupport::Concern
-        # Public: Аттрибуты для хранения изображения
-        IMG_ATTRIBUTES = %w(img_file_name img_content_type img_file_size img_fingerprint).freeze
+
+        module ClassMethods
+          # Public: Аттрибуты для хранения изображения
+          #
+          # Returns Array
+          def img_attributes
+            %W(
+              #{attachment_attribute}_file_name
+              #{attachment_attribute}_content_type
+              #{attachment_attribute}_file_size
+              #{attachment_attribute}_fingerprint
+            ).freeze
+          end
+        end
 
         included do
           attr_reader :image_url
           attr_accessor :source_image_geometry
 
-          has_attached_file :img, attachment_options
+          has_attached_file attachment_attribute, attachment_options
+          alias_attribute :img, attachment_attribute if attachment_attribute != :img
 
-          validates_attachment_presence :img
-          validates_attachment_size :img,
+          validates_attachment_presence attachment_attribute
+          validates_attachment_size attachment_attribute,
                                     less_than: max_size.megabytes,
                                     message: 'Размер файла не должен превышать %s Мб' % max_size
-          validates_attachment_content_type :img,
+          validates_attachment_content_type attachment_attribute,
                                             message: 'Файл должен быть корректным изображением',
                                             content_type: allowed_mime_types
 
-          validates_attachment_file_name :img,
+          validates_attachment_file_name attachment_attribute,
                                          matches: allowed_file_names,
                                          message: 'Файл должен быть корректным изображением'
 
-          before_img_post_process :extract_source_image_geometry
+          public_send "before_#{attachment_attribute}_post_process", :extract_source_image_geometry
 
           delegate :fingerprints,
                    :files,
@@ -35,7 +48,7 @@ module Apress
                    :most_existing_style,
                    :original_or_biggest_style,
                    :to_file,
-                   to: :img,
+                   to: attachment_attribute,
                    allow_nil: true
         end
 
@@ -68,7 +81,7 @@ module Apress
         private
 
         def img_was_changed?
-          (previous_changes.keys & IMG_ATTRIBUTES).present?
+          (previous_changes.keys & self.class.img_attributes).present?
         end
 
         # Internal: Сохрание размеров исходного изображения. Выполняется перед валидациями
@@ -89,7 +102,12 @@ module Apress
           #
           # Returns Paperclip::Geometry.
           def style_geometry(style)
-            geometry_string = attachment_definitions.fetch(:img).fetch(:styles).fetch(style).fetch(:geometry)
+            geometry_string = attachment_definitions.
+              fetch(attachment_attribute).
+              fetch(:styles).
+              fetch(style).
+              fetch(:geometry)
+
             Paperclip::Geometry.parse(geometry_string)
           end
         end

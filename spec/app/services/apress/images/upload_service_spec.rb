@@ -78,5 +78,22 @@ describe Apress::Images::UploadService do
         it_behaves_like 'croping image style according to given crop_ parameters'
       end
     end
+
+    context 'when model has no position column' do
+      before { Rails.application.config.imageable_models << 'DisorderedImage' }
+
+      context 'when create a new image' do
+        subject { described_class.new('DisorderedImage') }
+
+        it { expect { subject.upload(image) }.to change(DisorderedImage, :count).by(1) }
+      end
+
+      context 'when update an existing image' do
+        let!(:old_image) { create :disordered_image }
+        subject { described_class.new('DisorderedImage', id: old_image.id) }
+
+        it { expect { subject.upload(image) }.not_to change(DisorderedImage, :count) }
+      end
+    end
   end
 end
