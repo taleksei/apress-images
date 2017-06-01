@@ -1,6 +1,11 @@
+# v6.4.1
+
+* 2017-06-01 [5cd06b2](../../commit/5cd06b2) - __(antonnikulin)__ Release 6.4.1 
+* 2017-06-01 [880ce02](../../commit/880ce02) - __(antonnikulin)__ fix(images_load): The correct setting handlers 
+https://jira.railsc.ru/browse/PC4-19039
+
 # v6.4.0
 
-* 2017-05-29 [6c5dfe6](../../commit/6c5dfe6) - __(korotaev)__ Release 6.4.0 
 * 2017-05-29 [622ef13](../../commit/622ef13) - __(korotaev)__ fix: geometry extraction, style_geometry for custom attribute 
 * 2017-05-15 [db10431](../../commit/db10431) - __(korotaev)__ feat(upload): make position and processing optional for model 
 https://jira.railsc.ru/browse/GOODS-565
