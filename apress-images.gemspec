@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.email         = %w(isqad88@yandex.ru)
   spec.summary       = %q{Apress images}
   spec.description   = %q{Universal image uploader}
-  spec.homepage      = 'https://railsc.ru'
+  spec.homepage      = 'https://github.com/abak-press/apress-images'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
