@@ -294,7 +294,7 @@ app.modules.images = (function(self) {
       }
     });
 
-    _$cropingDialog
+    _$cropingDialog && _$cropingDialog
       .on('dialogclose', function() {
         $(_options.selectors.fileInput).val('');
       })
