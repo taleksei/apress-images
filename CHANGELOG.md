@@ -1,6 +1,13 @@
+# v6.4.2
+
+* 2017-06-29 [0b2a1ca](../../commit/0b2a1ca) - __(Dmitry Bochkarev)__ Release 6.4.2 
+* 2017-06-29 [28c4327](../../commit/28c4327) - __(Dmitry Bochkarev)__ fix: удаление невалидных последовательностей из названий файлов 
+https://jira.railsc.ru/browse/SERVICES-1919
+
+* 2017-06-01 [3339c9d](../../commit/3339c9d) - __(Andrew N. Shalaev)__ chore: correct homepage in gemspec 
+
 # v6.4.1
 
-* 2017-06-01 [5cd06b2](../../commit/5cd06b2) - __(antonnikulin)__ Release 6.4.1 
 * 2017-06-01 [880ce02](../../commit/880ce02) - __(antonnikulin)__ fix(images_load): The correct setting handlers 
 https://jira.railsc.ru/browse/PC4-19039
 
