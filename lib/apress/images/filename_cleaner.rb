@@ -7,9 +7,10 @@ module Apress
       def call(filename)
         extname = File.extname(filename)
         fname = File.basename(filename, extname)
+        fname.scrub!('')
         fname = Addressable::URI.unescape(fname)
         fname = Russian.transliterate(fname)
-        fname = fname.gsub(/[^\w-]/, '_')
+        fname.gsub!(/[^\w-]/, '_')
         new_filename = "#{fname}#{extname}"
         if new_filename.length > 255
           new_filename[(new_filename.length - 255)..-1]
