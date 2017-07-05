@@ -1,6 +1,11 @@
+# v6.4.3
+
+* 2017-07-05 [f42fb2c](../../commit/f42fb2c) - __(Dmitry Bochkarev)__ Release 6.4.3 
+* 2017-07-05 [00825bf](../../commit/00825bf) - __(Dmitry Bochkarev)__ fix: невалидная UTF-8 последовательность в результате вызова Addressable::URI.unescape 
+https://jira.railsc.ru/browse/SERVICES-1919
+
 # v6.4.2
 
-* 2017-06-29 [0b2a1ca](../../commit/0b2a1ca) - __(Dmitry Bochkarev)__ Release 6.4.2 
 * 2017-06-29 [28c4327](../../commit/28c4327) - __(Dmitry Bochkarev)__ fix: удаление невалидных последовательностей из названий файлов 
 https://jira.railsc.ru/browse/SERVICES-1919
 
