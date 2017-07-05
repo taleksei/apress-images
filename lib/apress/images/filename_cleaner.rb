@@ -9,6 +9,7 @@ module Apress
         fname = File.basename(filename, extname)
         fname.scrub!('')
         fname = Addressable::URI.unescape(fname)
+        fname.scrub!('')
         fname = Russian.transliterate(fname)
         fname.gsub!(/[^\w-]/, '_')
         new_filename = "#{fname}#{extname}"
