@@ -33,6 +33,15 @@ RSpec.describe Apress::Images::FilenameCleaner do
       end
     end
 
+    context 'when unescaped filename result to invalid UTF-8 sequence' do
+      let(:filename) { '1274071928_%D4%E0%F1%E0%E423.jpg' }
+
+      it do
+        expect { result }.not_to raise_error
+        expect(result).to eq('1274071928_23.jpg')
+      end
+    end
+
     context 'when filename is uri escaped' do
       let(:filename) { '%D0%BA%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B0.jpg' }
 
