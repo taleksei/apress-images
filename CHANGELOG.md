@@ -1,6 +1,12 @@
+# v6.4.4
+
+* 2017-07-07 [7890af1](../../commit/7890af1) - __(Pavel Galkin)__ Release 6.4.4 
+* 2017-06-01 [ddd0ff3](../../commit/ddd0ff3) - __(levushkina)__ fix: add max height to popup, fit popup by image [SKIP CI] 
+https://jira.railsc.ru/browse/CK-936
+https://jira.railsc.ru/browse/PC4-19841
+
 # v6.4.3
 
-* 2017-07-05 [f42fb2c](../../commit/f42fb2c) - __(Dmitry Bochkarev)__ Release 6.4.3 
 * 2017-07-05 [00825bf](../../commit/00825bf) - __(Dmitry Bochkarev)__ fix: невалидная UTF-8 последовательность в результате вызова Addressable::URI.unescape 
 https://jira.railsc.ru/browse/SERVICES-1919
 
