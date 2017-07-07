@@ -30,7 +30,8 @@ app.modules.images = (function(self) {
     },
     _images = [],
     _process = false,
-    CROP_POPUP_WIDTH = 650,
+    MAX_CROP_POPUP_WIDTH = 640,
+    MAX_CROP_POPUP_HEIGHT = 350,
     _$imagesContainer,
     _$cropingDialog,
     _cropRatio,
@@ -115,13 +116,13 @@ app.modules.images = (function(self) {
 
   function _showCropingDialog(file, fileInfo) {
     FileAPI.Image(file)
-      .resize(CROP_POPUP_WIDTH, 'max')
+      .resize(MAX_CROP_POPUP_WIDTH, MAX_CROP_POPUP_HEIGHT, 'max')
       .get(function(error, image) {
         _cropRatio = image.width / fileInfo.width;
         _$cropingDialog.html(HandlebarsTemplates['images/croping_popup']({image: image.toDataURL()})).dialog({
           modal: true,
           resizable: false,
-          width: CROP_POPUP_WIDTH,
+          width: image.width,
           dialogClass: 'croping-popup'
         });
 
@@ -139,7 +140,6 @@ app.modules.images = (function(self) {
         height: app.config.images.cropOptions['min_height'] * _cropRatio
       };
 
-    $cloneImage.css({width: CROP_POPUP_WIDTH});
     _setCropData({left: 0, top: 0}, {width: cropAreaDimensions.width, height: cropAreaDimensions.height});
 
     $cropArea.resizable({
