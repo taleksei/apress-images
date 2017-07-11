@@ -283,7 +283,9 @@ app.modules.images = (function(self) {
         if (FileAPI.support.dnd) {
           $(_options.selectors.imagesWrapper).dnd($.noop, function(files) {
             _setContainer(this);
-            files.length && _uploadFiles(files, app.config.images.uploadData);
+            if (files.length) {
+              app.config.images.cropable ? _loadFiles(files) : _uploadFiles(files, app.config.images.uploadData);
+            }
           });
         }
       });
