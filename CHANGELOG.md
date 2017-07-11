@@ -1,6 +1,12 @@
+# v6.5.0
+
+* 2017-07-11 [2e7206c](../../commit/2e7206c) - __(levushkina)__ Release 6.5.0 
+* 2017-07-11 [4c919d0](../../commit/4c919d0) - __(levushkina)__ feature: add crop to dnd file-uploader 
+https://jira.railsc.ru/browse/SG-6121
+https://jira.railsc.ru/browse/CK-992
+
 # v6.4.4
 
-* 2017-07-07 [7890af1](../../commit/7890af1) - __(Pavel Galkin)__ Release 6.4.4 
 * 2017-06-01 [ddd0ff3](../../commit/ddd0ff3) - __(levushkina)__ fix: add max height to popup, fit popup by image [SKIP CI] 
 https://jira.railsc.ru/browse/CK-936
 https://jira.railsc.ru/browse/PC4-19841
