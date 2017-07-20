@@ -8,7 +8,7 @@ module Apress
 
       @queue = :images_deleting
 
-      @backoff_strategy = [0, 30, 60, 120, 300]
+      @backoff_strategy = [1.minute, 5.minutes, 15.minutes, 30.minutes]
       @retry_delay_multiplicand_max = 2.0
 
       def self.perform(image_id, class_name)
