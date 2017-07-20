@@ -1,6 +1,10 @@
+# v6.5.1
+
+* 2017-07-20 [f158e45](../../commit/f158e45) - __(Andrew N. Shalaev)__ Release v6.5.1 
+* 2017-07-20 [adc029a](../../commit/adc029a) - __(Andrew N. Shalaev)__ chore: improve backoff strategy for process jobs 
+
 # v6.5.0
 
-* 2017-07-11 [2e7206c](../../commit/2e7206c) - __(levushkina)__ Release 6.5.0 
 * 2017-07-11 [4c919d0](../../commit/4c919d0) - __(levushkina)__ feature: add crop to dnd file-uploader 
 https://jira.railsc.ru/browse/SG-6121
 https://jira.railsc.ru/browse/CK-992
