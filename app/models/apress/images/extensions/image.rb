@@ -40,7 +40,7 @@ module Apress
                                          matches: allowed_file_names,
                                          message: 'Файл должен быть корректным изображением'
 
-          public_send "before_#{attachment_attribute}_post_process", :extract_source_image_geometry
+          send "before_#{attachment_attribute}_post_process", :extract_source_image_geometry
 
           delegate :fingerprints,
                    :files,
