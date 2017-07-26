@@ -1,6 +1,10 @@
+# v6.5.2
+
+* 2017-07-26 [89cd828](../../commit/89cd828) - __(korotaev)__ Release 6.5.2 
+* 2017-07-26 [521f040](../../commit/521f040) - __(korotaev)__ fix(image): use send for define callback 
+
 # v6.5.1
 
-* 2017-07-20 [f158e45](../../commit/f158e45) - __(Andrew N. Shalaev)__ Release v6.5.1 
 * 2017-07-20 [adc029a](../../commit/adc029a) - __(Andrew N. Shalaev)__ chore: improve backoff strategy for process jobs 
 
 # v6.5.0
