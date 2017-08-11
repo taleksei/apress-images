@@ -1,12 +1,15 @@
-# coding: utf-8
-
 require 'spec_helper'
 
 RSpec.describe Apress::Images::ProcessJob do
   describe '.perform' do
-    let(:image) { create :subject_image, processing: true }
+    context 'success' do
+      let(:image) { create :subject_image, processing: true }
 
-    before { allow_any_instance_of(Paperclip::Attachment).to receive(:process_delayed!) }
+      it do
+        expect_any_instance_of(Paperclip::Attachment).to receive(:process_delayed!)
+        described_class.perform(image.id, image.class.name)
+      end
+    end
 
     it { expect_any_instance_of(Paperclip::Attachment).to receive(:process_delayed!) }
 
