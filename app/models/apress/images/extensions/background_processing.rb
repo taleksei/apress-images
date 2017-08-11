@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module Apress
   module Images
     module Extensions
@@ -11,7 +9,7 @@ module Apress
 
         included do
           # Public: callback должен быть "навешан" раньше callback'ов paperclip-attachment'а
-          before_destroy :reset_processing_flag, if: :processing?
+          before_destroy :remove_processing_job, if: :processing?
         end
 
         module ClassMethods
@@ -69,15 +67,7 @@ module Apress
           return if !@enqueue_img_delayed_processing || reload.processing?
 
           update_column(:processing, true)
-
-          queue_name =
-            if online_processing?
-              Apress::Images::ProcessJob.queue
-            else
-              Apress::Images::ProcessJob.non_online_queue
-            end
-
-          Resque.enqueue_to queue_name, Apress::Images::ProcessJob, id, self.class.name, options_for_delayed_enqueue
+          Resque.enqueue_to(queue_name, Apress::Images::ProcessJob, id, self.class.name, options_for_delayed_enqueue)
         ensure
           @enqueue_img_delayed_processing = false
         end
@@ -92,9 +82,18 @@ module Apress
 
         private
 
-        def reset_processing_flag
+        def remove_processing_job
+          Resque::Job.destroy(queue_name, Apress::Images::ProcessJob, id, self.class.name)
           self.processing = false
           nil
+        end
+
+        def queue_name
+          if online_processing?
+            Apress::Images::ProcessJob.queue
+          else
+            Apress::Images::ProcessJob.non_online_queue
+          end
         end
       end
     end

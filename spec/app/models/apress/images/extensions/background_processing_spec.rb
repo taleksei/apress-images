@@ -1,4 +1,3 @@
-# coding: utf-8
 require 'spec_helper'
 
 RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
@@ -119,22 +118,20 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
     end
   end
 
-  describe 'stub urls when image in processing' do
+  describe 'destruction' do
     let(:image) { create :delayed_image }
     let(:image_stub) { Rails.root.join('public/images/stub_thumb.gif') }
 
-    context 'when image destroy' do
-      before { image.destroy }
+    before do
+      allow(Resque::Job).to receive(:destroy)
+      image.destroy
+    end
 
-      it { expect(image).to be_destroyed }
-
-      it 'reset procecesing flag' do
-        expect(image).not_to be_processing
-      end
-
-      it 'keep stub image' do
-        expect(File.exist?(image_stub)).to be
-      end
+    it do
+      expect(image).to be_destroyed
+      expect(image).not_to be_processing # resets the processing flag
+      expect(Resque::Job).to have_received(:destroy).with(:images, Apress::Images::ProcessJob, image.id, 'DelayedImage')
+      expect(File.exist?(image_stub)).to eq(true) # keeps the stub image
     end
   end
 end

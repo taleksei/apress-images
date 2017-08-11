@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module Apress
   module Images
     # Public: джоб нарезки изображений
@@ -24,10 +22,10 @@ module Apress
       def self.perform(image_id, class_name, opts = {})
         options = opts.with_indifferent_access
         model = class_name.camelize.constantize
-        image = model.where(id: image_id).first
-        image.assign_attributes(options[:assign_attributes]) if options[:assign_attributes]
+        image = model.where(id: image_id).first!
 
-        image.img.process_delayed! if image && image.processing?
+        image.assign_attributes(options[:assign_attributes]) if options[:assign_attributes]
+        image.img.process_delayed! if image.processing?
       end
 
       ActiveSupport.run_load_hooks(:'apress/images/process_job', self)
