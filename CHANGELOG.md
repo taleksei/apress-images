@@ -1,6 +1,15 @@
+# v6.5.3
+
+* 2017-08-11 [aac0519](../../commit/aac0519) - __(Pavel Galkin)__ Release 6.5.4 
+* 2017-08-11 [070fb05](../../commit/070fb05) - __(Pavel Galkin)__ fix: error in ProcessJob when image was not found 
+https://jira.railsc.ru/browse/CK-1073
+
+* 2017-08-11 [3c090aa](../../commit/3c090aa) - __(Pavel Galkin)__ test: wrap `.perform` test in context and simplify 
+Если используется expect_any_instance_of, то allow_any_instance_of не
+нужен.
+
 # v6.5.2
 
-* 2017-07-26 [89cd828](../../commit/89cd828) - __(korotaev)__ Release 6.5.2 
 * 2017-07-26 [521f040](../../commit/521f040) - __(korotaev)__ fix(image): use send for define callback 
 
 # v6.5.1
