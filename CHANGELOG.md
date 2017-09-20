@@ -1,3 +1,9 @@
+# v6.6.0
+
+* 2017-09-20 [4a83f47](../../commit/4a83f47) - __(Dmitry Bochkarev)__ Release 6.6.0 
+* 2017-09-11 [f186e84](../../commit/f186e84) - __(Dmitry Bochkarev)__ feature: подстановка расширения из содержимого файла 
+https://jira.railsc.ru/browse/SERVICES-1197
+
 # v6.5.3
 
 * 2017-08-11 [aac0519](../../commit/aac0519) - __(Pavel Galkin)__ Release 6.5.4 
