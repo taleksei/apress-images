@@ -17,13 +17,27 @@ module Apress
           http_read_timeout: 5.seconds,
           default_convert_options: {
             all: "-filter Triangle -define filter:support=2 -dither None -quality 80 -quiet"
-          }
+          },
+          # Для каких типов файлов форсировать определение содержимого
+          force_content_type_detect: (
+            MIME::Types['text/html'] +
+            MIME::Types['application/x-httpd-php'] +
+            MIME::Types['application/octet-stream']
+          ).to_set,
+          # Для каких типов файлов исправлять расширение
+          fix_mime_types_extensions: (
+            MIME::Types['image/jpeg'] +
+            MIME::Types['image/gif'] +
+            MIME::Types['image/png']
+          ).to_set
         }
         # TODO: deprecated
         config.imageable_models = config.images[:imageable_models]
         config.imageable_subjects = config.images[:imageable_subjects]
 
         Paperclip::Attachment.include(Apress::Images::Extensions::Attachment)
+        Paperclip::AbstractAdapter.prepend(Apress::Images::Extensions::IoAdapters::FixContentType)
+        Paperclip::AbstractAdapter.prepend(Apress::Images::Extensions::IoAdapters::FixExtensions)
         Paperclip::UriAdapter.prepend(Apress::Images::Extensions::IoAdapters::UriAdapter)
 
         Paperclip.io_adapters.register Paperclip::UriAdapter do |target|
