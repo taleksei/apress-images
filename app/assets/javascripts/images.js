@@ -79,39 +79,49 @@ app.modules.images = (function(self) {
     _images.splice(0, _images.length);
   }
 
-  function _checkIfImageShouldBeCroped(file) {
+  function _checkIfImageShouldBeCroped(file, fileInfo) {
+    switch (true) {
+      case fileInfo.width > app.config.images.cropOptions['min_width'] &&
+      fileInfo.height > app.config.images.cropOptions['min_height']:
+        _showCropingDialog(file, fileInfo);
+        _processedImage = file;
+        break;
+
+      case fileInfo.width > app.config.images.cropOptions['min_width'] &&
+      fileInfo.height === app.config.images.cropOptions['min_height']:
+        _showCropingDialog(file, fileInfo);
+        _processedImage = file;
+        break;
+
+      case fileInfo.width === app.config.images.cropOptions['min_width'] &&
+      fileInfo.height > app.config.images.cropOptions['min_height']:
+        _showCropingDialog(file, fileInfo);
+        _processedImage = file;
+        break;
+
+      case fileInfo.width < app.config.images.cropOptions['min_width'] ||
+      fileInfo.height < app.config.images.cropOptions['min_height']:
+        $doc.trigger('imageTooSmall:images', _$imagesContainer);
+        _uploadFiles([file], app.config.images.uploadData);
+        break;
+
+      case fileInfo.width === app.config.images.cropOptions['min_width'] &&
+      fileInfo.height === app.config.images.cropOptions['min_height']:
+        _uploadFiles([file], app.config.images.uploadData);
+        break;
+    }
+  }
+
+  function _getImageSize(file) {
+    var imageSize;
+
     FileAPI.getInfo(file, function(error, fileInfo) {
-      switch (true) {
-        case fileInfo.width > app.config.images.cropOptions['min_width'] &&
-             fileInfo.height > app.config.images.cropOptions['min_height']:
-          _showCropingDialog(file, fileInfo);
-          _processedImage = file;
-          break;
-
-        case fileInfo.width > app.config.images.cropOptions['min_width'] &&
-             fileInfo.height === app.config.images.cropOptions['min_height']:
-          _showCropingDialog(file, fileInfo);
-          _processedImage = file;
-          break;
-
-        case fileInfo.width === app.config.images.cropOptions['min_width'] &&
-             fileInfo.height > app.config.images.cropOptions['min_height']:
-          _showCropingDialog(file, fileInfo);
-          _processedImage = file;
-          break;
-
-        case fileInfo.width < app.config.images.cropOptions['min_width'] ||
-             fileInfo.height < app.config.images.cropOptions['min_height']:
-          $doc.trigger('imageTooSmall:images', _$imagesContainer);
-          _uploadFiles([file], app.config.images.uploadData);
-          break;
-
-        case fileInfo.width === app.config.images.cropOptions['min_width'] &&
-             fileInfo.height === app.config.images.cropOptions['min_height']:
-          _uploadFiles([file], app.config.images.uploadData);
-          break;
+      imageSize = {
+        width: fileInfo.width,
+        height: fileInfo.height
       }
     });
+    return imageSize;
   }
 
   function _showCropingDialog(file, fileInfo) {
@@ -186,11 +196,14 @@ app.modules.images = (function(self) {
       'crop_x': parseInt(position.left / _cropRatio),
       'crop_y': parseInt(position.top / _cropRatio),
       'crop_w': parseInt(size.width / _cropRatio),
-      'crop_h': parseInt(size.height / _cropRatio)
+      'crop_h': parseInt(size.height / _cropRatio),
+      transformImg: true
     };
   }
 
   function _uploadFiles(files, data) {
+    var transformImg;
+
     if (_isImagesLimitExceeds(files)) {
       $doc.trigger('imageLimitExceeds:images', _$imagesContainer);
       files = files.slice(0, _options.maxFilesCount - (files.length + _getImagesCount()));
@@ -199,10 +212,18 @@ app.modules.images = (function(self) {
       return false;
     }
 
+    if (data.transformImg) {
+      transformImg = {
+        maxWidth: app.config.images.originalStyle.width,
+        maxHeight: app.config.images.originalStyle.height
+      };
+    }
+
     FileAPI.upload({
       url: app.config.images.uploadUrl,
       data: data || null,
       files: {'images[]': files},
+      imageTransform: transformImg,
       upload: function() {
         _$imagesContainer.find(_options.selectors.buttonUpload).prop({disabled: true});
       },
@@ -248,10 +269,10 @@ app.modules.images = (function(self) {
               //уменьшаем картинку до размеров оригинального стиля, относительно которого backend обрезает изображение
               .resize(app.config.images.originalStyle.width, app.config.images.originalStyle.height, 'max')
               .get(function(error, image) {
-                _checkIfImageShouldBeCroped(new File([dataURLtoBlob(image.toDataURL())], file.name, {type: file.type}));
+                _checkIfImageShouldBeCroped(file, {width: image.width, height: image.height});
               });
           } else {
-            _checkIfImageShouldBeCroped(file);
+            _checkIfImageShouldBeCroped(file, _getImageSize(file));
           }
         } else {
           _uploadFiles(files, app.config.images.uploadData);
