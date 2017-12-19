@@ -1,6 +1,12 @@
+# v6.6.1
+
+* 2017-12-19 [73f5f77](../../commit/73f5f77) - __(Konstantin Lazarev)__ Release 6.6.1 
+* 2017-11-23 [2b34693](../../commit/2b34693) - __(levushkina)__ fix(crop): fix upload cropable img for ie 
+https://jira.railsc.ru/browse/CK-1267
+https://jira.railsc.ru/browse/BPC-11560
+
 # v6.6.0
 
-* 2017-09-20 [4a83f47](../../commit/4a83f47) - __(Dmitry Bochkarev)__ Release 6.6.0 
 * 2017-09-11 [f186e84](../../commit/f186e84) - __(Dmitry Bochkarev)__ feature: подстановка расширения из содержимого файла 
 https://jira.railsc.ru/browse/SERVICES-1197
 
