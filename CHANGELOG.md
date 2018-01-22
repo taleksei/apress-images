@@ -1,6 +1,11 @@
+# v6.6.2
+
+* 2018-01-19 [e2b0d80](../../commit/e2b0d80) - __(Denis Korobicyn)__ Release 6.6.2 
+* 2018-01-19 [ce4357e](../../commit/ce4357e) - __(Denis Korobicyn)__ fix(rails 4): remove constantize and model_name 
+https://jira.railsc.ru/browse/PC4-21423
+
 # v6.6.1
 
-* 2017-12-19 [73f5f77](../../commit/73f5f77) - __(Konstantin Lazarev)__ Release 6.6.1 
 * 2017-11-23 [2b34693](../../commit/2b34693) - __(levushkina)__ fix(crop): fix upload cropable img for ie 
 https://jira.railsc.ru/browse/CK-1267
 https://jira.railsc.ru/browse/BPC-11560
