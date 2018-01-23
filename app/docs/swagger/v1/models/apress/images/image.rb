@@ -41,6 +41,17 @@ module Swagger
               property :img_content_type do
                 key :type, :string
               end
+
+              property :styles, type: :array do
+                items do
+                  ::Apress::Images::Image.default_attachment_options[:styles].each_key do |k|
+                    key :type, :object
+                    property k, type: :object do
+                      property :url, type: :string
+                    end
+                  end
+                end
+              end
             end
           end
         end
