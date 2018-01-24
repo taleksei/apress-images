@@ -8,6 +8,15 @@ RSpec.describe "apress/images/api/v1/images/image.json.jbuilder", type: :view do
     }.with_indifferent_access
   end
 
+  let(:styles_schema) do
+    {
+      type: 'array',
+      items: {
+        type: 'object'
+      }
+    }.with_indifferent_access
+  end
+
   before do
     render template: "apress/images/api/v1/images/_image",
            formats: :json,
@@ -15,7 +24,10 @@ RSpec.describe "apress/images/api/v1/images/image.json.jbuilder", type: :view do
            locals: {image: create(:subject_image)}
   end
 
-  it { expect(rendered).to match_json_schema(schema) }
+  it do
+    expect(rendered).to match_json_schema(schema)
+    expect(JSON.parse(rendered)['styles'].to_json).to match_json_schema(styles_schema)
+  end
 
   it 'return full image url' do
     expect(JSON.parse(rendered)['img']).to include 'http://test/system/images'
