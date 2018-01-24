@@ -1,6 +1,11 @@
+# v6.7.0
+
+* 2018-01-24 [9bed082](../../commit/9bed082) - __(Valery Glyantsev)__ Release 6.7.0 
+* 2018-01-23 [20e5958](../../commit/20e5958) - __(Valery Glyantsev)__ fix: use original image in api view 
+https://jira.railsc.ru/browse/PC4-21284
+
 # v6.6.2
 
-* 2018-01-19 [e2b0d80](../../commit/e2b0d80) - __(Denis Korobicyn)__ Release 6.6.2 
 * 2018-01-19 [ce4357e](../../commit/ce4357e) - __(Denis Korobicyn)__ fix(rails 4): remove constantize and model_name 
 https://jira.railsc.ru/browse/PC4-21423
 
