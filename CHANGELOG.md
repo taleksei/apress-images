@@ -1,6 +1,11 @@
+# v6.7.1
+
+* 2018-02-02 [5cd6c7f](../../commit/5cd6c7f) - __(korotaev)__ Release 6.7.1 
+* 2018-02-02 [c8f9199](../../commit/c8f9199) - __(korotaev)__ fix: correct upload from url 
+https://jira.railsc.ru/browse/GOODS-1055
+
 # v6.7.0
 
-* 2018-01-24 [9bed082](../../commit/9bed082) - __(Valery Glyantsev)__ Release 6.7.0 
 * 2018-01-23 [20e5958](../../commit/20e5958) - __(Valery Glyantsev)__ fix: use original image in api view 
 https://jira.railsc.ru/browse/PC4-21284
 
