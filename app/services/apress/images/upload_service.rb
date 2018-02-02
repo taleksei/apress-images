@@ -39,7 +39,7 @@ module Apress
       #
       # Returns Object изображение
       def upload(source, position = current_position.try(:next))
-        source_attribute = source.is_a?(String) ? :img_url : :img
+        source_attribute = source.is_a?(String) ? :image_url : :img
         attributes = {source_attribute => source}
         attributes[:position] = position if position
         attributes.merge!(image_attributes)
