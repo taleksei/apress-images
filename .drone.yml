@@ -11,7 +11,7 @@ build:
       - RUBY_IMAGE_TAG=2.2-latest
       - COMPOSE_FILE_EXT=drone
       - RAILS_ENV=test
-      - POSTGRES_IMAGE_TAG=9.3-latest
+      - POSTGRES_IMAGE_TAG=9.6-latest
     commands:
       - wrapdocker docker -v
 
