@@ -67,7 +67,7 @@ module Apress
           return if !@enqueue_img_delayed_processing || reload.processing?
 
           update_column(:processing, true)
-          Resque.enqueue_to(queue_name, Apress::Images::ProcessJob, id, self.class.name, options_for_delayed_enqueue)
+          Resque.enqueue_to(queue_name, *processing_job_args)
         ensure
           @enqueue_img_delayed_processing = false
         end
@@ -82,8 +82,13 @@ module Apress
 
         private
 
+        def processing_job_args
+          [Apress::Images::ProcessJob, id, self.class.name, options_for_delayed_enqueue]
+        end
+
         def remove_processing_job
-          Resque::Job.destroy(queue_name, Apress::Images::ProcessJob, id, self.class.name)
+          Resque::Job.destroy(Apress::Images::ProcessJob.queue, *processing_job_args)
+          Resque::Job.destroy(Apress::Images::ProcessJob.non_online_queue, *processing_job_args)
           self.processing = false
           nil
         end

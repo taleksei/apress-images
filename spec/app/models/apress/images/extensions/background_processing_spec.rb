@@ -119,19 +119,36 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
   end
 
   describe 'destruction' do
-    let(:image) { create :delayed_image }
+    let(:redis) { Resque.redis }
+    let(:image) { build :delayed_image }
     let(:image_stub) { Rails.root.join('public/images/stub_thumb.gif') }
 
-    before do
-      allow(Resque::Job).to receive(:destroy)
-      image.destroy
+    context 'when online pricessing' do
+      before do
+        image.online_processing = true
+        image.save!
+      end
+
+      it do
+        expect { image.destroy }.to change { redis.lrange('queue:images', 0, -1).count }.from(1).to(0)
+        expect(image).to be_destroyed
+        expect(image).not_to be_processing # resets the processing flag
+        expect(File.exist?(image_stub)).to eq(true) # keeps the stub image
+      end
     end
 
-    it do
-      expect(image).to be_destroyed
-      expect(image).not_to be_processing # resets the processing flag
-      expect(Resque::Job).to have_received(:destroy).with(:images, Apress::Images::ProcessJob, image.id, 'DelayedImage')
-      expect(File.exist?(image_stub)).to eq(true) # keeps the stub image
+    context 'when non-online processing' do
+      before do
+        image.online_processing = false
+        image.save!
+      end
+
+      it do
+        expect { image.destroy }.to change { redis.lrange('queue:non_online_images', 0, -1).count }.from(1).to(0)
+        expect(image).to be_destroyed
+        expect(image).not_to be_processing # resets the processing flag
+        expect(File.exist?(image_stub)).to eq(true) # keeps the stub image
+      end
     end
   end
 end
