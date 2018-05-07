@@ -1,6 +1,13 @@
+# v6.7.2
+
+* 2018-05-07 [9fa436c](../../commit/9fa436c) - __(Mikhail Nelaev)__ Release 6.7.2 
+* 2018-05-04 [308e33d](../../commit/308e33d) - __(Mikhail Nelaev)__ fix: не удалялись джобы обработки картинок 
+https://jira.railsc.ru/browse/GOODS-1137
+
+* 2018-05-04 [94af71c](../../commit/94af71c) - __(Mikhail Nelaev)__ chore: use pg 9.6 
+
 # v6.7.1
 
-* 2018-02-02 [5cd6c7f](../../commit/5cd6c7f) - __(korotaev)__ Release 6.7.1 
 * 2018-02-02 [c8f9199](../../commit/c8f9199) - __(korotaev)__ fix: correct upload from url 
 https://jira.railsc.ru/browse/GOODS-1055
 
