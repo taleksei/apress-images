@@ -160,6 +160,9 @@ module Apress
           else
             most_existing_style
           end
+        rescue SocketError, Errno::EHOSTUNREACH => e
+          log(e.message)
+          :original
         end
 
         # Public: файл для стиля
