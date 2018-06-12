@@ -1,6 +1,11 @@
+# v6.7.3
+
+* 2018-06-04 [3b4ec5b](../../commit/3b4ec5b) - __(Oleg Perminov)__ Release 6.7.3 
+* 2018-06-04 [5d41429](../../commit/5d41429) - __(Oleg Perminov)__ fix: image style when node is not available 
+https://jira.railsc.ru/browse/BPC-9723
+
 # v6.7.2
 
-* 2018-05-07 [9fa436c](../../commit/9fa436c) - __(Mikhail Nelaev)__ Release 6.7.2 
 * 2018-05-04 [308e33d](../../commit/308e33d) - __(Mikhail Nelaev)__ fix: не удалялись джобы обработки картинок 
 https://jira.railsc.ru/browse/GOODS-1137
 
