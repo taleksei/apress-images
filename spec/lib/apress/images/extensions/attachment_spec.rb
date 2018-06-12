@@ -109,6 +109,14 @@ RSpec.describe Paperclip::Attachment do
 
       it { expect(image.img.original_or_biggest_style).to eq(:thumb) }
     end
+
+    context 'when node is not available' do
+      before do
+        allow(image.img).to receive(:exists?).with(:original).and_raise [SocketError, Errno::EHOSTUNREACH].sample
+      end
+
+      it { expect(image.img.original_or_biggest_style).to eq(:original) }
+    end
   end
 
   describe '#thumbs' do
