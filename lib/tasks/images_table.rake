@@ -1,5 +1,3 @@
-# coding: utf-8
-
 namespace :images_table do
   task upgrade: :environment do
     connection = ActiveRecord::Base.connection
@@ -77,5 +75,33 @@ namespace :images_table do
         DROP INDEX CONCURRENTLY #{connection.index_name(:images, [:subject_type, :subject_id])};
       SQL
     end
+  end
+
+  desc 'Fill images.img_updated_at'
+  task fill_img_updated_at: :environment do
+    connection = Image.connection
+    batch_size = 5_000
+
+    min_id, max_id = connection.select_one(<<-SQL).values.map(&:to_i)
+      SELECT MIN(id), MAX(id) FROM images WHERE img_updated_at IS NULL;
+    SQL
+
+    batches_count = (max_id.to_f / batch_size).ceil
+    progressbar = ProgressBar.create(total: batches_count, format: '%a %P% Processed: %c from %C')
+
+    while min_id < max_id
+      next_id = min_id + batch_size
+
+      connection.execute <<-SQL
+        UPDATE images
+        SET img_updated_at = COALESCE(updated_at, NOW())
+          WHERE id BETWEEN #{min_id} AND #{next_id}
+      SQL
+
+      min_id = next_id
+      progressbar.increment
+    end
+
+    progressbar.finish
   end
 end
