@@ -1,6 +1,10 @@
+# v6.8.0
+
+* 2018-12-12 [6b14cf3](../../commit/6b14cf3) - __(Andrew N. Shalaev)__ Release v6.8.0 
+* 2018-12-12 [881e7ff](../../commit/881e7ff) - __(Andrew N. Shalaev)__ fix: add img_updated_at and fill them 
+
 # v6.7.3
 
-* 2018-06-04 [3b4ec5b](../../commit/3b4ec5b) - __(Oleg Perminov)__ Release 6.7.3 
 * 2018-06-04 [5d41429](../../commit/5d41429) - __(Oleg Perminov)__ fix: image style when node is not available 
 https://jira.railsc.ru/browse/BPC-9723
 
