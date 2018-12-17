@@ -1,17 +1,15 @@
 class AddImgUpdatedAtToImages < ActiveRecord::Migration
   def change
-    add_column :images, :img_updated_at, :timestamp
-
-    return if Rails.env.test?
-
     if Rails.env.real_production?
       say <<-TEXT
         ################################################################
-        # bundle exec rake migrations:images:fill_img_updated_at #
+        # bundle exec rake migrations:images:rename_updated_at         #
         ################################################################
       TEXT
     else
-      Rake::Task['migrations:images:fill_img_updated_at'].invoke
+      execute 'ALTER TABLE images RENAME COLUMN updated_at TO img_updated_at'
+
+      ::Apress::Images::Image.reset_column_information
     end
   end
 end

@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module Apress
   module Images
     # Public: Базовый класс для хранения изображений
