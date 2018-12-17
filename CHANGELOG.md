@@ -1,6 +1,11 @@
+# v6.8.1
+
+* 2018-12-17 [518f9f8](../../commit/518f9f8) - __(Andrew N. Shalaev)__ Release v6.8.1 
+* 2018-12-17 [76c93f9](../../commit/76c93f9) - __(Andrew N. Shalaev)__ fix: rename updated_at to img_updated_at 
+https://jira.railsc.ru/browse/BPC-13545
+
 # v6.8.0
 
-* 2018-12-12 [6b14cf3](../../commit/6b14cf3) - __(Andrew N. Shalaev)__ Release v6.8.0 
 * 2018-12-12 [881e7ff](../../commit/881e7ff) - __(Andrew N. Shalaev)__ fix: add img_updated_at and fill them 
 
 # v6.7.3
