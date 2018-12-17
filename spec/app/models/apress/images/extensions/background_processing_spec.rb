@@ -102,7 +102,7 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
                                                    {})
         ActiveRecord::Base.transaction do
           image.save!
-          image.updated_at = image.updated_at + 1.day
+          image.img_updated_at = image.img_updated_at + 1.day
           image.save!
         end
       end

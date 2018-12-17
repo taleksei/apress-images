@@ -8,7 +8,8 @@ ActiveRecord::Schema.define do
     t.integer :img_file_size
     t.integer :position, null: false, default: 0
     t.boolean :processing, null: false, default: false
-    t.timestamps
+    t.timestamp :created_at
+    t.timestamp :img_updated_at
   end
 
   create_table :disordered_images, force: true do |t|

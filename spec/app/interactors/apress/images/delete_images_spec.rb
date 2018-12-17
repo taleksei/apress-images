@@ -8,7 +8,7 @@ RSpec.describe Apress::Images::DeleteImages do
       let(:service) do
         described_class.new(
           image_class: 'SubjectImage',
-          conditions: ['updated_at < ? AND subject_id IS NULL', 1.minutes.ago]
+          conditions: ['img_updated_at < ? AND subject_id IS NULL', 1.minutes.ago]
         )
       end
 

@@ -77,31 +77,19 @@ namespace :images_table do
     end
   end
 
-  desc 'Fill images.img_updated_at'
-  task fill_img_updated_at: :environment do
-    connection = Image.connection
-    batch_size = 5_000
+  desc 'Rename updated_at to img_updated_at column'
+  task rename_updated_at: :environment do
+    logger = Logger.new(STDOUT)
+    logger.formatter = Logger::Formatter.new
+    ActiveRecord::Base.logger = logger
 
-    min_id, max_id = connection.select_one(<<-SQL).values.map(&:to_i)
-      SELECT MIN(id), MAX(id) FROM images WHERE img_updated_at IS NULL;
+    ActiveRecord::Base.on(:direct).connection.execute <<-SQL.strip_heredoc
+      BEGIN;
+        SET LOCAL statement_timeout TO '10s';
+        ALTER TABLE images RENAME COLUMN updated_at TO img_updated_at';
+      COMMIT;
     SQL
-
-    batches_count = (max_id.to_f / batch_size).ceil
-    progressbar = ProgressBar.create(total: batches_count, format: '%a %P% Processed: %c from %C')
-
-    while min_id < max_id
-      next_id = min_id + batch_size
-
-      connection.execute <<-SQL
-        UPDATE images
-        SET img_updated_at = COALESCE(updated_at, NOW())
-          WHERE id BETWEEN #{min_id} AND #{next_id}
-      SQL
-
-      min_id = next_id
-      progressbar.increment
-    end
-
-    progressbar.finish
+    # Reset to default logger
+    ActiveRecord::Base.logger = Rails.logger
   end
 end
