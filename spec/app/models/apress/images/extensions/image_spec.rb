@@ -136,4 +136,27 @@ RSpec.describe Apress::Images::Extensions::Image do
       it_behaves_like '.style_geometry'
     end
   end
+
+  describe 'Callbacks' do
+    describe '.clear_attachment' do
+      let(:big_image_file) do
+        fixture_file_upload(Rails.root.join('../fixtures/images/sample_big_image.png'), 'image/png', :binary)
+      end
+
+      let(:image) { build :subject_image, img: big_image_file }
+      let(:path) { image.img.path }
+
+      it do
+        ActiveRecord::Base.transaction do
+          image.save!
+
+          expect(File).to exist(path)
+
+          raise ActiveRecord::Rollback
+        end
+
+        expect(File).not_to exist(path)
+      end
+    end
+  end
 end
