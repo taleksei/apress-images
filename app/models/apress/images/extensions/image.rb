@@ -50,6 +50,13 @@ module Apress
                    :to_file,
                    to: attachment_attribute,
                    allow_nil: true
+
+          after_rollback :clear_attachment, on: :create
+        end
+
+        def clear_attachment
+          img.clear
+          img.flush_deletes
         end
 
         # Public: список стилей
