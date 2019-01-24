@@ -1,6 +1,11 @@
+# v6.8.2
+
+* 2019-01-24 [0577b5e](../../commit/0577b5e) - __(Mikhail Nelaev)__ Release 6.8.2 
+* 2019-01-16 [36d5a9c](../../commit/36d5a9c) - __(Mikhail Nelaev)__ fix: clear file if image creation failed 
+https://jira.railsc.ru/browse/GOODS-1571
+
 # v6.8.1
 
-* 2018-12-17 [518f9f8](../../commit/518f9f8) - __(Andrew N. Shalaev)__ Release v6.8.1 
 * 2018-12-17 [76c93f9](../../commit/76c93f9) - __(Andrew N. Shalaev)__ fix: rename updated_at to img_updated_at 
 https://jira.railsc.ru/browse/BPC-13545
 
