@@ -3,7 +3,7 @@ class AddImgUpdatedAtToImages < ActiveRecord::Migration
     if Rails.env.real_production?
       say <<-TEXT
         ################################################################
-        # bundle exec rake migrations:images:rename_updated_at         #
+        # bundle exec rake images_table:rename_updated_at              #
         ################################################################
       TEXT
     else

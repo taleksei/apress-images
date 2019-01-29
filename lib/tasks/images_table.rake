@@ -86,7 +86,7 @@ namespace :images_table do
     ActiveRecord::Base.on(:direct).connection.execute <<-SQL.strip_heredoc
       BEGIN;
         SET LOCAL statement_timeout TO '10s';
-        ALTER TABLE images RENAME COLUMN updated_at TO img_updated_at';
+        ALTER TABLE images RENAME COLUMN updated_at TO img_updated_at;
       COMMIT;
     SQL
     # Reset to default logger
