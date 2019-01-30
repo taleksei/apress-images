@@ -1,6 +1,10 @@
+# v6.8.3
+
+* 2019-01-29 [59cd64c](../../commit/59cd64c) - __(TamarinEA)__ Release 6.8.3 
+* 2019-01-29 [54b25d7](../../commit/54b25d7) - __(TamarinEA)__ fix: typo in rename updated_at task 
+
 # v6.8.2
 
-* 2019-01-24 [0577b5e](../../commit/0577b5e) - __(Mikhail Nelaev)__ Release 6.8.2 
 * 2019-01-16 [36d5a9c](../../commit/36d5a9c) - __(Mikhail Nelaev)__ fix: clear file if image creation failed 
 https://jira.railsc.ru/browse/GOODS-1571
 
