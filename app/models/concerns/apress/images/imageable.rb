@@ -77,6 +77,21 @@ module Apress
 
           include Apress::Images::Extensions::Image
 
+          if options[:deduplication]
+            prepend Apress::Images::Deduplicable
+            extend Apress::Images::Deduplicable::ClassMethods
+
+            define_method(:deduplication_moved_attributes) do
+              options.fetch(:deduplication_moved_attributes, %w(subject_id))
+            end
+            define_method(:deduplication_copy_attributes) do
+              options.fetch(:deduplication_copy_attributes, [])
+            end
+          else
+            define_method(:fingerprint_original?) { false }
+            define_method(:duplicate?) { false }
+          end
+
           if options.fetch(:position_normalizing, true) && column_names.include?(COLUMN_POSITION_NAME)
             include Apress::Images::PositionNormalizable
           end

@@ -62,6 +62,7 @@ module Apress
           self.job_is_processing = false
 
           update_processing_column
+          update_duplicates_processing
         end
 
         # Public: пометить модель для отложенной обработки
@@ -176,6 +177,10 @@ module Apress
           tmpfile
         end
 
+        def duplicate?
+          instance.respond_to?(:duplicate?) && instance.duplicate?
+        end
+
         private
 
         # Internal: сбросить флаг фоновой обработки и записать в базу
@@ -185,6 +190,17 @@ module Apress
           return unless instance.processing?
           instance.processing = false
           instance.class.where(instance.class.primary_key => instance.id).update_all(processing: false)
+        end
+
+        def update_duplicates_processing
+          return unless instance.respond_to?(:fingerprint_original?) && instance.fingerprint_original?
+
+          img_attributes = instance.class.img_attributes.each_with_object({}) do |attr, memo|
+            memo[attr] = instance.attributes[attr] if instance.attributes.key?(attr)
+          end
+          img_attributes[:processing] = false
+
+          instance.class.where(fingerprint_parent_id: instance.id).update_all(img_attributes)
         end
       end
     end
