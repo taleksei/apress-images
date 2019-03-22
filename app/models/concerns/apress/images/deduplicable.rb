@@ -21,7 +21,7 @@ module Apress
           public_send("#{attribute}=", other_image.public_send(attribute))
         end
         self.fingerprint = other_image.fingerprint
-        self.fingerprint_parent_id = other_image.id
+        self.fingerprint_parent_id = other_image.fingerprint_parent_id || other_image.id
       end
 
       def duplicate?
