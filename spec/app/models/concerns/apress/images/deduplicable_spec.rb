@@ -209,6 +209,34 @@ describe Apress::Images::Deduplicable do
         end
       end
 
+      describe '#duplicate_from' do
+        shared_examples_for 'duplicate_when_image1_original' do |image|
+          let(:image3) do
+            im = DefaultDuplicatedImage.new
+            im.duplicate_from(send(image))
+            im
+          end
+
+          it do
+            expect(image3.fingerprint).to eq image1.fingerprint
+            expect(image3.img_fingerprint).to eq image1.img_fingerprint
+            expect(image3.img_file_name).to eq image1.img_file_name
+            expect(image3.img_content_type).to eq image1.img_content_type
+            expect(image3.img_file_size).to eq image1.img_file_size
+            expect(image3.fingerprint_parent_id).to eq image1.id
+            expect(image3.processing).to be_truthy
+
+            expect(image3.img.url(:original, false)).to eq image1.img.url(:original, false)
+          end
+        end
+
+        it_behaves_like 'duplicate_when_image1_original', 'image1'
+
+        context 'when duplicate from duplicate' do
+          it_behaves_like 'duplicate_when_image1_original', 'image2'
+        end
+      end
+
       after { FileUtils.rm_rf(Rails.root.join('../internal/public/system/images/default_duplicated_images')) }
     end
   end
