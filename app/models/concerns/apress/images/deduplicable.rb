@@ -38,7 +38,7 @@ module Apress
       #
       #  В случае удаления оргинала, у которого eсть дубли - первый дубль становится оригиналом,
       #  путём копирования важных атрибутов в текущую картинку, а запись с этим дублем удаляется.
-      #  Т.о. id оригинала не меняется и остальные дубли в обновления не требуют.
+      #  Т.о. id оригинала не меняется и остальные дубли обновления не требуют.
       def destroy
         return super if duplicate?
 
@@ -55,6 +55,8 @@ module Apress
           save!
           first_duplicate.destroy
         end
+
+        enqueue_dangling_image if subject_id.nil?
       end
 
       module ClassMethods
