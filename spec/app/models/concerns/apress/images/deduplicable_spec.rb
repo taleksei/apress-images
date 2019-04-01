@@ -26,8 +26,7 @@ describe Apress::Images::Deduplicable do
         deduplication: true,
         deduplication_moved_attributes: %w(subject_id subject_type),
         deduplication_copy_attributes: %w(node processing),
-        background_processing: false,
-        clean_dangling_images: false
+        background_processing: false
       )
     end
 
@@ -66,14 +65,27 @@ describe Apress::Images::Deduplicable do
       end
 
       context 'when destroy fingerprint parent' do
-        before { image1.destroy }
-
         it do
+          image1.destroy
           expect(image2.class.where(id: image2.id)).to_not be_exists
           expect(image1.reload).to be
           expect(image1.subject_id).to eq 2
           expect(image1.subject_type).to eq 'ProductImage'
           expect(image1.img.exists?(:original)).to be_truthy
+        end
+
+        context 'when duplicate destroy enqueued' do
+          before { image2.update_attributes(subject_id: nil) }
+
+          it do
+            image1.destroy
+            expect(image2.class.where(id: image2.id)).to_not be_exists
+            expect(image1.reload).to be
+            expect(image1.subject_id).to be_nil
+            expect(image1.subject_type).to eq 'ProductImage'
+            expect(image1.img.exists?(:original)).to be_truthy
+            expect(Resque.delayed?(Apress::Images::DeleteImageJob, image1.id, image1.class.to_s)).to be_truthy
+          end
         end
       end
 

@@ -15,8 +15,6 @@ module Apress
         after_commit :dequeue_dangling_image, if: -> { @dequeue_delete_dangling_image }
       end
 
-      private
-
       def enqueue_dangling_image
         Resque.enqueue_at(
           enqueue_at,
@@ -27,6 +25,8 @@ module Apress
       ensure
         @enqueue_delete_dangling_image = false
       end
+
+      private
 
       def enqueue_at
         config = Rails.application.config.images
