@@ -16,9 +16,10 @@ namespace :images_deduplication do
 
     cursor_options = {with_hold: true, connection: ActiveRecord::Base.on(:direct).connection, block_size: 1000}
 
+    with_processing = model.column_names.include?('processing')
     processing_conditional = {}
 
-    if model.column_names.include?('processing')
+    if with_processing
       processing_conditional = {processing: false}
       processing_sql = <<-SQL
         AND EXISTS (SELECT 1 FROM #{model.quoted_table_name} b WHERE b.id = a.fingerprint_parent_id AND NOT processing)
@@ -37,6 +38,7 @@ namespace :images_deduplication do
         FROM #{model.quoted_table_name} a
         WHERE a.fingerprint = #{model.connection.quote(fingerprint)} AND a.fingerprint_parent_id IS NOT NULL
         #{processing_sql}
+        LIMIT 1
       SQL
       parent = model.find(duplicate.fingerprint_parent_id) if duplicate
 
@@ -76,6 +78,7 @@ namespace :images_deduplication do
         where(fingerprint: fingerprint).
         where('fingerprint_parent_id IS NULL AND id != ?', parent.id).
         each_instance(cursor_options) do |image|
+        image.processing = false if with_processing
         image.img.clear
         image.img.flush_deletes
         image.duplicate_from(parent)
@@ -111,7 +114,8 @@ namespace :images_deduplication do
 
     cursor_options = {with_hold: true, connection: ActiveRecord::Base.on(:direct).connection, block_size: 1000}
 
-    processing_conditional = model.column_names.include?('processing') ? {processing: false} : {}
+    with_processing = model.column_names.include?('processing')
+    processing_conditional = with_processing ? {processing: false} : {}
 
     logger.info('START')
 
@@ -126,9 +130,13 @@ namespace :images_deduplication do
 
       img_fingerprint = Paperclip.io_adapters.for(image.img.to_file(:original)).fingerprint
 
-      parent = model.find_original(img_fingerprint)
+      parent = model.where(fingerprint_parent_id: nil).
+        where('img_fingerprint = ?', img_fingerprint).
+        where('id != ?', image.id).
+        first
 
       if parent
+        image.processing = false if with_processing
         image.img.clear
         image.img.flush_deletes
         image.duplicate_from(parent)
