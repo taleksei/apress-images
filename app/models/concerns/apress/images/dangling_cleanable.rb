@@ -32,7 +32,7 @@ module Apress
         config = Rails.application.config.images
 
         config.fetch(:clear_dangling_after).seconds.since +
-          rand(config.fetch(:clear_dangling_spread)).seconds
+          rand(config.fetch(:clear_dangling_spread).to_i).seconds
       end
 
       def dequeue_dangling_image
