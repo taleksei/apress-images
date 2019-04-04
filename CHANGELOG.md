@@ -1,6 +1,10 @@
+# v6.8.4
+
+* 2019-04-04 [cfc0bbf](../../commit/cfc0bbf) - __(Andrew N. Shalaev)__ release v6.8.4 
+* 2019-04-04 [99d2c12](../../commit/99d2c12) - __(Andrew N. Shalaev)__ feature: add ruby2.3 support and drop rails3.2 support 
+
 # v6.8.3
 
-* 2019-01-29 [59cd64c](../../commit/59cd64c) - __(TamarinEA)__ Release 6.8.3 
 * 2019-01-29 [54b25d7](../../commit/54b25d7) - __(TamarinEA)__ fix: typo in rename updated_at task 
 
 # v6.8.2
