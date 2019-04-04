@@ -1,3 +1,11 @@
+matrix:
+  include:
+    - DOCKER_RUBY_VERSION: 2.2
+      RUBY_IMAGE_TAG: 2.2-latest
+
+    - DOCKER_RUBY_VERSION: 2.3
+      RUBY_IMAGE_TAG: 2.3-latest
+
 build:
   test:
     image: abakpress/dind-testing
@@ -7,7 +15,7 @@ build:
       - /home/data/drone/gems:/bundle
       - /home/data/drone/key_cache:/ssh_keys
     environment:
-      - DOCKER_RUBY_VERSION=2.2
+      - DOCKER_RUBY_VERSION=2.3
       - RUBY_IMAGE_TAG=2.2-latest
       - COMPOSE_FILE_EXT=drone
       - RAILS_ENV=test
@@ -29,5 +37,6 @@ build:
     pull: true
     when:
       event: push
+      branch: master
     commands:
       - release-gem
