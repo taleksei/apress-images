@@ -15,4 +15,5 @@ if RUBY_VERSION < '2.3'
   gem 'dry-configurable', '< 0.8.0', require: false
   gem 'dry-container', '< 0.7.0', require: false
   gem 'nokogiri', '< 1.10.0', require: false
+  gem 'pry-byebug', '< 3.7.0', require: false
 end
