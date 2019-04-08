@@ -36,6 +36,8 @@ module Apress
         config.imageable_subjects = config.images[:imageable_subjects]
 
         Paperclip::Attachment.include(Apress::Images::Extensions::Attachment)
+        Paperclip::Attachment.prepend(Apress::Images::Extensions::Attachment::Deduplicable)
+        Paperclip::Interpolations.extend(Apress::Images::Extensions::Interpolations::Deduplicable)
         Paperclip::AbstractAdapter.prepend(Apress::Images::Extensions::IoAdapters::FixContentType)
         Paperclip::AbstractAdapter.prepend(Apress::Images::Extensions::IoAdapters::FixExtensions)
         Paperclip::UriAdapter.prepend(Apress::Images::Extensions::IoAdapters::UriAdapter)

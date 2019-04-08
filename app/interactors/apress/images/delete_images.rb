@@ -30,21 +30,13 @@ module Apress
 
         return if images.empty?
 
-        clear_attachments(images)
-        images_scope.unscoped.where(id: images.map!(&:id)).delete_all
+        images.sort_by! { |image| image.duplicate? ? 0 : 1 }.each(&:destroy)
       end
 
       private
 
       def images_scope
         image_klass.where(conditions).limit(delete_limit)
-      end
-
-      def clear_attachments(images)
-        images.each do |image|
-          image.img.clear
-          image.img.flush_deletes
-        end
       end
     end
   end

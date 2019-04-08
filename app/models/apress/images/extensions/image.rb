@@ -28,7 +28,7 @@ module Apress
           has_attached_file attachment_attribute, attachment_options
           alias_attribute :img, attachment_attribute if attachment_attribute != :img
 
-          validates_attachment_presence attachment_attribute
+          validates_attachment_presence attachment_attribute, unless: :duplicate?
           validates_attachment_size attachment_attribute,
                                     less_than: max_size.megabytes,
                                     message: 'Размер файла не должен превышать %s Мб' % max_size
