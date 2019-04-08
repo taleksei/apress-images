@@ -1,3 +1,23 @@
+# v6.9.0
+
+* 2019-04-08 [a24cd22](../../commit/a24cd22) - __(TamarinEA)__ Release 6.9.0 
+* 2019-04-05 [51786e5](../../commit/51786e5) - __(TamarinEA)__ chore: lock pry-byebug for old ruby 
+* 2019-04-05 [df8746e](../../commit/df8746e) - __(TamarinEA)__ fix: retry when webdav error in deduplication task 
+https://jira.railsc.ru/browse/GOODS-1644
+
+* 2019-04-03 [da868fd](../../commit/da868fd) - __(TamarinEA)__ fix: do not delete file when processed 
+https://jira.railsc.ru/browse/GOODS-1644
+
+* 2019-03-28 [10c794c](../../commit/10c794c) - __(TamarinEA)__ fix: enqueue clean dangling original image after destroy 
+https://jira.railsc.ru/browse/GOODS-1644
+
+* 2019-03-22 [1ff9bce](../../commit/1ff9bce) - __(TamarinEA)__ chore: remove support rails 3 
+* 2019-03-22 [f050ded](../../commit/f050ded) - __(TamarinEA)__ fix: take fingerprint parent when duplicate from 
+https://jira.railsc.ru/browse/GOODS-1644
+
+* 2019-02-06 [6caac3d](../../commit/6caac3d) - __(TamarinEA)__ feature: add deduplication 
+* 2019-02-07 [39b2af2](../../commit/39b2af2) - __(TamarinEA)__ chore: lock some gems for old ruby 
+
 # v6.8.4
 
 * 2019-04-04 [cfc0bbf](../../commit/cfc0bbf) - __(Andrew N. Shalaev)__ release v6.8.4 
