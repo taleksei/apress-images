@@ -9,7 +9,7 @@ module Apress
 
         included do
           # Public: callback должен быть "навешан" раньше callback'ов paperclip-attachment'а
-          before_destroy :remove_processing_job, if: :processing?
+          before_destroy :remove_processing_job, if: -> { !duplicate? && processing? }
         end
 
         module ClassMethods
@@ -26,7 +26,7 @@ module Apress
               queue_name: :images # TODO: добавить возможность выставить в кастомную очередь
             )
 
-            before_save :set_enqueue_img_delayed_processing_flag
+            before_save :set_enqueue_img_delayed_processing_flag, unless: :duplicate?
             after_commit :enqueue_delayed_processing
           end
         end

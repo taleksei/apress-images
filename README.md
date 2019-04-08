@@ -119,6 +119,31 @@ thumb_file = Paperclip.io_adapters.for(@avatar.img.styles[:thumb])
 Paperclip::Geometry.from_file(thumb_file).to_s #=> '50x25'
 ```
 
+### Хранение файлов только уникальных картинок
+
+```ruby
+class Avatar < ActiveRecord::Base
+  include Apress::Images::Imageable
+
+  # deduplication - флаг для включения дедупликации
+  # deduplication_additional_attributes - список колонок, которые необходимо копировать в дубли
+  # deduplication_moved_attributes - список колонок, которые копируются из дубля, при попытке удаления оригинала
+  acts_as_image(
+    attachment_options: {styles: {big: {geometry: '200x200>'}}},
+    deduplication: true,
+    deduplication_additional_attributes: %w(node processing),
+    deduplication_moved_attributes: %w(subject_id subject_field)
+  )
+end
+```
+Для корректной работы дедупликации необходимы следующие колонки:
+1) fingerprint - цифровой отпечаток загруженной пользователем картинки
+2) img_fingerprint - цифровой отпечаток нарезаного стиля original
+3) fingerprint_parent_id - id записи, дублем для которой является текущая
+
+Необходимо создать foreign key на колонку fingerprint_parent_id (ON DELETE RESTRICT).
+Так же рекомендуется добавить триггер использующий функцию image_update_img_from_parent,
+для корректного сохранения дубликатов при параллельной нарезке оригинала.
 
 ## Contributing
 
