@@ -1,6 +1,11 @@
+# v6.9.1
+
+* 2019-06-21 [c5d9737](../../commit/c5d9737) - __(TamarinEA)__ chore: lock some gems by ruby version 
+* 2019-06-21 [0e0a4ba](../../commit/0e0a4ba) - __(TamarinEA)__ Release 6.9.1 
+* 2019-06-21 [0a11ff8](../../commit/0a11ff8) - __(TamarinEA)__ chore: up deduplication retry limit to 3 
+
 # v6.9.0
 
-* 2019-04-08 [a24cd22](../../commit/a24cd22) - __(TamarinEA)__ Release 6.9.0 
 * 2019-04-05 [51786e5](../../commit/51786e5) - __(TamarinEA)__ chore: lock pry-byebug for old ruby 
 * 2019-04-05 [df8746e](../../commit/df8746e) - __(TamarinEA)__ fix: retry when webdav error in deduplication task 
 https://jira.railsc.ru/browse/GOODS-1644
