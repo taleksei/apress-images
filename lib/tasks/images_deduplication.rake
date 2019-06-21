@@ -174,10 +174,11 @@ namespace :images_deduplication do
     logger.info('FINISH')
   end
 
-  def with_retry(count = 2)
+  def with_retry(count = 3)
     yield
   rescue
     raise if count.zero?
+    sleep 1
     with_retry(count - 1) { yield }
   end
 end
