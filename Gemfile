@@ -16,4 +16,6 @@ if RUBY_VERSION < '2.3'
   gem 'dry-container', '< 0.7.0', require: false
   gem 'nokogiri', '< 1.10.0', require: false
   gem 'pry-byebug', '< 3.7.0', require: false
+  gem 'public_suffix', '< 3.1.0', require: false
+  gem 'redis', '< 4.1.2', require: false
 end
