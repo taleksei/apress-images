@@ -7,6 +7,7 @@ module Apress
         module UriAdapter
           def download_content
             options = {
+              ssl_verify_mode: ::OpenSSL::SSL::VERIFY_NONE,
               allow_redirections: :safe,
               read_timeout: ::Rails.application.config.images.fetch(:http_read_timeout),
               open_timeout: ::Rails.application.config.images.fetch(:http_open_timeout)
