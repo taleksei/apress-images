@@ -1,7 +1,12 @@
+# v6.9.2
+
+* 2019-07-23 [becb8df](../../commit/becb8df) - __(Andrew N. Shalaev)__ Release v6.9.2 
+* 2019-07-23 [7de7e9a](../../commit/7de7e9a) - __(Andrew N. Shalaev)__ fix: do not verify ssl 
+https://jira.railsc.ru/browse/BPC-14977
+
 # v6.9.1
 
 * 2019-06-21 [c5d9737](../../commit/c5d9737) - __(TamarinEA)__ chore: lock some gems by ruby version 
-* 2019-06-21 [0e0a4ba](../../commit/0e0a4ba) - __(TamarinEA)__ Release 6.9.1 
 * 2019-06-21 [0a11ff8](../../commit/0a11ff8) - __(TamarinEA)__ chore: up deduplication retry limit to 3 
 
 # v6.9.0
