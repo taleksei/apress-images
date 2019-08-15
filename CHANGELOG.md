@@ -1,6 +1,11 @@
+# v6.10.0
+
+* 2019-08-15 [84826be](../../commit/84826be) - __(Andrew N. Shalaev)__ Release v6.10.0 
+* 2019-08-15 [3f89b02](../../commit/3f89b02) - __(Andrew N. Shalaev)__ feature: configure default image styles 
+https://jira.railsc.ru/browse/BPC-15117
+
 # v6.9.2
 
-* 2019-07-23 [becb8df](../../commit/becb8df) - __(Andrew N. Shalaev)__ Release v6.9.2 
 * 2019-07-23 [7de7e9a](../../commit/7de7e9a) - __(Andrew N. Shalaev)__ fix: do not verify ssl 
 https://jira.railsc.ru/browse/BPC-14977
 
