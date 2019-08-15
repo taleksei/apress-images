@@ -24,17 +24,6 @@ module Apress
         convert_options: {
           original: '-interlace Plane -strip'
         },
-        styles: {
-          original: {
-            geometry: '1280x1024>',
-            animated: false
-          },
-          thumb: {
-            geometry: '90x90>',
-            animated: false,
-            watermark_path: WATERMARK_SMALL
-          }
-        },
         url: '/system/images/:class/:id_partition_:style.:extension',
         filename_cleaner: Apress::Images::FilenameCleaner.new,
         # нужно ли сохранять Paperclip::Geometry исходного файла
@@ -105,7 +94,9 @@ module Apress
         #
         # Returns Hash
         def default_attachment_options
-          DEFAULT_OPTIONS
+          DEFAULT_OPTIONS.merge(
+            styles: ::Rails.application.config.images.fetch(:default_image_styles)
+          )
         end
       end
     end

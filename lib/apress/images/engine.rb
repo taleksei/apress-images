@@ -1,5 +1,3 @@
-# coding: utf-8
-
 module Apress
   module Images
     class Engine < ::Rails::Engine
@@ -15,6 +13,17 @@ module Apress
           imageable_subjects: Set.new,
           http_open_timeout: 5.seconds,
           http_read_timeout: 5.seconds,
+          default_image_styles: {
+            original: {
+              geometry: '1280x1024>',
+              animated: false
+            },
+            thumb: {
+              geometry: '90x90>',
+              animated: false,
+              watermark_path: ::Apress::Images::Imageable::WATERMARK_SMALL
+            }
+          },
           default_convert_options: {
             all: "-filter Triangle -define filter:support=2 -dither None -quality 80 -quiet"
           },
