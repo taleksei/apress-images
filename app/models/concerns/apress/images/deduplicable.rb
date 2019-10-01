@@ -61,9 +61,8 @@ module Apress
 
       module ClassMethods
         def find_original(file_fingerprint)
-          where('fingerprint_parent_id IS NULL').
-            where('fingerprint = ? OR img_fingerprint = ?', file_fingerprint, file_fingerprint).
-            first
+          where(fingerprint_parent_id: nil).where(fingerprint: file_fingerprint).first ||
+            where(fingerprint_parent_id: nil).where(img_fingerprint: file_fingerprint).first
         end
       end
     end
