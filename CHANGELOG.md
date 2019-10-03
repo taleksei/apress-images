@@ -1,6 +1,12 @@
+# v6.10.1
+
+* 2019-10-03 [17d4765](../../commit/17d4765) - __(TamarinEA)__ chore: lock some gems by ruby version 
+* 2019-10-03 [69587e1](../../commit/69587e1) - __(TamarinEA)__ Release 6.10.1 
+* 2019-10-01 [a9f0b86](../../commit/a9f0b86) - __(TamarinEA)__ fix: always use index when find original 
+https://jira.railsc.ru/browse/GOODS-2013
+
 # v6.10.0
 
-* 2019-08-15 [84826be](../../commit/84826be) - __(Andrew N. Shalaev)__ Release v6.10.0 
 * 2019-08-15 [3f89b02](../../commit/3f89b02) - __(Andrew N. Shalaev)__ feature: configure default image styles 
 https://jira.railsc.ru/browse/BPC-15117
 
