@@ -1,7 +1,12 @@
+# v6.10.2
+
+* 2019-10-18 [b8ba9dc](../../commit/b8ba9dc) - __(Andrew N. Shalaev)__ Release v6.10.2 
+* 2019-10-18 [9a98c77](../../commit/9a98c77) - __(Andrew N. Shalaev)__ fix: remove default options for original style 
+https://jira.railsc.ru/browse/BPC-15426
+
 # v6.10.1
 
 * 2019-10-03 [17d4765](../../commit/17d4765) - __(TamarinEA)__ chore: lock some gems by ruby version 
-* 2019-10-03 [69587e1](../../commit/69587e1) - __(TamarinEA)__ Release 6.10.1 
 * 2019-10-01 [a9f0b86](../../commit/a9f0b86) - __(TamarinEA)__ fix: always use index when find original 
 https://jira.railsc.ru/browse/GOODS-2013
 
