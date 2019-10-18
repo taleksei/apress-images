@@ -21,9 +21,6 @@ module Apress
       DEFAULT_OPTIONS = {
         default_style: :thumb,
         processors: [:watermark],
-        convert_options: {
-          original: '-interlace Plane -strip'
-        },
         url: '/system/images/:class/:id_partition_:style.:extension',
         filename_cleaner: Apress::Images::FilenameCleaner.new,
         # нужно ли сохранять Paperclip::Geometry исходного файла
