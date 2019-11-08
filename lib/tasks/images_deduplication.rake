@@ -124,7 +124,7 @@ namespace :images_deduplication do
   task fill_img_fingerprint: :environment do
     model = ENV.fetch('DEDUPLICATION_MODEL_NAME').constantize
     logger = Logger.new(STDOUT).tap { |l| l.formatter = Logger::Formatter.new }
-    i = 0
+    i = j = k = l = 0
 
     cursor_options = {with_hold: true, connection: ActiveRecord::Base.on(:direct).connection, block_size: 1000}
 
@@ -133,34 +133,26 @@ namespace :images_deduplication do
 
     logger.info('START')
 
-    model.where('img_fingerprint IS NULL').where(processing_conditional).each_instance(cursor_options) do |image|
+    model.
+      where(img_fingerprint: nil, fingerprint_parent_id: nil).
+      where(processing_conditional).
+      each_instance(cursor_options) do |image|
       unless with_retry { image.img.exists?(:original) }
+        j += 1
         i += 1
 
-        logger.info("Processed #{i} images.") if (i % 1000).zero?
+        logger.info("#{i} original processed. Without file: #{j}. #{k} duplicate processed.") if (i % 1000).zero?
 
         next
       end
 
       img_fingerprint = Paperclip.io_adapters.for(image.img.to_file(:original)).fingerprint
 
-      parent = model.where(fingerprint_parent_id: nil).
-        where('img_fingerprint = ?', img_fingerprint).
-        where('id != ?', image.id).
-        first
-
       begin
-        if parent
-          image.processing = false if with_processing
-          with_retry do
-            image.img.clear
-            image.img.flush_deletes
-          end
-          image.duplicate_from(parent)
-          image.save!
-        else
-          image.update_attribute(:img_fingerprint, img_fingerprint)
-        end
+        image.update_attribute(:img_fingerprint, img_fingerprint)
+        k += model.
+          where(img_fingerprint: nil, fingerprint_parent_id: image.id).
+          update_all(img_fingerprint: img_fingerprint)
       rescue => e
         logger.error("Error on update #{image.id}")
         raise e
@@ -168,9 +160,30 @@ namespace :images_deduplication do
 
       i += 1
 
-      logger.info("Processed #{i} images.") if (i % 1000).zero?
+      logger.info("#{i} original processed. Without file: #{j}. #{k} duplicate processed.") if (i % 1000).zero?
     end
 
+    logger.info('Finish original images.')
+
+    sql = <<-SQL
+      SELECT id, img_fingerprint FROM #{model.quoted_table_name} image1
+      WHERE img_fingerprint IS NOT NULL AND EXISTS (
+        SELECT 1 FROM #{model.quoted_table_name} image2
+        WHERE fingerprint_parent_id = image1.id AND img_fingerprint IS NULL
+        LIMIT 1
+      );
+    SQL
+
+    PostgreSQLCursor::Cursor.new(sql, cursor_options).each_row do |row|
+      k += model.
+        where(img_fingerprint: nil, fingerprint_parent_id: row['id']).
+        update_all(img_fingerprint: row['img_fingerprint'])
+
+      l += 1
+      logger.info("#{i} original processed. Without file: #{j}. #{k} duplicate processed.") if (l % 1000).zero?
+    end
+
+    logger.info("#{i} original processed. Without file: #{j}. #{k} duplicate processed.")
     logger.info('FINISH')
   end
 
