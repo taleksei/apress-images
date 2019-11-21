@@ -146,7 +146,8 @@ namespace :images_deduplication do
         next
       end
 
-      img_fingerprint = Paperclip.io_adapters.for(image.img.to_file(:original)).fingerprint
+      file = with_retry { image.img.to_file(:original) }
+      img_fingerprint = Paperclip.io_adapters.for(file).fingerprint
 
       begin
         image.update_attribute(:img_fingerprint, img_fingerprint)
