@@ -1,6 +1,15 @@
+# v6.10.3
+
+* 2019-11-22 [2d3295d](../../commit/2d3295d) - __(TamarinEA)__ Release 6.10.3 
+* 2019-11-21 [5c99c19](../../commit/5c99c19) - __(TamarinEA)__ chore: lock gems 
+* 2019-11-21 [db27328](../../commit/db27328) - __(TamarinEA)__ fix: retry on load file when fill img fingerprint 
+https://jira.railsc.ru/browse/GOODS-1893
+
+* 2019-11-07 [8d24807](../../commit/8d24807) - __(TamarinEA)__ fix: correct img fingerprint filling 
+https://jira.railsc.ru/browse/GOODS-1893
+
 # v6.10.2
 
-* 2019-10-18 [b8ba9dc](../../commit/b8ba9dc) - __(Andrew N. Shalaev)__ Release v6.10.2 
 * 2019-10-18 [9a98c77](../../commit/9a98c77) - __(Andrew N. Shalaev)__ fix: remove default options for original style 
 https://jira.railsc.ru/browse/BPC-15426
 
