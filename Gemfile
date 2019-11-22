@@ -22,5 +22,10 @@ if RUBY_VERSION < '2.3'
 end
 
 if RUBY_VERSION < '2.4'
+  gem 'dry-configurable', '< 0.9.0', require: false if RUBY_VERSION >= '2.3'
   gem 'mock_redis', '< 0.20', require: false
+end
+
+if RUBY_VERSION < '2.5'
+  gem 'sprockets', '< 4.0.0'
 end
