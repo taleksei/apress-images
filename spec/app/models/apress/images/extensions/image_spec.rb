@@ -159,4 +159,39 @@ RSpec.describe Apress::Images::Extensions::Image do
       end
     end
   end
+
+  describe 'validations' do
+    describe '#corrupted_image_file_validation' do
+      context 'when deduplication enabled' do
+        let(:image) { build :default_duplicated_image }
+
+        context 'when save duplicate' do
+          it do
+            expect(image).to receive(:corrupted_image_file_validation)
+            image.save!
+          end
+        end
+
+        context 'when save duplicate' do
+          before { create :default_duplicated_image }
+
+          it do
+            expect(image).to_not receive(:corrupted_image_file_validation)
+            image.save!
+          end
+        end
+      end
+
+      context 'when deduplication disabled' do
+        context 'when save image with same img' do
+          before { create :subject_image }
+
+          it do
+            expect(image).to receive(:corrupted_image_file_validation)
+            image.save!
+          end
+        end
+      end
+    end
+  end
 end

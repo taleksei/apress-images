@@ -16,23 +16,9 @@ describe Apress::Images::Deduplicable do
   end
 
   context 'when simple options' do
-    class SimpleDuplicatedImage < ActiveRecord::Base
-      include Apress::Images::Imageable
-
-      self.table_name = 'duplicated_images'
-
-      acts_as_image(
-        table_name: 'duplicated_images',
-        deduplication: true,
-        deduplication_moved_attributes: %w(subject_id subject_type),
-        deduplication_copy_attributes: %w(node processing),
-        background_processing: false
-      )
-    end
-
     describe SimpleDuplicatedImage, type: :model do
-      let!(:image1) { SimpleDuplicatedImage.create!(img: file, subject_id: 1, subject_type: 'OfferImage', node: 2) }
-      let!(:image2) { SimpleDuplicatedImage.create!(img: file, subject_id: 2, subject_type: 'ProductImage') }
+      let!(:image1) { create :simple_duplicated_image, subject_id: 1, subject_type: 'OfferImage', node: 2 }
+      let!(:image2) { create :simple_duplicated_image, subject_id: 2, subject_type: 'ProductImage' }
 
       context 'when create duplicate' do
         it do
@@ -112,23 +98,11 @@ describe Apress::Images::Deduplicable do
   end
 
   context 'when default options' do
-    class DefaultDuplicatedImage < ActiveRecord::Base
-      include Apress::Images::Imageable
-
-      self.table_name = 'duplicated_images'
-
-      acts_as_image(
-        table_name: 'duplicated_images',
-        deduplication: true,
-        deduplication_copy_attributes: %w(processing)
-      )
-    end
-
     before { allow(Resque).to receive(:enqueue_to) }
 
     describe DefaultDuplicatedImage, type: :model do
-      let!(:image1) { DefaultDuplicatedImage.create!(img: file) }
-      let!(:image2) { DefaultDuplicatedImage.create!(img: file) }
+      let!(:image1) { create :default_duplicated_image }
+      let!(:image2) { create :default_duplicated_image }
 
       context 'when create duplicate' do
         it do
@@ -202,7 +176,7 @@ describe Apress::Images::Deduplicable do
 
       context 'when parent image reprocess after duplicate builded' do
         let(:image3) do
-          image = DefaultDuplicatedImage.new(img: file)
+          image = build :default_duplicated_image
           image1.img.process_delayed!
 
           image.save!
@@ -224,7 +198,7 @@ describe Apress::Images::Deduplicable do
       describe '#duplicate_from' do
         shared_examples_for 'duplicate_when_image1_original' do |image|
           let(:image3) do
-            im = DefaultDuplicatedImage.new
+            im = build :default_duplicated_image
             im.duplicate_from(send(image))
             im
           end
