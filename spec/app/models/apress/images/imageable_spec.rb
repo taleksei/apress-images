@@ -58,28 +58,4 @@ RSpec.describe Apress::Images::Imageable do
       expect { image.update_attributes!(custom: attachment) }.to change { image.custom_file_name }
     end
   end
-
-  describe 'validations' do
-    describe '#corrupted_image_file_validation' do
-      context 'with deduplication' do
-        let(:image) { build :default_duplicated_image }
-
-        context 'when save duplicate' do
-          it do
-            expect(image).to receive(:corrupted_image_file_validation)
-            image.save!
-          end
-        end
-
-        context 'when save duplicate' do
-          before { create :default_duplicated_image }
-
-          it do
-            expect(image).to_not receive(:corrupted_image_file_validation)
-            image.save!
-          end
-        end
-      end
-    end
-  end
 end
