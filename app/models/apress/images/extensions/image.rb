@@ -40,6 +40,8 @@ module Apress
                                          matches: allowed_file_names,
                                          message: 'Файл должен быть корректным изображением'
 
+          validate :corrupted_image_file_validation, if: -> { (img.dirty? || img_was_changed?) && !duplicate? }
+
           send "before_#{attachment_attribute}_post_process", :extract_source_image_geometry
 
           delegate :fingerprints,
@@ -52,6 +54,14 @@ module Apress
                    allow_nil: true
 
           after_rollback :clear_attachment, on: :create
+
+          def corrupted_image_file_validation
+            return if img.blank?
+
+            adapter = Paperclip.io_adapters.for(img)
+            stdout_stderr_output = `identify -verbose #{adapter.path} 2>&1`
+            errors.add(:img_content_type, "Corrupted image: #{stdout_stderr_output}") if $CHILD_STATUS != 0
+          end
         end
 
         def clear_attachment

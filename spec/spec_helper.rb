@@ -34,6 +34,9 @@ require 'pry-byebug'
 
 Paperclip.options[:logger] = Rails.logger
 
+Redis.current = MockRedis.new
+Resque.redis = Redis.current
+
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Paperclip::Shoulda::Matchers
@@ -43,6 +46,7 @@ RSpec.configure do |config|
   config.filter_run_including focus: true
   config.run_all_when_everything_filtered = true
 
-  Redis.current = MockRedis.new
-  Resque.redis = Redis.current
+  config.before(:each) do
+    Redis.current.flushdb
+  end
 end

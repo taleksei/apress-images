@@ -100,6 +100,7 @@ RSpec.describe Apress::Images::Extensions::BackgroundProcessing do
                                                    instance_of(Fixnum),
                                                    image.class.name,
                                                    {})
+        allow(image).to receive(:corrupted_image_file_validation).and_return(true)
         ActiveRecord::Base.transaction do
           image.save!
           image.img_updated_at = image.img_updated_at + 1.day
