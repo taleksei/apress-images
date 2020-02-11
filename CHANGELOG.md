@@ -1,6 +1,17 @@
+# v6.11.0
+
+* 2020-02-11 [7f3d7f9](../../commit/7f3d7f9) - __(terentev)__ Release 6.11.0 
+* 2020-02-07 [d0323ea](../../commit/d0323ea) - __(terentev)__ fix: validate image file only on create 
+https://jira.railsc.ru/browse/GOODS-1799
+
+* 2020-01-31 [4d7cd7d](../../commit/4d7cd7d) - __(terentev)__ feat: add corrupted_image_file_validation 
+https://jira.railsc.ru/browse/GOODS-1799
+
+* 2020-01-31 [2c35fce](../../commit/2c35fce) - __(terentev)__ chore: fix floating test 
+* 2020-01-29 [546add7](../../commit/546add7) - __(terentev)__ chore: drone 1.6 
+
 # v6.10.3
 
-* 2019-11-22 [2d3295d](../../commit/2d3295d) - __(TamarinEA)__ Release 6.10.3 
 * 2019-11-21 [5c99c19](../../commit/5c99c19) - __(TamarinEA)__ chore: lock gems 
 * 2019-11-21 [db27328](../../commit/db27328) - __(TamarinEA)__ fix: retry on load file when fill img fingerprint 
 https://jira.railsc.ru/browse/GOODS-1893
