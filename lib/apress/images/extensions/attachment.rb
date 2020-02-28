@@ -41,23 +41,7 @@ module Apress
           self.job_is_processing = true
           self.post_processing = true
 
-          if exists?(:original)
-            reprocess!
-          else
-            log("Original not exists for image #{instance.id}")
-
-            begin
-              file = to_file(most_existing_style)
-
-              assign(file)
-
-              reprocess!
-            rescue
-              log("Could not restore original for image #{instance.id}")
-            ensure
-              file.close if file
-            end
-          end
+          reprocess!
 
           self.job_is_processing = false
 
@@ -109,13 +93,6 @@ module Apress
           !delay_processing?
         end
 
-        # Public: стили кроме оригинала
-        #
-        # Returns Array
-        def thumbs
-          styles.keys.reject { |style| style == :original }
-        end
-
         # Public: пути в файловой системе для каждого стиля
         #
         # Returns Hash
@@ -134,36 +111,6 @@ module Apress
             result[style] = Digest::MD5.file(file).to_s
             result
           end
-        end
-
-        # Public: из всех стилей первый самый большой(по площади), файл которого существует
-        #
-        # Returns Symbol
-        def most_existing_style
-          thumbs
-            .map do |style_name|
-              geo = Paperclip::Geometry.parse(styles[style_name].geometry)
-              area = geo.width * geo.height
-              sort_value = -area # самые большие, при сортировке, встанут первыми
-              [style_name, sort_value]
-            end
-            .sort_by(&:last)
-            .find { |(style_name, _area)| exists?(style_name) }
-            .try(:first)
-        end
-
-        # Public: выбирает стиль, если есть, то original, или самый большой (по площади)
-        #
-        # Returns Symbol
-        def original_or_biggest_style
-          if exists?(:original)
-            :original
-          else
-            most_existing_style
-          end
-        rescue SocketError, Errno::EHOSTUNREACH => e
-          log(e.message)
-          :original
         end
 
         # Public: файл для стиля

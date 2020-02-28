@@ -66,63 +66,11 @@ RSpec.describe Paperclip::Attachment do
         File.unlink(image.img.path(:original))
       end
 
-      it 'restores original from most existing style' do
+      it do
         expect(image.img).not_to be_exists(:original)
-        image.img.process_delayed!
-        expect(image.img).to be_exists(:original)
+        expect { image.img.process_delayed! }.to raise_error(Errno::ENOENT)
       end
     end
-  end
-
-  describe '#most_existing_style' do
-    let(:image) { create :subject_image }
-
-    it { expect(image.img.most_existing_style).to eq(:big) }
-
-    context 'if no image exists' do
-      before { allow(image.img).to receive(:exists?).and_return(false) }
-
-      it { expect(image.img.most_existing_style).to be_nil }
-    end
-  end
-
-  describe '#best_style_for_copy' do
-    let(:image) { create :subject_image }
-
-    context 'original exists' do
-      it { expect(image.img.original_or_biggest_style).to eq(:original) }
-    end
-
-    context 'original missing' do
-      before do
-        File.unlink(image.img.path(:original))
-      end
-
-      it { expect(image.img.original_or_biggest_style).to eq(:big) }
-    end
-
-    context 'original and big version missing' do
-      before do
-        File.unlink(image.img.path(:original))
-        File.unlink(image.img.path(:big))
-      end
-
-      it { expect(image.img.original_or_biggest_style).to eq(:thumb) }
-    end
-
-    context 'when node is not available' do
-      before do
-        allow(image.img).to receive(:exists?).with(:original).and_raise [SocketError, Errno::EHOSTUNREACH].sample
-      end
-
-      it { expect(image.img.original_or_biggest_style).to eq(:original) }
-    end
-  end
-
-  describe '#thumbs' do
-    let(:image) { create :subject_image }
-
-    it { expect(image.img.thumbs).to match_array([:big, :thumb, :small]) }
   end
 
   describe '#files' do

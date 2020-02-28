@@ -46,9 +46,6 @@ module Apress
 
           delegate :fingerprints,
                    :files,
-                   :thumbs,
-                   :most_existing_style,
-                   :original_or_biggest_style,
                    :to_file,
                    to: attachment_attribute,
                    allow_nil: true

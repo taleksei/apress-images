@@ -22,11 +22,8 @@ RSpec.describe Apress::Images::Imageable do
     before { allow_any_instance_of(Paperclip::Attachment).to receive(:path).and_return(dummy_filepath) }
 
     it 'delegates attachment methods' do
-      expect(image.thumbs).to eq(image.img.thumbs)
       expect(image.files).to eq(image.img.files)
       expect(image.fingerprints).to eq(image.img.fingerprints)
-      expect(image.most_existing_style).to eq(image.img.most_existing_style)
-      expect(image.original_or_biggest_style).to eq(image.img.original_or_biggest_style)
     end
   end
 
